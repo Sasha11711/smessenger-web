@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+//colors
+$dark_brown: #59503F;
+$brown: #A79473;
+$light_brown: #E6D9C4;
+$cube_brown: #9D370F;
+$black: #000000;
+$white: #ffffff;
+$grey: #bbbbbb;
+$correct: #99cc00;
+$incorrect: #cc0000;
+//dimens
+$default_size: 70px;
+$small_size: 45px;
+
+hr {
+  height: 2px;
+  background-color: $dark_brown;
+  margin-top: 10px;
+}
+
+text {
+  color: $dark_brown;
+}
+
+text, .text-primary {
+  color: $dark_brown;
+}
+
+.text-secondary, .background-primary {
+  color: $light_brown;
+}
+
+.background-secondary {
+  background-color: $brown;
+}
+
+.container, .error {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.block {
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.text-input {
+  min-height: 48px;
+}
+
+.text {
+  max-height: 60px;
+}
+
+.error {
+  color: $incorrect;
+  font-size: $small_size;
+}
