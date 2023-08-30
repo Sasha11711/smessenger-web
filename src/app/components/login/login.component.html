@@ -1,1 +1,11 @@
-<p>login works!</p>
+<h1 class="block text-primary text-center">Login</h1>
+<form class="center" (ngSubmit)="onLoginSubmit()">
+  <input class="block form-input" type="text" name="login" placeholder="Enter login" required
+         [(ngModel)]="login" [disabled]="isLoggingIn">
+  <input class="block form-input" type="password" name="password" placeholder="Enter password" required
+         [(ngModel)]="password" [disabled]="isLoggingIn">
+  <div class="block">
+    <p class="error" [style.visibility]="errorMessage ? 'visible' : 'hidden'">{{errorMessage}}</p>
+    <button class="button-primary form-input" type="submit" [disabled]="isLoggingIn">Login</button>
+  </div>
+</form>
