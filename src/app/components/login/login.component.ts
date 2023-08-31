@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -8,22 +9,27 @@ import { Router } from "@angular/router";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  isLoggingIn: boolean = false;
   errorMessage: string | null = null;
-  login: string = '';
-  password: string = '';
+  loginForm = new FormGroup({
+    login: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
+  })
 
   constructor(private authService: AuthService, private router: Router) { }
 
   onLoginSubmit() {
-    this.isLoggingIn = true;
+    this.loginForm.disable();
     this.errorMessage = null;
-    this.authService.login(this.login, this.password).subscribe(error => {
+    this.authService.login(this.getValue("login"), this.getValue("password")).subscribe(error => {
       if (error) {
-        this.isLoggingIn = false;
+        this.loginForm.enable();
         this.errorMessage = error;
       }
       else this.router.navigate(['/']);
     });
+  }
+
+  private getValue(controlName: string) {
+    return this.loginForm.get(controlName)!.value;
   }
 }

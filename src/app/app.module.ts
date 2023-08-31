@@ -6,12 +6,12 @@ import { RegisterComponent } from './components/register/register.component';
 import { MessengerComponent } from './components/messenger/messenger.component';
 import { RouterOutlet } from "@angular/router";
 import { AppRoutingModule } from "./app-routing.module";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MessengerComponent],
-  imports: [BrowserModule, AppRoutingModule, RouterOutlet, HttpClientModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, RouterOutlet, HttpClientModule, FormsModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
