@@ -46,9 +46,14 @@ input[type="text"], input[type="password"] {
   &:focus {
     outline: none;
   }
-
   &::placeholder {
     color: $brown;
+  }
+  &.ng-dirty.ng-valid {
+    background: linear-gradient($correct, $correct) center bottom 5px /100% 1px no-repeat;
+  }
+  &.ng-dirty.ng-invalid {
+    background: linear-gradient($incorrect, $incorrect) center bottom 5px /100% 1px no-repeat;
   }
 }
 
@@ -120,6 +125,7 @@ main {
 .error {
   color: $incorrect;
   margin: 0;
+
   &::before {
     content: "*";
   }

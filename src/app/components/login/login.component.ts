@@ -17,7 +17,7 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  onLoginSubmit() {
+  onSubmit(): void {
     this.loginForm.disable();
     this.errorMessage = null;
     this.authService.login(this.getValue("login"), this.getValue("password")).subscribe(error => {
@@ -29,7 +29,7 @@ export class LoginComponent {
     });
   }
 
-  private getValue(controlName: string) {
+  private getValue(controlName: string): string {
     return this.loginForm.get(controlName)!.value;
   }
 }

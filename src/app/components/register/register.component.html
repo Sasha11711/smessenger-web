@@ -1,1 +1,40 @@
-<p>register works!</p>
+<h1 class="block text-primary text-center">Register</h1>
+<form class="center" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="block">
+    <input class="form-input" type="text" name="login" placeholder="Enter login"
+           formControlName="login">
+    <p class="error" [style.visibility]="isInvalidOrDirty('login') ? 'visible' : 'hidden'">
+      Must be > 10, can contain digits, letters, '–', '_'.
+    </p>
+  </div>
+  <div class="block">
+    <input class="form-input" type="password" name="password" placeholder="Enter password"
+           formControlName="password">
+    <p class="error" [style.visibility]="isInvalidOrDirty('password') ? 'visible' : 'hidden'">
+      Must be > 12 and contain 1+ digits, can contain letters, '–', '_'.
+    </p>
+  </div>
+  <div class="block">
+    <input class="form-input" type="password" name="confirmPassword" placeholder="Enter password again"
+           formControlName="confirmPassword"
+           [ngClass]="registerForm.hasError('passwordMismatch') ? 'ng-invalid' : 'ng-valid'">
+    <p class="error" [style.visibility]="registerForm.hasError('passwordMismatch') &&
+                                         registerForm.get('confirmPassword')!.dirty ? 'visible' : 'hidden'">
+      Must be identical to password
+    </p>
+  </div>
+  <div class="block">
+    <input class="form-input" type="text" name="username" placeholder="Enter username"
+           formControlName="username">
+    <p class="error" [style.visibility]="isInvalidOrDirty('username') ? 'visible' : 'hidden'">
+      Username is required.
+    </p>
+  </div>
+  <div class="block">
+    <p class="error" [style.visibility]="errorMessage ? 'visible' : 'hidden'">{{errorMessage}}</p>
+    <button class="button-primary form-input" type="submit" [disabled]="!registerForm.valid || registerForm.disabled">
+      register
+    </button>
+  </div>
+  <a class="block text-center button-secondary" routerLink="/login">login</a>
+</form>
