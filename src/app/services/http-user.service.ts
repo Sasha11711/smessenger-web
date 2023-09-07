@@ -28,7 +28,7 @@ export class HttpUserService {
   }
 
   getIdUuid(login: string, password: string): Observable<string> {
-    return this.http.get<string>(`${this.URL}/get-id-uuid/${login}&${password}`);
+    return this.http.get(`${this.URL}/get-id-uuid/${login}&${password}`, {responseType: 'text'});
   }
 
   create(userCreateDto: UserCreateDto): Observable<Object> {

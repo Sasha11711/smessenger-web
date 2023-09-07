@@ -1,1 +1,5 @@
-<p>messenger works!</p>
+<div *ngIf="user">
+  <app-chats [class.chats-container]="isDesktop" [chats]="user.chats" *ngIf="isDesktop || !chat"/>
+  <app-chat [class.chat-container]="isDesktop" [chat]="chat" *ngIf="chat"/>
+</div>
+<h1 class="text-primary text-center" *ngIf="!user">loading...</h1>

@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from "rxjs";
 import { HttpUserService } from "./http-user.service";
 import { LOGIN_PASSWORD_ERROR, UNEXPECTED_ERROR, USER_DEACTIVATED_ERROR } from "../constants";
+import { Md5 } from "ts-md5";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  idUuid: string | undefined;
+  idUuid?: string;
 
   constructor(private httpUserService: HttpUserService) { }
 
   login(login: string, password: string): Observable<string | null> {
-    return this.httpUserService.getIdUuid(login, password).pipe(
+    let md5Password = Md5.hashStr(password);
+    return this.httpUserService.getIdUuid(login, md5Password).pipe(
       map(idUuid => {
         this.idUuid = idUuid;
         return null;

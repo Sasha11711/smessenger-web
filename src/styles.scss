@@ -1,41 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@use "variables" as v;
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
-
-$dark_brown: #59503F;
-$brown: #A79473;
-$light_brown: #E6D9C4;
-$cube_brown: #9D370F;
-$black: #000000;
-$white: #ffffff;
-$grey: #bbbbbb;
-$correct: #99cc00;
-$incorrect: #cc0000;
-
-$default_size: 70px;
-$small_size: 45px;
 
 * {
   font-family: 'Roboto', math;
-  transition: 50ms;
+  transition: all 50ms, background-color 100ms;
 }
 
 body {
-  background-color: $light_brown;
+  margin: 0;
+  background-color: v.$light_brown;
 }
 
-button {
-  font-weight: bolder;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 3px;
-
-  &:disabled {
-    opacity: 0.66;
-  }
+a {
+  cursor: pointer;
 }
 
 form {
-  width: 350px;
+  width: 50svmin;
 }
 
 input[type="text"], input[type="password"] {
@@ -47,55 +29,69 @@ input[type="text"], input[type="password"] {
     outline: none;
   }
   &::placeholder {
-    color: $brown;
+    color: v.$brown;
   }
   &.ng-dirty.ng-valid {
-    background: linear-gradient($correct, $correct) center bottom 5px /100% 1px no-repeat;
+    background: linear-gradient(v.$correct, v.$correct) center bottom 5px /100% 1px no-repeat;
   }
   &.ng-dirty.ng-invalid {
-    background: linear-gradient($incorrect, $incorrect) center bottom 5px /100% 1px no-repeat;
+    background: linear-gradient(v.$incorrect, v.$incorrect) center bottom 5px /100% 1px no-repeat;
   }
 }
 
 hr {
   height: 2px;
-  background-color: $dark_brown;
+  background-color: v.$dark_brown;
   margin-top: 10px;
 }
 
-main {
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
 .text-primary, .button-secondary {
-  color: $dark_brown;
-}
-
-.button-secondary {
-  background-color: $light_brown;
-  box-shadow: 0 2px 4px $light_brown;
-
-  &:hover {
-    background-color: $brown;
-  }
+  color: v.$dark_brown;
 }
 
 .text-secondary, .button-primary {
-  color: $light_brown;
+  color: v.$light_brown;
 }
 
-.button-primary {
-  background-color: $brown;
-  box-shadow: 0 1px 3px $brown;
+.button-primary, .button-secondary {
+  font-weight: bolder;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px v.$brown;
+  height: v.$small_size;
 
-  &:hover:enabled {
-    background-color: $dark_brown;
+  &:is(a) {
+    text-decoration: none;
+    line-height: v.$small_size;
+    font-size: small;
+  }
+  &:is(a):active, &:enabled:active {
+    transform: translateY(1px);
+  }
+  &:enabled {
+    cursor: pointer;
+  }
+  &:disabled {
+    opacity: 0.66;
   }
 }
 
-.button-secondary:active:enabled, .button-primary:active:enabled {
-  transform: translateY(1px);
+.button-primary {
+  background-color: v.$brown;
+
+  &:hover:enabled, &:is(a):hover {
+    background-color: v.$dark_brown;
+  }
+}
+
+.button-secondary {
+  background-color: v.$light_brown;
+
+  &:hover:enabled, &:is(a):hover {
+    background-color: v.$brown;
+    color: v.$light_brown;
+  }
 }
 
 .block {
@@ -105,7 +101,7 @@ main {
 }
 
 .form-input {
-  min-height: $small_size;
+  height: v.$default_size;
   width: 100%;
 }
 
@@ -123,7 +119,7 @@ main {
 }
 
 .error {
-  color: $incorrect;
+  color: v.$incorrect;
   margin: 0;
 
   &::before {

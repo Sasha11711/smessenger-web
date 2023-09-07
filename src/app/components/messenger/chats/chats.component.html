@@ -1,0 +1,18 @@
+<header>
+  <a><img src="assets/settings_icon.svg" alt="settings"></a>
+  <h1>Chats</h1>
+  <div class="right">
+    <a><img src="assets/users_icon.svg" alt="users"></a>
+    <a><img src="assets/add_chat_icon.svg" alt="add chat"></a>
+  </div>
+</header>
+<div class="chats-list">
+  <div class="chat-item" *ngFor="let chat of chats">
+    <img [src]="getImageUrl(chat.chatImage)" alt="Chat image">
+    <h2>{{chat.title}}</h2>
+    <div *ngIf="getLastMessage(chat.messages); let lastMessage">
+
+    </div>
+  </div>
+</div>
+

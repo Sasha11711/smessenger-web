@@ -20,7 +20,7 @@
            [ngClass]="registerForm.hasError('passwordMismatch') ? 'ng-invalid' : 'ng-valid'">
     <p class="error" [style.visibility]="registerForm.hasError('passwordMismatch') &&
                                          registerForm.get('confirmPassword')!.dirty ? 'visible' : 'hidden'">
-      Must be identical to password
+      Must be identical to password.
     </p>
   </div>
   <div class="block">

@@ -1,32 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  errorMessage: string | null = null;
+export class LoginComponent implements OnDestroy {
+  errorMessage?: string;
   loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   })
+  private subscriptions = new Subscription();
 
   constructor(private authService: AuthService, private router: Router) { }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
   onSubmit(): void {
     this.loginForm.disable();
-    this.errorMessage = null;
-    this.authService.login(this.getValue("login"), this.getValue("password")).subscribe(error => {
-      if (error) {
-        this.loginForm.enable();
-        this.errorMessage = error;
-      }
-      else this.router.navigate(['/']);
-    });
+    this.errorMessage = undefined;
+    this.subscriptions.add(
+      this.authService.login(this.getValue("login"), this.getValue("password")).subscribe(error => {
+        if (error) {
+          this.loginForm.enable();
+          this.errorMessage = error;
+        }
+        else this.router.navigate(['/']);
+      })
+    );
   }
 
   private getValue(controlName: string): string {

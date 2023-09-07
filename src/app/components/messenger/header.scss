@@ -1,0 +1,33 @@
+@use "../../../variables" as v;
+
+header {
+  display: flex;
+  align-items: center;
+  height: v.$big_size;
+  background-color: v.$brown;
+  color: v.$light_brown;
+
+  * {
+    display: inline;
+  }
+
+  a>img {
+    height: v.$big_size - 20px;
+    padding: 10px;
+
+    &:hover {
+      background-color: v.$dark_brown;
+    }
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}
+
+.header-title {
+  font-size: large;
+}
+
+.right {
+  margin-left: auto;
+}
