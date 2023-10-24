@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { API_URL } from "../constants";
+import { API_URL } from "../app/constants";
 import { HttpClient } from "@angular/common/http";
 import { ChatInfoDto } from "../dto/chat/chat-info-dto";
 import { ChatCreateDto } from "../dto/chat/chat-create-dto";

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from "rxjs";
 import { HttpUserService } from "./http-user.service";
-import { LOGIN_PASSWORD_ERROR, UNEXPECTED_ERROR, USER_DEACTIVATED_ERROR } from "../constants";
+import { LOGIN_PASSWORD_ERROR, UNEXPECTED_ERROR, USER_DEACTIVATED_ERROR } from "../app/constants";
 import { Md5 } from "ts-md5";
 
 @Injectable({

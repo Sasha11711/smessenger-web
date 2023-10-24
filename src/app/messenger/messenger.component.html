@@ -1,0 +1,6 @@
+<div *ngIf="user">
+  <app-chats [class.chats-container]="isDesktop" *ngIf="isDesktop || !chat"
+             [chats]="user.chats" [blocked]="user.blockedUsers" (onChatSelected)="selectChat($event)"/>
+  <app-chat [class.chat-container]="isDesktop" [chat]="chat" [blocked]="user.blockedUsers" *ngIf="chat"/>
+</div>
+<h1 class="text-primary text-center" *ngIf="!user">loading...</h1>

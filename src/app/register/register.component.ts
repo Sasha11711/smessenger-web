@@ -6,7 +6,7 @@ import {
   LOGIN_REGEX,
   PASSWORD_REGEX,
   UNEXPECTED_ERROR
-} from "../../constants";
+} from "../constants";
 import { HttpUserService } from "../../services/http-user.service";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";

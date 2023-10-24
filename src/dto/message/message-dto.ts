@@ -7,8 +7,7 @@ export class MessageDto {
   text?: string;
   sentInstant!: Date;
   isEdited!: boolean;
-  embedImage?: Blob;
 
-  chat!: ChatInfoDto;
+  chatId!: number;
   author!: UserInfoDto;
 }
