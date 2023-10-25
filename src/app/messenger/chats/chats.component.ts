@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatDto } from "../../../dto/chat/chat-dto";
-import { MessageDto } from "../../../dto/message/message-dto";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
-import { BLOCKED_USER_TEXT } from "../../constants";
+import {API_URL, BLOCKED_USER_TEXT, IMAGE_MESSAGE_TEXT} from "../../constants";
+import {UserDto} from "../../../dto/user/user-dto";
+import {MessageDto} from "../../../dto/message/message-dto";
 
 @Component({
   selector: 'app-chats',
@@ -10,7 +11,8 @@ import { BLOCKED_USER_TEXT } from "../../constants";
   styleUrls: ['./chats.component.scss', '../flex-container.scss']
 })
 export class ChatsComponent {
-  @Input() chats!: Set<ChatDto>;
+  protected readonly API_URL = API_URL;
+  @Input() user!: UserDto;
   @Input() blocked!: Set<UserInfoDto>;
   @Output() onChatSelected = new EventEmitter<ChatDto>();
 
@@ -20,15 +22,9 @@ export class ChatsComponent {
     return URL.createObjectURL(imageBlob);
   }
 
-  getLastMessage(messages: Set<MessageDto>): MessageDto | void {
-    if (messages.size) {
-      let lastMessage: MessageDto;
-      messages.forEach((message) => {
-        if (lastMessage && message.id > lastMessage.id)
-          lastMessage = message;
-      });
-      if (this.blocked.has(lastMessage!.author))
-        lastMessage!.text = BLOCKED_USER_TEXT
-    }
+  getText(message: MessageDto): string {
+    if (this.user.blockedUsers.has(message.author))
+      return BLOCKED_USER_TEXT
+    return message.text || IMAGE_MESSAGE_TEXT
   }
 }

@@ -1,5 +1,5 @@
-import { ChatInfoDto } from "../chat/chat-info-dto";
 import { UserInfoDto } from "../user/user-info-dto";
+import {ChatInfoDto} from "../chat/chat-info-dto";
 
 export class MessageDto {
   id!: number;
@@ -8,6 +8,6 @@ export class MessageDto {
   sentInstant!: Date;
   isEdited!: boolean;
 
-  chatId!: number;
+  chat!: ChatInfoDto;
   author!: UserInfoDto;
 }

@@ -1,18 +1,18 @@
 <div class="flex-container">
   <header>
-    <a><img src="../../../assets/settings_icon.svg" alt="settings"></a>
+    <a><img ngSrc="././assets/settings_icon.svg" alt="settings"></a>
     <h1>Chats</h1>
     <div class="right">
-      <a><img src="../../../assets/users_icon.svg" alt="users"></a>
-      <a><img src="../../../assets/add_chat_icon.svg" alt="add chat"></a>
+      <a><img ngSrc="././assets/users_icon.svg" alt="users"></a>
+      <a><img ngSrc="././assets/add_chat_icon.svg" alt="add chat"></a>
     </div>
   </header>
   <div class="flex-content">
-    <div class="chat-item " *ngFor="let chat of chats" (click)="onChatSelected.emit(chat)">
-      <img class="chat-image" [src]="getImageUrl(chat.chatImage)" alt="Chat image">
+    <div class="chat-item " *ngFor="let chat of user.chats" (click)="onChatSelected.emit(chat)">
+      <img ngSrc="{{API_URL}}/chat/{{chat.id}}/image" alt="Chat image">
       <h2>{{chat.title}}</h2>
-      <div *ngIf="getLastMessage(chat.messages); let lastMessage">
-        <p class="author">{{lastMessage?.author}}</p>: <p class="messageText">{{lastMessage?.text}}</p>
+      <div *ngIf="chat.lastMessage; let lastMessage">
+        <p class="author">{{lastMessage.author}}</p>: <p class="messageText">{{getText(lastMessage)}}</p>
       </div>
     </div>
   </div>

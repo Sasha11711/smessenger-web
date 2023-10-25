@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChatDto } from "../../../dto/chat/chat-dto";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { MessageDto } from "../../../dto/message/message-dto";
-import { BLOCKED_USER_TEXT } from "../../constants";
+import {API_URL, BLOCKED_USER_TEXT} from "../../constants";
+import {UserDto} from "../../../dto/user/user-dto";
 
 @Component({
   selector: 'app-chat',
@@ -10,9 +11,10 @@ import { BLOCKED_USER_TEXT } from "../../constants";
   styleUrls: ['./chat.component.scss', '../flex-container.scss']
 })
 export class ChatComponent {
+  protected readonly API_URL = API_URL;
+  protected readonly BLOCKED_USER_TEXT = BLOCKED_USER_TEXT;
+  @Input() user!: UserDto;
   @Input() chat?: ChatDto;
-  @Input() blocked!: Set<UserInfoDto>;
-  BLOCKED_USER_TEXT = BLOCKED_USER_TEXT;
 
   getAvatarUrl(user: UserInfoDto): URL {
     if (!user.avatar)
@@ -28,4 +30,5 @@ export class ChatComponent {
   isBlocked(user: UserInfoDto): boolean {
     return this.blocked.has(user);
   }
+
 }

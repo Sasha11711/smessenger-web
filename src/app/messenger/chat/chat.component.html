@@ -1,11 +1,11 @@
 <header>
-  <a><img src="../../../assets/back_icon.svg" alt="back"></a>
+  <a><img ngSrc="./././assets/back_icon.svg" alt="back"></a>
   <h1>{{chat.title}}</h1>
-  <a class="right"><img src="../../../assets/settings_icon.svg" alt="settings"></a>
+  <a class="right"><img ngSrc="./././assets/settings_icon.svg" alt="settings"></a>
 </header>
 <div class="messages-list">
   <div class="message-item" *ngFor="let message of chat.messages">
-    <img [src]="getAvatarUrl(message.author)" alt="Chat image">
+    <img ngSrc="{{API_URL}}/user/{{user.id}}/image" alt="Chat image">
     <h2>{{message.author.username}}</h2>
     <p>{{this.isBlocked(message.author) ? BLOCKED_USER_TEXT : message.text}}</p>
     <img [src]="getEmbedUrl(message)" *ngIf="message.embedImage" alt="embed image"/>

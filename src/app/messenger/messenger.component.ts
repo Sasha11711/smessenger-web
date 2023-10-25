@@ -4,8 +4,6 @@ import { ChatDto } from "../../dto/chat/chat-dto";
 import { HttpUserService } from "../../services/http-user.service";
 import { AuthService } from "../../services/auth.service";
 import { Subscription } from "rxjs";
-import { MessageDto } from "../../dto/message/message-dto";
-import { UserInfoDto } from "../../dto/user/user-info-dto";
 
 @Component({
   selector: 'app-messenger',
@@ -37,13 +35,13 @@ export class MessengerComponent implements OnInit, OnDestroy {
         this.user = user;
         setTimeout(() => {
           this.subscribeGetUser();
-        }, 1000);
+        }, 3);
       },
       error: (error) => {
         if (error.status !== 504) this.authService.logout();
         else setTimeout(() => {
           this.subscribeGetUser();
-        }, 3000);
+        }, 5);
       }
     });
   }
