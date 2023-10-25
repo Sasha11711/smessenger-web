@@ -1,4 +1,4 @@
 export class UserUpdateDto {
-  username!: String;
+  username?: string;
   avatar?: Blob;
 }

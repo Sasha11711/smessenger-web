@@ -5,11 +5,9 @@ export class ChatDto {
   id!: number;
 
   title!: string;
-  chatImage?: Blob;
-  creationInstant!: Date;
 
-  messages!: Set<MessageDto>;
+  lastMessage!: MessageDto;
   users!: Set<UserInfoDto>;
-  moderators!: Set<UserInfoDto>;
+  moderatorsId!: Set<number>;
   bannedUsers!: Set<UserInfoDto>;
 }
