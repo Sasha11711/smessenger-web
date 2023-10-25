@@ -8,6 +8,6 @@ export class MessageDto {
   sentInstant!: Date;
   isEdited!: boolean;
 
-  chat!: ChatInfoDto;
+  chatId!: number;
   author!: UserInfoDto;
 }

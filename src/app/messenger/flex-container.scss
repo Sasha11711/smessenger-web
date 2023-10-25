@@ -1,4 +1,26 @@
-@use "../../../variables" as v;
+@use "src/variables" as v;
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0 0;
+  height: 100%;
+
+  header, .flex-bottom {
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: v.$big_size;
+  }
+
+  .flex-content {
+    height: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+}
 
 header {
   display: flex;

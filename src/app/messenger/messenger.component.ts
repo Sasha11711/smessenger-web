@@ -4,6 +4,8 @@ import { ChatDto } from "../../dto/chat/chat-dto";
 import { HttpUserService } from "../../services/http-user.service";
 import { AuthService } from "../../services/auth.service";
 import { Subscription } from "rxjs";
+import { MessageDto } from "../../dto/message/message-dto";
+import { UserInfoDto } from "../../dto/user/user-info-dto";
 
 @Component({
   selector: 'app-messenger',
@@ -44,5 +46,9 @@ export class MessengerComponent implements OnInit, OnDestroy {
         }, 3000);
       }
     });
+  }
+
+  selectChat(chat: ChatDto) {
+    this.chat = chat;
   }
 }
