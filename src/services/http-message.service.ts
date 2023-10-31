@@ -17,8 +17,8 @@ export class HttpMessageService {
     return this.http.get<MessageDto>(`${this.URL}/${id}/${userIdUuid}`);
   }
 
-  createByUserInChat(userIdUuid: string, chatId: number, messageCreateDto: MessageCreateDto): Observable<Object> {
-    return this.http.post(`${this.URL}/${userIdUuid}/${chatId}`, messageCreateDto);
+  createByUserInChat(userIdUuid: string, chatId: number, messageCreateDto: MessageCreateDto): Observable<MessageDto> {
+    return this.http.post<MessageDto>(`${this.URL}/${userIdUuid}/${chatId}`, messageCreateDto);
   }
 
   updateByAuthor(id: number, userIdUuid: string, newText: string): Observable<Object> {

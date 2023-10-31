@@ -14,18 +14,18 @@ export class LoginComponent implements OnDestroy {
     login: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   })
-  private subscriptions = new Subscription();
+  private subscription = new Subscription();
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   onSubmit(): void {
     this.loginForm.disable();
     this.errorMessage = undefined;
-    this.subscriptions.add(
+    this.subscription.add(
       this.authService.login(this.getValue("login"), this.getValue("password")).subscribe(error => {
         if (error) {
           this.loginForm.enable();

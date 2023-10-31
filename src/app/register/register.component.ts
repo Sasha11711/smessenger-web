@@ -23,18 +23,18 @@ export class RegisterComponent implements OnDestroy {
     confirmPassword: new FormControl(''),
     username: new FormControl('', Validators.required),
   }, this.confirmPasswordValidator);
-  private subscriptions = new Subscription();
+  private subscription = new Subscription();
 
   constructor(private httpUserService: HttpUserService, private router: Router) {}
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   onSubmit(): void {
     this.registerForm.disable();
     this.errorMessage = undefined;
-    this.subscriptions.add(
+    this.subscription.add(
       this.httpUserService.create({
         login: this.getValue('login'),
         password: this.getValue('password'),

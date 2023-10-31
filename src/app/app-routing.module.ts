@@ -5,9 +5,11 @@ import { MessengerComponent } from "./messenger/messenger.component";
 import { NgModule } from "@angular/core";
 import { authGuard } from "../guards/auth.guard";
 import { noAuthGuard } from "../guards/no-auth.guard";
+import {ChatCreateComponent} from "./messenger/chat-create/chat-create.component";
 
 const routes: Routes = [
   { path: '', component: MessengerComponent, canActivate: [authGuard] },
+  { path: 'create', component: ChatCreateComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] },
 ];

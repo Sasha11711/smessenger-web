@@ -10,9 +10,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { ChatsComponent } from './messenger/chats/chats.component';
 import { ChatComponent } from './messenger/chat/chat.component';
+import { ChatCreateComponent } from './messenger/chat-create/chat-create.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MessengerComponent, ChatsComponent, ChatComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MessengerComponent, ChatsComponent, ChatComponent, ChatCreateComponent],
   imports: [BrowserModule, AppRoutingModule, RouterOutlet, HttpClientModule, FormsModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent]
