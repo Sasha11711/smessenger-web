@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { ChatDto } from "../../../dto/chat/chat-dto";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { MessageDto } from "../../../dto/message/message-dto";
-import {API_URL, BLOCKED_USER_TEXT} from "../../constants";
 import {UserDto} from "../../../dto/user/user-dto";
 
 @Component({
@@ -11,24 +10,14 @@ import {UserDto} from "../../../dto/user/user-dto";
   styleUrls: ['./chat.component.scss', '../flex-container.scss']
 })
 export class ChatComponent {
-  protected readonly API_URL = API_URL;
-  protected readonly BLOCKED_USER_TEXT = BLOCKED_USER_TEXT;
+  protected readonly PAGE_SIZE = 10;
   @Input() user!: UserDto;
-  @Input() chat?: ChatDto;
-
-  getAvatarUrl(user: UserInfoDto): URL {
-    if (!user.avatar)
-      return new URL("assets/icon.svg");
-    return new URL(URL.createObjectURL(user.avatar));
-  }
-
-  getEmbedUrl(message: MessageDto): URL | void {
-    if (message.embedImage)
-      return new URL(URL.createObjectURL(message.embedImage));
-  }
+  @Input() chat!: ChatDto;
+  isLoading: boolean = false;
+  messages: [MessageDto] = [this.chat.lastMessage];
+  page: number = 1;
 
   isBlocked(user: UserInfoDto): boolean {
-    return this.blocked.has(user);
+    return this.user.blockedUsers.has(user);
   }
-
 }

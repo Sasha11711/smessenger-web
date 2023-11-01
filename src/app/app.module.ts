@@ -11,9 +11,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { ChatsComponent } from './messenger/chats/chats.component';
 import { ChatComponent } from './messenger/chat/chat.component';
 import { ChatCreateComponent } from './messenger/chat-create/chat-create.component';
+import {MessageComponent} from "./messenger/chat/message/message.component";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MessengerComponent, ChatsComponent, ChatComponent, ChatCreateComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MessengerComponent, ChatsComponent, ChatComponent, ChatCreateComponent, MessageComponent],
   imports: [BrowserModule, AppRoutingModule, RouterOutlet, HttpClientModule, FormsModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent]
