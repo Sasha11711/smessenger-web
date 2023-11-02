@@ -1,10 +1,10 @@
 <h1 class="block text-primary text-center">Create Chat</h1>
 <form class="center" (ngSubmit)="onSubmit()" #chatForm="ngForm">
-  <input class="form-input" type="text" placeholder="Chat image." [(ngModel)]="chatCreate.image" name="image">
+  <input class="form-input" type="image" placeholder="Chat image." [(ngModel)]="chatCreate.image" name="image">
   <div class="block">
     <input class="form-input" type="text" [(ngModel)]="chatCreate.title" required #titleInput="ngModel">
     <p class="error" *ngIf="titleInput.invalid && (titleInput.dirty || titleInput.touched)">
-      Title  is required.
+      Title is required.
     </p>
   </div>
   <button type="submit" [disabled]="!chatForm.valid">Create</button>

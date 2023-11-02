@@ -8,5 +8,5 @@
   <div></div>
 </div>
 <div class="messages-list">
-  <app-message *ngFor="messages"/>
+  <app-message *ngFor="messages let message" [message]="message"/>
 </div>
