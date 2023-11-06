@@ -23,59 +23,59 @@ export class HttpUserService {
     return this.http.get<UserInfoDto>(`${this.URL}/${id}`);
   }
 
-  getFull(idUuid: string): Observable<UserDto> {
-    return this.http.get<UserDto>(`${this.URL}/get-full/${idUuid}`);
+  getFull(token: string): Observable<UserDto> {
+    return this.http.get<UserDto>(`${this.URL}/get-full/${token}`);
   }
 
-  getIdUuid(login: string, password: string): Observable<string> {
-    return this.http.get(`${this.URL}/get-id-uuid/${login}&${password}`, {responseType: 'text'});
+  getToken(login: string, password: string): Observable<string> {
+    return this.http.get(`${this.URL}/get-token/${login}&${password}`, {responseType: 'text'});
   }
 
   create(userCreateDto: UserCreateDto): Observable<Object> {
     return this.http.post(this.URL, userCreateDto);
   }
 
-  update(idUuid: string, userUpdateDto: UserUpdateDto): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}`, userUpdateDto);
+  update(token: string, userUpdateDto: UserUpdateDto): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}`, userUpdateDto);
   }
 
-  changePassword(idUuid: string, login: string, oldPassword: string, newPassword: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/${login}&${oldPassword}/${newPassword}`, null);
+  changePassword(token: string, login: string, oldPassword: string, newPassword: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/${login}&${oldPassword}/${newPassword}`, null);
   }
 
-  addFriendRequest(idUuid: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/add-request/${userId}`, null);
+  addFriendRequest(token: string, userId: number): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/add-request/${userId}`, null);
   }
 
-  removeFriendRequest(idUuid: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/remove-request/${userId}`, null);
+  removeFriendRequest(token: string, userId: number): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/remove-request/${userId}`, null);
   }
 
-  declineFriendRequest(idUuid: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/decline-request/${userId}`, null);
+  declineFriendRequest(token: string, userId: number): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/decline-request/${userId}`, null);
   }
 
-  acceptFriendRequest(idUuid: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/accept-request/${userId}`, null);
+  acceptFriendRequest(token: string, userId: number): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/accept-request/${userId}`, null);
   }
 
-  removeFriend(idUuid: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/remove-friend/${userId}`, null);
+  removeFriend(token: string, userId: number): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/remove-friend/${userId}`, null);
   }
 
-  blockUser(idUuid: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/block/${userId}`, null);
+  blockUser(token: string, userId: number): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/block/${userId}`, null);
   }
 
-  unblockUser(idUuid: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/unblock/${userId}`, null);
+  unblockUser(token: string, userId: number): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/unblock/${userId}`, null);
   }
 
-  resetUuid(idUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${idUuid}/reset-uuid`, null);
+  resetUuid(token: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${token}/reset-uuid`, null);
   }
 
-  delete(idUuid: string, login: string, password: string): Observable<Object> {
-    return this.http.delete(`${this.URL}/${idUuid}/${login}&${password}`);
+  delete(token: string, login: string, password: string): Observable<Object> {
+    return this.http.delete(`${this.URL}/${token}/${login}&${password}`);
   }
 }

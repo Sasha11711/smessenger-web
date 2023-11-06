@@ -29,8 +29,8 @@ export class MessengerComponent implements OnInit, OnDestroy {
   }
 
   subscribeGetUser() {
-    let idUuid = this.authService.idUuid!;
-    this.subscription = this.httpUserService.getFull(idUuid).subscribe({
+    let token = this.authService.token!;
+    this.subscription = this.httpUserService.getFull(token).subscribe({
       next: (user: UserDto) => {
         this.user = user;
         setTimeout(() => {

@@ -13,19 +13,19 @@ export class HttpMessageService {
 
   constructor(private http: HttpClient) { }
 
-  get(id: number, userIdUuid: string): Observable<MessageDto> {
-    return this.http.get<MessageDto>(`${this.URL}/${id}/${userIdUuid}`);
+  get(id: number, userToken: string): Observable<MessageDto> {
+    return this.http.get<MessageDto>(`${this.URL}/${id}/${userToken}`);
   }
 
-  createByUserInChat(userIdUuid: string, chatId: number, messageCreateDto: MessageCreateDto): Observable<MessageDto> {
-    return this.http.post<MessageDto>(`${this.URL}/${userIdUuid}/${chatId}`, messageCreateDto);
+  createByUserInChat(userToken: string, chatId: number, messageCreateDto: MessageCreateDto): Observable<MessageDto> {
+    return this.http.post<MessageDto>(`${this.URL}/${userToken}/${chatId}`, messageCreateDto);
   }
 
-  updateByAuthor(id: number, userIdUuid: string, newText: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/${userIdUuid}/${newText}`, null);
+  updateByAuthor(id: number, userToken: string, newText: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/${userToken}/${newText}`, null);
   }
 
-  deleteByAuthorOrMod(id: number, userIdUuid: string): Observable<Object> {
-    return this.http.delete(`${this.URL}/${id}/${userIdUuid}`);
+  deleteByAuthorOrMod(id: number, userToken: string): Observable<Object> {
+    return this.http.delete(`${this.URL}/${id}/${userToken}`);
   }
 }

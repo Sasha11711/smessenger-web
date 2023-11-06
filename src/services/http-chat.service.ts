@@ -17,43 +17,43 @@ export class HttpChatService {
     return this.http.get<ChatInfoDto>(`${this.URL}/${id}`);
   }
 
-  createByUser(userIdUuid: string, chatCreateDto: ChatCreateDto): Observable<ChatInfoDto> {
-    return this.http.post<ChatInfoDto>(`${this.URL}/${userIdUuid}`, chatCreateDto);
+  createByUser(userToken: string, chatCreateDto: ChatCreateDto): Observable<ChatInfoDto> {
+    return this.http.post<ChatInfoDto>(`${this.URL}/${userToken}`, chatCreateDto);
   }
 
-  updateByMod(id: number, modIdUuid: string, chatCreateDto: ChatCreateDto): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/${modIdUuid}`, chatCreateDto);
+  updateByMod(id: number, modToken: string, chatCreateDto: ChatCreateDto): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/${modToken}`, chatCreateDto);
   }
 
-  joinUser(id: number, userId: number, friendIdUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/join/${userId}/${friendIdUuid}`, null);
+  joinUser(id: number, userId: number, friendToken: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/join/${userId}/${friendToken}`, null);
   }
 
-  leaveUser(id: number, userIdUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/leave/${userIdUuid}`, null);
+  leaveUser(id: number, userToken: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/leave/${userToken}`, null);
   }
 
-  kickUserByMod(id: number, userId: number, modIdUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/kick/${userId}/${modIdUuid}`, null);
+  kickUserByMod(id: number, userId: number, modToken: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/kick/${userId}/${modToken}`, null);
   }
 
-  banUserByMod(id: number, userId: number, modIdUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/ban/${userId}/${modIdUuid}`, null);
+  banUserByMod(id: number, userId: number, modToken: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/ban/${userId}/${modToken}`, null);
   }
 
-  unbanUserByMod(id: number, userId: number, modIdUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/unban/${userId}/${modIdUuid}`, null);
+  unbanUserByMod(id: number, userId: number, modToken: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/unban/${userId}/${modToken}`, null);
   }
 
-  setModeratorByMod(id: number, userId: number, modIdUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/mod/${userId}/${modIdUuid}`, null);
+  setModeratorByMod(id: number, userId: number, modToken: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/mod/${userId}/${modToken}`, null);
   }
 
-  unsetModeratorByMod(id: number, userId: number, modIdUuid: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/unmod/${userId}/${modIdUuid}`, null);
+  unsetModeratorByMod(id: number, userId: number, modToken: string): Observable<Object> {
+    return this.http.put(`${this.URL}/${id}/unmod/${userId}/${modToken}`, null);
   }
 
-  deleteByMod(id: number, modIdUuid: string): Observable<Object> {
-    return this.http.delete(`${this.URL}/${id}/${modIdUuid}`);
+  deleteByMod(id: number, modToken: string): Observable<Object> {
+    return this.http.delete(`${this.URL}/${id}/${modToken}`);
   }
 }

@@ -8,15 +8,15 @@ import { Md5 } from "ts-md5";
   providedIn: 'root'
 })
 export class AuthService {
-  idUuid?: string;
+  token?: string;
 
   constructor(private httpUserService: HttpUserService) { }
 
   login(login: string, password: string): Observable<string | null> {
     let md5Password = Md5.hashStr(password);
-    return this.httpUserService.getIdUuid(login, md5Password).pipe(
-      map(idUuid => {
-        this.idUuid = idUuid;
+    return this.httpUserService.getToken(login, md5Password).pipe(
+      map(token => {
+        this.token = token;
         return null;
       }),
       catchError(error => {
@@ -32,6 +32,6 @@ export class AuthService {
   }
 
   logout(): void {
-    this.idUuid = undefined;
+    this.token = undefined;
   }
 }

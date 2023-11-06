@@ -24,10 +24,10 @@ export class ChatCreateComponent implements OnDestroy {
   }
 
   onSubmit() {
-    let idUuid = this.authService.idUuid!;
-    this.subscription = this.httpChatService.createByUser(idUuid, this.chatCreate).subscribe({
+    let token = this.authService.token!;
+    this.subscription = this.httpChatService.createByUser(token, this.chatCreate).subscribe({
       next: (chatInfo: ChatInfoDto) => {
-        this.router.navigate(['', {queryParams: {chat: chatInfo.id}}])
+        this.router.navigate(['', {queryParams: {chat: chatInfo.id}}]);
       },
       error: (error) => {
         if (error.status != 504) this.authService.logout();
