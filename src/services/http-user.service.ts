@@ -1,81 +1,107 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { API_URL } from "../app/constants";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { UserInfoDto } from "../dto/user/user-info-dto";
 import { UserDto } from "../dto/user/user-dto";
 import { UserUpdateDto } from "../dto/user/user-update-dto";
-import { Observable } from "rxjs";
 import { UserCreateDto } from "../dto/user/user-create-dto";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class HttpUserService {
   private readonly URL = `${API_URL}/user`
 
-  constructor(private http: HttpClient) { }
-
-  getAllByUsername(username: string): Observable<Set<UserInfoDto>> {
-    return this.http.get<Set<UserInfoDto>>(`${this.URL}/find-by-username/${username}`);
+  constructor(private http: HttpClient) {
   }
 
-  get(id: number): Observable<UserInfoDto> {
+  getAllByUsername(username: string) {
+    const params = new HttpParams().set("username", username);
+    return this.http.get<Set<UserInfoDto>>(`${this.URL}/find-by-username`, {params});
+  }
+
+  get(id: number) {
     return this.http.get<UserInfoDto>(`${this.URL}/${id}`);
   }
 
-  getFull(token: string): Observable<UserDto> {
-    return this.http.get<UserDto>(`${this.URL}/get-full/${token}`);
+  getFull(token: string) {
+    const params = new HttpParams().set("token", token);
+    return this.http.get<UserDto>(`${this.URL}/get-full`, {params});
   }
 
-  getToken(login: string, password: string): Observable<string> {
-    return this.http.get(`${this.URL}/get-token/${login}&${password}`, {responseType: 'text'});
+  getToken(login: string, password: string) {
+    const params = new HttpParams()
+      .set("login", login)
+      .set("password", password);
+
+    return this.http.get(`${this.URL}/get-token`, {params, responseType: "text"});
   }
 
-  create(userCreateDto: UserCreateDto): Observable<Object> {
+  create(userCreateDto: UserCreateDto) {
     return this.http.post(this.URL, userCreateDto);
   }
 
-  update(token: string, userUpdateDto: UserUpdateDto): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}`, userUpdateDto);
+  update(token: string, userUpdateDto: UserUpdateDto) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(this.URL, userUpdateDto, {params});
   }
 
-  changePassword(token: string, login: string, oldPassword: string, newPassword: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/${login}&${oldPassword}/${newPassword}`, null);
+  changePassword(token: string, login: string, password: string, newPassword: string) {
+    const params = new HttpParams()
+      .set("token", token)
+      .set("login", login)
+      .set("password", password)
+      .set("newPassword", newPassword);
+
+    return this.http.put(`${this.URL}/change-password`, null, {params});
   }
 
-  addFriendRequest(token: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/add-request/${userId}`, null);
+  addFriendRequest(token: string, userId: number) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/add-request/${userId}`, null, {params});
   }
 
-  removeFriendRequest(token: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/remove-request/${userId}`, null);
+  removeFriendRequest(token: string, userId: number) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/remove-request/${userId}`, null, {params});
   }
 
-  declineFriendRequest(token: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/decline-request/${userId}`, null);
+  declineFriendRequest(token: string, userId: number) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/decline-request/${userId}`, null, {params});
   }
 
-  acceptFriendRequest(token: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/accept-request/${userId}`, null);
+  acceptFriendRequest(token: string, userId: number) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/accept-request/${userId}`, null, {params});
   }
 
-  removeFriend(token: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/remove-friend/${userId}`, null);
+  removeFriend(token: string, userId: number) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/remove-friend/${userId}`, null, {params});
   }
 
-  blockUser(token: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/block/${userId}`, null);
+  blockUser(token: string, userId: number) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/block/${userId}`, null, {params});
   }
 
-  unblockUser(token: string, userId: number): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/unblock/${userId}`, null);
+  unblockUser(token: string, userId: number) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/unblock/${userId}`, null, {params});
   }
 
-  resetUuid(token: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${token}/reset-uuid`, null);
+  resetUuid(token: string) {
+    const params = new HttpParams().set("token", token);
+    return this.http.put(`${this.URL}/reset-uuid`, null, {params});
   }
 
-  delete(token: string, login: string, password: string): Observable<Object> {
-    return this.http.delete(`${this.URL}/${token}/${login}&${password}`);
+  delete(token: string, login: string, password: string) {
+    const params = new HttpParams()
+      .set("token", token)
+      .set("login", login)
+      .set("password", password);
+
+    return this.http.delete(this.URL, {params});
   }
 }

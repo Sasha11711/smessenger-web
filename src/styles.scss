@@ -25,6 +25,12 @@ a {
   cursor: pointer;
 }
 
+hr {
+  height: 2px;
+  background-color: v.$dark_brown;
+  margin-top: 10px;
+}
+
 form {
   width: 50svmin;
 }
@@ -48,10 +54,9 @@ input[type="text"], input[type="password"] {
   }
 }
 
-hr {
-  height: 2px;
-  background-color: v.$dark_brown;
-  margin-top: 10px;
+.form-input {
+  height: v.$default_size;
+  width: 100%;
 }
 
 .text-primary, .button-secondary {
@@ -109,9 +114,13 @@ hr {
   margin-bottom: 10px;
 }
 
-.form-input {
-  height: v.$default_size;
-  width: 100%;
+.item-flex {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  * {
+    margin-bottom: 10px;
+  }
 }
 
 .text {

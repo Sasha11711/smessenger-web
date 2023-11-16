@@ -3,8 +3,9 @@ import { UserInfoDto } from "./user-info-dto";
 
 export class UserDto {
   username!: string;
+  avatarId!: number;
 
-  chats!: Set<ChatDto>;
+  chats!: ChatDto[];
   moderatorAt!: Set<number>;
 
   friends!: Set<UserInfoDto>;

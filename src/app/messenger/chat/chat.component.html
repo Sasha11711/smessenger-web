@@ -1,12 +1,7 @@
-<header>
-  <a><img src="assets/back_icon.svg" alt="back"></a>
-  <h1>{{chat.title}}</h1>
-  <a class="right"><img src="assets/settings_icon.svg" alt="settings"></a>
-</header>
-<div *ngIf="isLoading">
-  Loading. . .
-  <div></div>
-</div>
+<app-header [leftButton]="{imageURL: 'assets/back_icon.svg', event: onChatUnselected}"
+            [rightButtons]="[{imageURL: 'assets/settings_icon.svg', event: onSettingsToggled}]">
+    <h1>{{chat.title}}</h1>
+</app-header>
 <div class="messages-list">
-  <app-message *ngFor="messages let message" [message]="message"/>
+    <app-message-item *ngFor="let message of messages" [message]="message"/>
 </div>

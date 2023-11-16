@@ -5,6 +5,7 @@ export class ChatDto {
   id!: number;
 
   title!: string;
+  imageId!: number;
 
   lastMessage!: MessageDto;
   users!: Set<UserInfoDto>;

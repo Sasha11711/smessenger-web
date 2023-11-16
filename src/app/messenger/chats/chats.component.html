@@ -1,20 +1,10 @@
-<div class="flex-container">
-  <header>
-    <a><img src="assets/settings_icon.svg" alt="settings"></a>
+<app-header [leftButton]="{imageURL: 'assets/settings_icon.svg', link: '/settings'}"
+            [rightButtons]="[
+                {imageURL: 'assets/users_icon.svg', link: '/users'},
+                {imageURL: 'assets/add_chat_icon.svg', link: '/create'}]">
     <h1>Chats</h1>
-    <div class="right">
-      <a><img src="assets/users_icon.svg" alt="users"></a>
-      <a routerLink="/create"><img src="assets/add_chat_icon.svg" alt="add chat"></a>
-    </div>
-  </header>
-  <div class="flex-content">
-    <div class="chat-item " *ngFor="let chat of user.chats" (click)="onChatSelected.emit(chat)">
-      <img src="{{API_URL}}/chat/{{chat.id}}/image" alt="Chat image">
-      <h2>{{chat.title}}</h2>
-      <div *ngIf="chat.lastMessage; let lastMessage">
-        <p class="author">{{lastMessage.author}}</p>: <p class="messageText">{{getText(lastMessage)}}</p>
-      </div>
-    </div>
-  </div>
+</app-header>
+<div class="flex-content">
+    <app-chat-item *ngFor="let chat of user.chats" [chat]="chat" [blockedUsers]="user.blockedUsers"
+                   (click)="onChatSelected.emit(chat)"/>
 </div>
-

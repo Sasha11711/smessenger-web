@@ -1,0 +1,8 @@
+<div class="item-flex">
+    <img class="avatar" ngSrc="{{API_URL}}/image/{{message.author.avatarId}}" alt="avatar" height="64" width="64">
+    <div>
+        <p>{{message.author}}</p>
+        <p>{{isBlocked ? BLOCKED_USER_TEXT : message.text}}</p>
+        <img *ngIf="!isBlocked" ngSrc="{{API_URL}}/image/{{message.embedId}}" alt="embed" height="100" width="100">
+    </div>
+</div>

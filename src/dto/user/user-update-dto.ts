@@ -1,4 +1,6 @@
+import { Image } from "../image";
+
 export class UserUpdateDto {
   username?: string;
-  avatar?: Blob;
+  avatar?: Image;
 }

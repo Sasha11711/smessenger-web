@@ -3,5 +3,4 @@ export class UserCreateDto {
   password!: String;
 
   username!: String;
-  avatar?: Blob;
 }

@@ -1,0 +1,11 @@
+<header>
+    <a [routerLink]="leftButton.link" (click)="leftButton.event?.emit()">
+        <img [ngSrc]="leftButton.imageURL" alt="back" height="512" width="512"/>
+    </a>
+    <ng-content/>
+    <div class="right">
+        <a *ngFor="let rightButton of rightButtons" [routerLink]="rightButton.link" (click)="rightButton.event?.emit()">
+            <img [ngSrc]="rightButton.imageURL" alt="settings" height="512" width="512">
+        </a>
+    </div>
+</header>

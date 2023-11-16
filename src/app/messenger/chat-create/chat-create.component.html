@@ -1,11 +1,15 @@
-<h1 class="block text-primary text-center">Create Chat</h1>
-<form class="center" (ngSubmit)="onSubmit()" #chatForm="ngForm">
-  <input class="form-input" type="image" placeholder="Chat image." [(ngModel)]="chatCreate.image" name="image">
-  <div class="block">
-    <input class="form-input" type="text" [(ngModel)]="chatCreate.title" required #titleInput="ngModel">
-    <p class="error" *ngIf="titleInput.invalid && (titleInput.dirty || titleInput.touched)">
-      Title is required.
-    </p>
+<app-header *ngIf="!chat" [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
+  <h1>Create Chat</h1>
+</app-header>
+<form class="center item-flex" (ngSubmit)="onSubmit()" [formGroup]="chatForm">
+  <div>
+    <input class="file-input" type="file" accept=".png" name="image" formControlName="image"
+           (change)="setImage($event)" #fileInput >
+    <img [ngSrc]="imageURL??'assets/icon.svg'" alt="avatar" width="100" height="100"
+         (click)="fileInput.click()"/>
   </div>
-  <button type="submit" [disabled]="!chatForm.valid">Create</button>
+  <div class="align-right">
+    <input class="form-input" type="text" formControlName="title" required>
+    <button class="button-primary" type="submit" [disabled]="!chatForm.valid">Apply</button>
+  </div>
 </form>

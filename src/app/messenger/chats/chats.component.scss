@@ -1,9 +1,0 @@
-@use "src/variables" as v;
-.chat-item {
-  clear: left;
-
-  & > img {
-    float: left;
-    height: v.$big_size;
-  }
-}

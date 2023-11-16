@@ -5,6 +5,7 @@ export class MessageDto {
   id!: number;
 
   text?: string;
+  embedId?: number;
   sentInstant!: Date;
   isEdited!: boolean;
 

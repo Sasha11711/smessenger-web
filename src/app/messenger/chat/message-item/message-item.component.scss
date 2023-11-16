@@ -1,0 +1,8 @@
+@use "src/variables" as v;
+.avatar {
+  height: v.$big_size;
+  width: v.$big_size;
+  border-radius: 50%;
+  margin-top: 5px;
+  margin-left: 5px;
+}

@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from "rxjs";
+import { Injectable } from "@angular/core";
+import { catchError, map, of } from "rxjs";
 import { HttpUserService } from "./http-user.service";
 import { LOGIN_PASSWORD_ERROR, UNEXPECTED_ERROR, USER_DEACTIVATED_ERROR } from "../app/constants";
 import { Md5 } from "ts-md5";
+import { CookieService } from "ngx-cookie-service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthService {
-  token?: string;
 
-  constructor(private httpUserService: HttpUserService) { }
+  constructor(private httpUserService: HttpUserService, private cookieService: CookieService) { }
 
-  login(login: string, password: string): Observable<string | null> {
+  login(login: string, password: string) {
     let md5Password = Md5.hashStr(password);
     return this.httpUserService.getToken(login, md5Password).pipe(
       map(token => {
-        this.token = token;
+        this.cookieService.set("token", token);
         return null;
       }),
       catchError(error => {
@@ -31,7 +31,15 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-    this.token = undefined;
+  logout() {
+    this.cookieService.delete("token");
+  }
+
+  checkToken() {
+    return this.cookieService.check("token");
+  }
+
+  getToken() {
+    return this.cookieService.get("token");
   }
 }

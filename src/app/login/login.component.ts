@@ -1,12 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
+  selector: "app-login",
+  templateUrl: "./login.component.html",
 })
 export class LoginComponent implements OnDestroy {
   errorMessage?: string;
@@ -22,7 +22,7 @@ export class LoginComponent implements OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onSubmit(): void {
+  onSubmit() {
     this.loginForm.disable();
     this.errorMessage = undefined;
     this.subscription.add(
@@ -36,7 +36,7 @@ export class LoginComponent implements OnDestroy {
     );
   }
 
-  private getValue(controlName: string): string {
+  private getValue(controlName: string) {
     return this.loginForm.get(controlName)!.value;
   }
 }

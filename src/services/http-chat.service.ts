@@ -1,59 +1,94 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { API_URL } from "../app/constants";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { ChatInfoDto } from "../dto/chat/chat-info-dto";
-import { ChatCreateDto } from "../dto/chat/chat-create-dto";
-import { Observable } from "rxjs";
+import { ChatDto } from "../dto/chat/chat-dto";
+import { MessageDto } from "../dto/message/message-dto";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class HttpChatService {
   private readonly URL = `${API_URL}/chat`
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  get(id: number): Observable<ChatInfoDto> {
+  get(id: number) {
     return this.http.get<ChatInfoDto>(`${this.URL}/${id}`);
   }
 
-  createByUser(userToken: string, chatCreateDto: ChatCreateDto): Observable<ChatInfoDto> {
-    return this.http.post<ChatInfoDto>(`${this.URL}/${userToken}`, chatCreateDto);
+  getByUser(id: number, token: string) {
+    let params = new HttpParams()
+      .set("token", token);
+    return this.http.get<ChatDto>(`${this.URL}/${id}/full`, {params});
   }
 
-  updateByMod(id: number, modToken: string, chatCreateDto: ChatCreateDto): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/${modToken}`, chatCreateDto);
+  getMessages(id: number, token: string, page: number, size: number) {
+    let params = new HttpParams()
+      .set("page", page)
+      .set("size", size)
+      .set("token", token);
+    return this.http.get<MessageDto[]>(`${this.URL}/${id}/messages`, {params});
   }
 
-  joinUser(id: number, userId: number, friendToken: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/join/${userId}/${friendToken}`, null);
+  createByUser(token: string, formData: FormData) {
+    let params = new HttpParams()
+      .set("token", token);
+    return this.http.post<ChatInfoDto>(this.URL, formData, {params});
   }
 
-  leaveUser(id: number, userToken: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/leave/${userToken}`, null);
+  updateByMod(id: number, token: string, formData: FormData) {
+    let params = new HttpParams()
+      .set("token", token);
+    return this.http.put(`${this.URL}/${id}`, formData, {params});
   }
 
-  kickUserByMod(id: number, userId: number, modToken: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/kick/${userId}/${modToken}`, null);
+  addUser(id: number, userId: number, token: string) {
+    let params = new HttpParams()
+      .set("token", token);
+    return this.http.put(`${this.URL}/${id}/add/${userId}`, null, {params});
   }
 
-  banUserByMod(id: number, userId: number, modToken: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/ban/${userId}/${modToken}`, null);
+  leaveUser(id: number, token: string) {
+    let params = new HttpParams()
+      .set("token", token);
+    return this.http.put(`${this.URL}/${id}/leave`, null, {params});
   }
 
-  unbanUserByMod(id: number, userId: number, modToken: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/unban/${userId}/${modToken}`, null);
+  kickUserByMod(id: number, userId: number, token: string) {
+    const params = new HttpParams()
+      .set("token", token);
+    return this.http.put(`${this.URL}/${id}/kick/${userId}`, null, {params});
   }
 
-  setModeratorByMod(id: number, userId: number, modToken: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/mod/${userId}/${modToken}`, null);
+  banUserByMod(id: number, userId: number, token: string) {
+    const params = new HttpParams()
+      .set("token", token);
+    return this.http.put(`${this.URL}/${id}/ban/${userId}`, null, {params});
   }
 
-  unsetModeratorByMod(id: number, userId: number, modToken: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/unmod/${userId}/${modToken}`, null);
+  unbanUserByMod(id: number, userId: number, token: string) {
+    const params = new HttpParams()
+      .set("token", token);
+    return this.http.put(`${this.URL}/${id}/unban/${userId}`, null, {params});
   }
 
-  deleteByMod(id: number, modToken: string): Observable<Object> {
-    return this.http.delete(`${this.URL}/${id}/${modToken}`);
+  setModeratorByMod(id: number, userId: number, token: string) {
+    const params = new HttpParams()
+      .set('token', token);
+    return this.http.put(`${this.URL}/${id}/mod/${userId}`, null, {params});
+  }
+
+  unsetModeratorByMod(id: number, userId: number, token: string) {
+    const params = new HttpParams()
+      .set('token', token);
+    return this.http.put(`${this.URL}/${id}/unmod/${userId}`, null, {params});
+  }
+
+  deleteByMod(id: number, token: string) {
+    const params = new HttpParams()
+      .set('token', token);
+    return this.http.delete(`${this.URL}/${id}`, {params});
   }
 }

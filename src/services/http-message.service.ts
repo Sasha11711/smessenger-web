@@ -1,31 +1,40 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { API_URL } from "../app/constants";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { MessageCreateDto } from "../dto/message/message-create-dto";
 import { MessageDto } from "../dto/message/message-dto";
-import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class HttpMessageService {
   private readonly URL = `${API_URL}/message`
 
-  constructor(private http: HttpClient) { }
-
-  get(id: number, userToken: string): Observable<MessageDto> {
-    return this.http.get<MessageDto>(`${this.URL}/${id}/${userToken}`);
+  constructor(private http: HttpClient) {
   }
 
-  createByUserInChat(userToken: string, chatId: number, messageCreateDto: MessageCreateDto): Observable<MessageDto> {
-    return this.http.post<MessageDto>(`${this.URL}/${userToken}/${chatId}`, messageCreateDto);
+  get(id: number, token: string) {
+    const params = new HttpParams()
+      .set("token", token);
+    return this.http.get<MessageDto>(`${this.URL}/${id}`, {params});
   }
 
-  updateByAuthor(id: number, userToken: string, newText: string): Observable<Object> {
-    return this.http.put(`${this.URL}/${id}/${userToken}/${newText}`, null);
+  createByUserInChat(chatId: number, token: string, messageCreateDto: MessageCreateDto) {
+    const params = new HttpParams()
+      .set("chatId", chatId)
+      .set("token", token);
+    return this.http.post<MessageDto>(this.URL, messageCreateDto, {params});
   }
 
-  deleteByAuthorOrMod(id: number, userToken: string): Observable<Object> {
-    return this.http.delete(`${this.URL}/${id}/${userToken}`);
+  updateByAuthor(id: number, token: string, newText: string) {
+    const params = new HttpParams()
+      .set("token", token);
+    return this.http.put(`${this.URL}/${id}`, newText, {params});
+  }
+
+  deleteByAuthorOrMod(id: number, token: string) {
+    const params = new HttpParams()
+      .set("token", token);
+    return this.http.delete(`${this.URL}/${id}`, {params});
   }
 }

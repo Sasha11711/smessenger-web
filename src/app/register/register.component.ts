@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from "@angular/core";
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import {
   USER_CREATE_ERROR,
@@ -12,8 +12,8 @@ import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
+  selector: "app-register",
+  templateUrl: "./register.component.html",
 })
 export class RegisterComponent implements OnDestroy {
   errorMessage?: string;
@@ -36,11 +36,11 @@ export class RegisterComponent implements OnDestroy {
     this.errorMessage = undefined;
     this.subscription.add(
       this.httpUserService.create({
-        login: this.getValue('login'),
-        password: this.getValue('password'),
-        username: this.getValue('username')
+        login: this.getValue("login"),
+        password: this.getValue("password"),
+        username: this.getValue("username")
       }).subscribe({
-        next: () => this.router.navigate(['/login']),
+        next: () => this.router.navigate(["/login"]),
         error: (error) => {
           this.registerForm.enable();
           switch (error.status) {
@@ -53,20 +53,20 @@ export class RegisterComponent implements OnDestroy {
     );
   }
 
-  isInvalidOrDirty(controlName: string): boolean {
+  isInvalidOrDirty(controlName: string) {
     return this.registerForm.get(controlName)!.invalid && this.registerForm.get(controlName)!.dirty;
   }
 
   private confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {
-    const passwordControl = control.get('password');
-    const confirmPasswordControl = control.get('confirmPassword');
+    const passwordControl = control.get("password");
+    const confirmPasswordControl = control.get("confirmPassword");
 
     if (passwordControl?.value !== confirmPasswordControl?.value)
-        return { 'passwordMismatch': true };
+        return { "passwordMismatch": true };
     return null;
   }
 
-  private getValue(controlName: string): string {
+  private getValue(controlName: string) {
     return this.registerForm.get(controlName)!.value;
   }
 }
