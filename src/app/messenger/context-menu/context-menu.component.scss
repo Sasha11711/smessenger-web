@@ -1,0 +1,10 @@
+@use "src/variables" as v;
+
+.context-menu {
+  position: absolute;
+}
+
+.context-button {
+  width: 100%;
+  display: block;
+}

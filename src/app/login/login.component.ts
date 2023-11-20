@@ -1,8 +1,7 @@
 import { Component, OnDestroy } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
-import { Router } from "@angular/router";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Subscription } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-login",
@@ -14,26 +13,26 @@ export class LoginComponent implements OnDestroy {
     login: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   })
-  private subscription = new Subscription();
+  private destroy$ = new Subject<void>();
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService) {}
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onSubmit() {
     this.loginForm.disable();
     this.errorMessage = undefined;
-    this.subscription.add(
-      this.authService.login(this.getValue("login"), this.getValue("password")).subscribe(error => {
-        if (error) {
+    this.authService.login(this.getValue("login"), this.getValue("password"))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        error: (err) => {
           this.loginForm.enable();
-          this.errorMessage = error;
+          this.errorMessage = err;
         }
-        else this.router.navigate(['/']);
-      })
-    );
+      });
   }
 
   private getValue(controlName: string) {

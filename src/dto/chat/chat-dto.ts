@@ -8,7 +8,7 @@ export class ChatDto {
   imageId!: number;
 
   lastMessage!: MessageDto;
-  users!: Set<UserInfoDto>;
-  moderatorsId!: Set<number>;
-  bannedUsers!: Set<UserInfoDto>;
+  users!: UserInfoDto[];
+  moderatorsId!: number[];
+  bannedUsers!: UserInfoDto[];
 }

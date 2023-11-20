@@ -1,4 +1,4 @@
-<div *ngIf="user" class="flex-row">
+<div *ngIf="user" [class.flex-row]="isDesktop">
   <app-chats [class.chats-container]="isDesktop" *ngIf="isDesktop || !chat"
              [user]="user" (onChatSelected)="selectChat($event)"/>
   <div [class.chat-container]="isDesktop" *ngIf="chat">

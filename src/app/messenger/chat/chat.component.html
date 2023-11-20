@@ -2,6 +2,6 @@
             [rightButtons]="[{imageURL: 'assets/settings_icon.svg', event: onSettingsToggled}]">
     <h1>{{chat.title}}</h1>
 </app-header>
-<div class="messages-list">
+<div class="message-list">
     <app-message-item *ngFor="let message of messages" [message]="message"/>
 </div>

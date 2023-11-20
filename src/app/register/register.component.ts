@@ -1,15 +1,9 @@
 import { Component, OnDestroy } from "@angular/core";
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
-import {
-  USER_CREATE_ERROR,
-  LOGIN_PASSWORD_ERROR,
-  LOGIN_REGEX,
-  PASSWORD_REGEX,
-  UNEXPECTED_ERROR
-} from "../constants";
+import { LOGIN_PASSWORD_ERROR, LOGIN_REGEX, PASSWORD_REGEX, UNEXPECTED_ERROR, USER_CREATE_ERROR } from "../constants";
 import { HttpUserService } from "../../services/http-user.service";
 import { Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-register",
@@ -23,23 +17,24 @@ export class RegisterComponent implements OnDestroy {
     confirmPassword: new FormControl(''),
     username: new FormControl('', Validators.required),
   }, this.confirmPasswordValidator);
-  private subscription = new Subscription();
+  private destroy$ = new Subject<void>();
 
   constructor(private httpUserService: HttpUserService, private router: Router) {}
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  onSubmit(): void {
+  onSubmit() {
     this.registerForm.disable();
     this.errorMessage = undefined;
-    this.subscription.add(
-      this.httpUserService.create({
-        login: this.getValue("login"),
-        password: this.getValue("password"),
-        username: this.getValue("username")
-      }).subscribe({
+    this.httpUserService.create({
+      login: this.getValue("login"),
+      password: this.getValue("password"),
+      username: this.getValue("username")
+    }).pipe(takeUntil(this.destroy$))
+      .subscribe({
         next: () => this.router.navigate(["/login"]),
         error: (error) => {
           this.registerForm.enable();
@@ -49,8 +44,7 @@ export class RegisterComponent implements OnDestroy {
             default: this.errorMessage = UNEXPECTED_ERROR;
           }
         }
-      })
-    );
+      });
   }
 
   isInvalidOrDirty(controlName: string) {
@@ -62,7 +56,7 @@ export class RegisterComponent implements OnDestroy {
     const confirmPasswordControl = control.get("confirmPassword");
 
     if (passwordControl?.value !== confirmPasswordControl?.value)
-        return { "passwordMismatch": true };
+      return {"passwordMismatch": true};
     return null;
   }
 

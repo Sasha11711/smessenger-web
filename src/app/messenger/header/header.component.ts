@@ -6,6 +6,12 @@ import { Component, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  @Input() leftButton!: {imageURL: string, link?: string, event?: EventEmitter<any>}
-  @Input() rightButtons?: {imageURL: string, link?: string, event?: EventEmitter<any>}[]
+  @Input() leftButton!: HeaderButton
+  @Input() rightButtons?: HeaderButton[]
+}
+
+export class HeaderButton {
+  imageURL!: string;
+  link?: string;
+  event?: EventEmitter<void>;
 }

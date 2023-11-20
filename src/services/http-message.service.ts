@@ -19,6 +19,15 @@ export class HttpMessageService {
     return this.http.get<MessageDto>(`${this.URL}/${id}`, {params});
   }
 
+  getAll(chatId: number, token: string, page: number, size: number) {
+    let params = new HttpParams()
+      .set("chatId", chatId)
+      .set("token", token)
+      .set("page", page)
+      .set("size", size);
+    return this.http.get<any>(this.URL, {params});
+  }
+
   createByUserInChat(chatId: number, token: string, messageCreateDto: MessageCreateDto) {
     const params = new HttpParams()
       .set("chatId", chatId)

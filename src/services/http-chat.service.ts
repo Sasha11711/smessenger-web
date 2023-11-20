@@ -3,7 +3,6 @@ import { API_URL } from "../app/constants";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { ChatInfoDto } from "../dto/chat/chat-info-dto";
 import { ChatDto } from "../dto/chat/chat-dto";
-import { MessageDto } from "../dto/message/message-dto";
 
 @Injectable({
   providedIn: "root"
@@ -22,14 +21,6 @@ export class HttpChatService {
     let params = new HttpParams()
       .set("token", token);
     return this.http.get<ChatDto>(`${this.URL}/${id}/full`, {params});
-  }
-
-  getMessages(id: number, token: string, page: number, size: number) {
-    let params = new HttpParams()
-      .set("page", page)
-      .set("size", size)
-      .set("token", token);
-    return this.http.get<MessageDto[]>(`${this.URL}/${id}/messages`, {params});
   }
 
   createByUser(token: string, formData: FormData) {

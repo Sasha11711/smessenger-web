@@ -1,0 +1,5 @@
+<div class="context-menu" [ngStyle]="{'left.px': x, 'top.px': y}">
+  <button class="context-button button-primary" *ngFor="let button of buttons" (click)="button.event.next()">
+    {{button.text}}
+  </button>
+</div>

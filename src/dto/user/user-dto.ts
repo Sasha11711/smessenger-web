@@ -6,10 +6,10 @@ export class UserDto {
   avatarId!: number;
 
   chats!: ChatDto[];
-  moderatorAt!: Set<number>;
+  moderatorAt!: number[];
 
-  friends!: Set<UserInfoDto>;
-  friendRequests!: Set<UserInfoDto>;
-  friendRequestedBy!: Set<UserInfoDto>;
-  blockedUsers!: Set<UserInfoDto>;
+  friends!: UserInfoDto[];
+  friendRequests!: UserInfoDto[];
+  friendRequestedBy!: UserInfoDto[];
+  blockedUsers!: UserInfoDto[];
 }

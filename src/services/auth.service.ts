@@ -4,20 +4,21 @@ import { HttpUserService } from "./http-user.service";
 import { LOGIN_PASSWORD_ERROR, UNEXPECTED_ERROR, USER_DEACTIVATED_ERROR } from "../app/constants";
 import { Md5 } from "ts-md5";
 import { CookieService } from "ngx-cookie-service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
 
-  constructor(private httpUserService: HttpUserService, private cookieService: CookieService) { }
+  constructor(private httpUserService: HttpUserService, private cookieService: CookieService, private router: Router) {}
 
   login(login: string, password: string) {
     let md5Password = Md5.hashStr(password);
     return this.httpUserService.getToken(login, md5Password).pipe(
       map(token => {
         this.cookieService.set("token", token);
-        return null;
+        this.router.navigate(['/']);
       }),
       catchError(error => {
         let errorMessage: string;
@@ -33,6 +34,7 @@ export class AuthService {
 
   logout() {
     this.cookieService.delete("token");
+    this.router.navigate(['/login']);
   }
 
   checkToken() {

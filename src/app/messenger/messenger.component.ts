@@ -3,7 +3,8 @@ import { UserDto } from "../../dto/user/user-dto";
 import { ChatDto } from "../../dto/chat/chat-dto";
 import { HttpUserService } from "../../services/http-user.service";
 import { AuthService } from "../../services/auth.service";
-import { Subscription } from "rxjs";
+import { repeat, Subject, takeUntil } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-messenger",
@@ -13,53 +14,78 @@ import { Subscription } from "rxjs";
 export class MessengerComponent implements OnInit, OnDestroy {
   user?: UserDto;
   chat?: ChatDto;
+  chatId?: number;
   isChatSettings = false;
   isDesktop: boolean;
-  private subscription?: Subscription;
+  private destroy$ = new Subject<void>();
 
-  constructor(private httpUserService: HttpUserService, private authService: AuthService) {
+  constructor(private httpUserService: HttpUserService, private authService: AuthService, private router: Router) {
     this.isDesktop = window.innerWidth >= 1048;
   }
 
   ngOnInit() {
     this.subscribeGetUser();
+    let queryParams = this.router.parseUrl(this.router.url).queryParamMap;
+    if (queryParams.has("chat")) {
+      this.chatId = parseInt(queryParams.get("chat")!);
+    }
+    if (queryParams.has("settings")) {
+      this.isChatSettings = true;
+    }
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   subscribeGetUser() {
     let token = this.authService.getToken();
-    this.subscription = this.httpUserService.getFull(token).subscribe({
-      next: (user: UserDto) => {
-        this.user = user;
-        if (this.chat) {
-          this.chat = this.user.chats.find(value => value.id === this.chat!.id);
+    this.httpUserService.getFull(token)
+      .pipe(
+        repeat({delay: 1000}),
+        takeUntil(this.destroy$))
+      .subscribe({
+        next: (user: UserDto) => {
+          if (JSON.stringify(this.user) != JSON.stringify(user)) {
+            this.user = user;
+            if (this.chat) this.chat = this.user.chats.find(value => value.id === this.chat!.id);
+            else if (this.chatId) this.chat = this.user.chats.find(chat => chat.id === this.chatId);
+          }
+        },
+        error: (error) => {
+          if (error.status === 401) this.authService.logout();
         }
-        setTimeout(() => {
-          this.subscribeGetUser();
-        }, 3000);
-      },
-      error: (error) => {
-        if (error.status !== 504) this.authService.logout();
-        else setTimeout(() => {
-          this.subscribeGetUser();
-        }, 5000);
-      }
-    });
+      });
   }
 
   selectChat(chat: ChatDto) {
     this.chat = chat;
+    this.isChatSettings = false;
+    this.router.navigate([], {
+      queryParams: {
+        chat: this.chat.id
+      }
+    })
   }
 
   unselectChat() {
     this.chat = undefined;
-    this.isChatSettings = false;
+    this.chatId = undefined;
+    this.router.navigate([], {
+      queryParams: {
+        chat: undefined
+      }
+    })
   }
 
   toggleSettings() {
     this.isChatSettings = !this.isChatSettings;
+    this.router.navigate([], {
+      queryParams: {
+        chat: this.chat!.id,
+        settings: this.isChatSettings ? this.isChatSettings : undefined
+      }
+    })
   }
 }

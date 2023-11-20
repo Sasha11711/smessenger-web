@@ -17,7 +17,7 @@ export class HttpUserService {
 
   getAllByUsername(username: string) {
     const params = new HttpParams().set("username", username);
-    return this.http.get<Set<UserInfoDto>>(`${this.URL}/find-by-username`, {params});
+    return this.http.get<UserInfoDto[]>(`${this.URL}/find-by-username`, {params});
   }
 
   get(id: number) {

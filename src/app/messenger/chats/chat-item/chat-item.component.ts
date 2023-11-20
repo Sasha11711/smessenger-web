@@ -12,10 +12,10 @@ import { UserInfoDto } from "../../../../dto/user/user-info-dto";
 export class ChatItemComponent {
   protected readonly API_URL = API_URL;
   @Input() chat!: ChatDto;
-  @Input() blockedUsers!: Set<UserInfoDto>;
+  @Input() blockedUsers!: UserInfoDto[];
 
   getText(message: MessageDto) {
-    if (this.blockedUsers.has(message.author))
+    if (this.blockedUsers.includes(message.author))
       return BLOCKED_USER_TEXT
     return message.text || IMAGE_MESSAGE_TEXT
   }
