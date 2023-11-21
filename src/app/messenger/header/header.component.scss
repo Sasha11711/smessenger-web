@@ -10,20 +10,6 @@ header {
   * {
     display: inline;
   }
-
-  a > img {
-    height: v.$big_size - 20px;
-    width: v.$big_size - 20px;
-    padding: 10px;
-
-    &:hover {
-      background-color: v.$dark_brown;
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
-  }
 }
 
 .right {

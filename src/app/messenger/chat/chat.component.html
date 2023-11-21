@@ -11,12 +11,13 @@
     <div>
       <input class="file-input" type="file" accept=".png" name="embed"
              (change)="setEmbed($event)" #fileInput>
-      <img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"
-           (click)="fileInput.click()"/>
+      <a class="button-image" (click)="fileInput.click()">
+        <img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"/>
+      </a>
     </div>
     <input type="text" placeholder="Enter message"/>
-    <button type="submit">
+    <a type="submit" class="button-image">
       <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
-    </button>
+    </a>
   </form>
 </div>

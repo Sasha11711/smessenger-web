@@ -43,12 +43,15 @@ input[type="text"], input[type="password"] {
   &:focus {
     outline: none;
   }
+
   &::placeholder {
     color: v.$brown;
   }
+
   &.ng-dirty.ng-valid {
     background: linear-gradient(v.$correct, v.$correct) center bottom 5px /100% 1px no-repeat;
   }
+
   &.ng-dirty.ng-invalid {
     background: linear-gradient(v.$incorrect, v.$incorrect) center bottom 5px /100% 1px no-repeat;
   }
@@ -67,25 +70,41 @@ input[type="text"], input[type="password"] {
   color: v.$light_brown;
 }
 
+a.button-image > img {
+  height: v.$big_size - 20px;
+  width: v.$big_size - 20px;
+  padding: 10px;
+
+  &:hover {
+    background-color: v.$dark_brown;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
 .button-primary, .button-secondary {
   font-weight: bolder;
   text-transform: uppercase;
   border: none;
   border-radius: 3px;
   box-shadow: 0 1px 3px v.$brown;
-  height: v.$small_size;
 
   &:is(a) {
     text-decoration: none;
     line-height: v.$small_size;
     font-size: small;
   }
+
   &:is(a):active, &:enabled:active {
     transform: translateY(1px);
   }
+
   &:enabled {
     cursor: pointer;
   }
+
   &:disabled {
     opacity: 0.66;
   }
@@ -94,7 +113,7 @@ input[type="text"], input[type="password"] {
 .button-primary {
   background-color: v.$brown;
 
-  &:hover:enabled, &:is(a):hover {
+  &:is(button):hover:enabled, &:is(a):hover {
     background-color: v.$dark_brown;
   }
 }
@@ -102,7 +121,7 @@ input[type="text"], input[type="password"] {
 .button-secondary {
   background-color: v.$light_brown;
 
-  &:hover:enabled, &:is(a):hover {
+  &:is(button):hover:enabled, &:is(a):hover {
     background-color: v.$brown;
     color: v.$light_brown;
   }
@@ -118,6 +137,7 @@ input[type="text"], input[type="password"] {
   display: flex;
   flex-direction: row;
   gap: 20px;
+
   * {
     margin-bottom: 10px;
   }
