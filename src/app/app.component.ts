@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { ContextMenuService } from "../services/context-menu.service";
 
 @Component({
   selector: "app-root",
@@ -7,4 +8,6 @@ import { Component } from "@angular/core";
 })
 export class AppComponent {
   title = "SMessenger";
+
+  constructor(protected contextMenuService: ContextMenuService) {}
 }

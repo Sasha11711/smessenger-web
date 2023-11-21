@@ -6,7 +6,7 @@ import { Image } from "../dto/image";
 @Injectable({
   providedIn: "root"
 })
-export class HttpChatService {
+export class HttpImageService {
   private readonly URL = `${API_URL}/image`
 
   constructor(private http: HttpClient) {

@@ -17,6 +17,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   @Input() chat!: ChatDto;
   @Output() onChatUnselected = new EventEmitter();
   @Output() onSettingsToggled = new EventEmitter();
+  embedURL?: string;
+  embed?: File;
   isLoading = true;
   messages?: MessageDto[];
   page: number = 1;
@@ -48,5 +50,20 @@ export class ChatComponent implements OnInit, OnDestroy {
           if (error.status === 401) this.authService.logout();
         }
       });
+  }
+
+  setEmbed(event: any) {
+    if (event.target.value) {
+      this.embed = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(this.embed!);
+      reader.onload = () => {
+        this.embedURL = reader.result as string;
+      }
+    }
+  }
+
+  onSubmit() {
+
   }
 }

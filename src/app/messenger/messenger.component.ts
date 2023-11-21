@@ -79,6 +79,12 @@ export class MessengerComponent implements OnInit, OnDestroy {
     })
   }
 
+  leaveChat(chatId: number) {
+    this.user!.chats = this.user!.chats.filter(chat => chat.id !== chatId);
+    this.user!.moderatorAt = this.user!.moderatorAt.filter(id => id !== chatId);
+    this.unselectChat();
+  }
+
   toggleSettings() {
     this.isChatSettings = !this.isChatSettings;
     this.router.navigate([], {

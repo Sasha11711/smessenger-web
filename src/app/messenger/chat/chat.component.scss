@@ -1,5 +1,35 @@
+@use "src/variables" as v;
+//TODO: styles
+
+.chat {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header, .message-input {
+  flex-grow: 0;
+}
+
 .message-list {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
   overflow: hidden;
   overflow-y: scroll;
+  flex-grow: 1;
+}
+
+.message-input {
+  width: 100%;
+  display: flex;
+  background: v.$brown;
+  &:nth-child(1) {
+    flex-grow: 1;
+  }
+}
+
+.file-input {
+  display: none;
 }

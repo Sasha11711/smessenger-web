@@ -4,12 +4,10 @@
                 {imageURL: 'assets/add_chat_icon.svg', link: '/create'}]">
     <h1>Chats</h1>
 </app-header>
-<div (click)="disableContextMenu()">
+<div>
     <app-chat-item *ngFor="let chat of user.chats" [chat]="chat" [blockedUsers]="user.blockedUsers"
                    (click)="onChatSelected.emit(chat)" (contextmenu)="enableContextMenu($event, chat.id)"/>
 </div>
-
-
 <div *ngIf="contextMenu">
   <app-context-menu [x]="contextX" [y]="contextY" [buttons]="contextButtons"/>
 </div>

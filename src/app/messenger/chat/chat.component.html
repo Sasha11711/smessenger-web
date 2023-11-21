@@ -1,7 +1,22 @@
-<app-header [leftButton]="{imageURL: 'assets/back_icon.svg', event: onChatUnselected}"
-            [rightButtons]="[{imageURL: 'assets/settings_icon.svg', event: onSettingsToggled}]">
+<!--TODO: message input-->
+<div class="chat">
+  <app-header class="chat-header" [leftButton]="{imageURL: 'assets/back_icon.svg', event: onChatUnselected}"
+              [rightButtons]="[{imageURL: 'assets/settings_icon.svg', event: onSettingsToggled}]">
     <h1>{{chat.title}}</h1>
-</app-header>
-<div class="message-list">
+  </app-header>
+  <div class="message-list">
     <app-message-item *ngFor="let message of messages" [message]="message"/>
+  </div>
+  <form class="message-input">
+    <div>
+      <input class="file-input" type="file" accept=".png" name="embed"
+             (change)="setEmbed($event)" #fileInput>
+      <img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"
+           (click)="fileInput.click()"/>
+    </div>
+    <input type="text" placeholder="Enter message"/>
+    <button type="submit">
+      <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
+    </button>
+  </form>
 </div>
