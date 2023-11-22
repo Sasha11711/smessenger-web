@@ -19,6 +19,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   @Output() onSettingsToggled = new EventEmitter();
   embedURL?: string;
   embed?: File;
+  message?: string;
   isLoading = true;
   messages?: MessageDto[];
   page: number = 1;
@@ -64,6 +65,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-
+    if (this.message != undefined || this.embed != undefined) {
+      let token = this.authService.getToken();
+      this.httpMessageService.createByUserInChat(this.chat.id, token, {
+        text: this.message,
+        embedImage: this.embed
+      })
+    }
   }
 }

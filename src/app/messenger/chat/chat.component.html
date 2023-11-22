@@ -15,7 +15,7 @@
         <img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"/>
       </a>
     </div>
-    <input type="text" placeholder="Enter message"/>
+    <input type="text" placeholder="Enter message" [formTarget]="message"/>
     <a type="submit" class="button-image">
       <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
     </a>

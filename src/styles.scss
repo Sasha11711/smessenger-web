@@ -85,6 +85,7 @@ a.button-image > img {
 }
 
 .button-primary, .button-secondary {
+  min-height: v.$small_size;
   font-weight: bolder;
   text-transform: uppercase;
   border: none;
