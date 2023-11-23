@@ -1,11 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {HttpChatService} from "../../../services/http-chat.service";
 import {AuthService} from "../../../services/auth.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ChatDto } from "../../../dto/chat/chat-dto";
-import { API_URL } from "../../constants";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ChatDto} from "../../../dto/chat/chat-dto";
+import {API_URL} from "../../constants";
 
 @Component({
   selector: "app-chat-create",
@@ -22,7 +22,8 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
   })
   private subscription = new Subscription();
 
-  constructor(private httpChatService: HttpChatService, private authService: AuthService, private router: Router) {}
+  constructor(private httpChatService: HttpChatService, private authService: AuthService, private router: Router) {
+  }
 
   ngOnInit() {
     if (this.chat) {
@@ -56,18 +57,24 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
     }
     if (this.chat) {
       this.subscription.add(
-          this.httpChatService.updateByMod(this.chat.id, token, formData).subscribe({
-                complete: () => this.chatForm.enable()
-              }
-          ));
-    }
-    else {
+        this.httpChatService.updateByMod(this.chat.id, token, formData).subscribe({
+            next: () => this.chatForm.enable(),
+            error: (err) => {
+              if (err.status == 401) this.authService.logout();
+              else this.chatForm.enable();
+            }
+          }
+        ));
+    } else {
       this.subscription.add(
-          this.httpChatService.createByUser(token, formData).subscribe({
-                next: () => this.router.navigate([""]),
-                error: () => this.chatForm.enable()
-              }
-          ));
+        this.httpChatService.createByUser(token, formData).subscribe({
+            next: () => this.router.navigate([""]),
+            error: (err) => {
+              if (err.status == 401) this.authService.logout();
+              else this.chatForm.enable();
+            }
+          }
+        ));
     }
   }
 }

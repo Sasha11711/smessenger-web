@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import { ChatDto } from "../../../dto/chat/chat-dto";
-import { MessageDto } from "../../../dto/message/message-dto";
-import { UserDto } from "../../../dto/user/user-dto";
-import { repeat, Subject, takeUntil } from "rxjs";
-import { AuthService } from "../../../services/auth.service";
-import { HttpMessageService } from "../../../services/http-message.service";
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
+import {ChatDto} from "../../../dto/chat/chat-dto";
+import {MessageDto} from "../../../dto/message/message-dto";
+import {UserDto} from "../../../dto/user/user-dto";
+import {repeat, Subject, takeUntil} from "rxjs";
+import {AuthService} from "../../../services/auth.service";
+import {HttpMessageService} from "../../../services/http-message.service";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: "app-chat",
@@ -17,15 +18,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   @Input() chat!: ChatDto;
   @Output() onChatUnselected = new EventEmitter();
   @Output() onSettingsToggled = new EventEmitter();
-  embedURL?: string;
-  embed?: File;
-  message?: string;
-  isLoading = true;
   messages?: MessageDto[];
   page: number = 1;
+  embedURL?: string;
+  messageForm = new FormGroup({
+    message: new FormControl(),
+    embed: new FormControl()
+  })
   private destroy$ = new Subject<void>();
 
-  constructor(private httpMessageService: HttpMessageService, private authService: AuthService) {}
+  constructor(private httpMessageService: HttpMessageService, private authService: AuthService) {
+  }
 
   ngOnInit() {
     this.subscribeGetMessages();
@@ -45,7 +48,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (messages) => {
           this.messages = messages.content;
-          this.isLoading = false;
         },
         error: (error) => {
           if (error.status === 401) this.authService.logout();
@@ -55,9 +57,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   setEmbed(event: any) {
     if (event.target.value) {
-      this.embed = event.target.files[0];
+      this.messageForm.controls["embed"] = event.target.files[0];
       const reader = new FileReader();
-      reader.readAsDataURL(this.embed!);
+      reader.readAsDataURL(event.target.files[0]);
       reader.onload = () => {
         this.embedURL = reader.result as string;
       }
@@ -65,12 +67,27 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.message != undefined || this.embed != undefined) {
+      this.messageForm.disable();
       let token = this.authService.getToken();
-      this.httpMessageService.createByUserInChat(this.chat.id, token, {
-        text: this.message,
-        embedImage: this.embed
-      })
-    }
+      // this.httpMessageService.createByUserInChat(this.chat.id, token, {
+      //   text: this.chatForm.controls["message"].value??undefined,
+      //   embedImage: this.chatForm.controls["embed"].value??undefined
+      // }).subscribe({
+      //   next: (message) => {
+      //     this.messages?.push(message);
+      //     this.chatForm = undefined;
+      //     this.embed = undefined;
+      //     this.embedURL = undefined;
+      //     this.isSending = false;
+      //   },
+      //   error: (err) => {
+      //     if (err.status == 401) this.authService.logout();
+      //     else this.isSending = false;
+      //   }
+      // })
+  }
+
+  anyValidator(fg: FormGroup) {
+    // if (fg.controls["message"] != null || this.embed)
   }
 }

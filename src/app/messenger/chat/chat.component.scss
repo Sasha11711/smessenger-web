@@ -7,7 +7,7 @@
   flex-direction: column;
 }
 
-.chat-header, .message-input {
+.chat-header, .message-form {
   flex-grow: 0;
 }
 
@@ -21,13 +21,18 @@
   flex-grow: 1;
 }
 
-.message-input {
+.message-form {
   width: 100%;
   display: flex;
   background: v.$brown;
-  &:nth-child(1) {
-    flex-grow: 1;
-  }
+}
+
+.message-input {
+  width: 100%;
+  height: v.$big_size;
+  color: v.$light_brown;
+  background-image: linear-gradient(v.$light_brown, v.$light_brown);
+  font-size: large;
 }
 
 .file-input {

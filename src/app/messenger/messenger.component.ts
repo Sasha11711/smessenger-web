@@ -53,8 +53,8 @@ export class MessengerComponent implements OnInit, OnDestroy {
             else if (this.chatId) this.chat = this.user.chats.find(chat => chat.id === this.chatId);
           }
         },
-        error: (error) => {
-          if (error.status === 401) this.authService.logout();
+        error: (err) => {
+          if (err.status === 401) this.authService.logout();
         }
       });
   }

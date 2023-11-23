@@ -21,7 +21,7 @@ body {
   background-color: v.$light_brown;
 }
 
-a {
+a, button {
   cursor: pointer;
 }
 
@@ -70,17 +70,25 @@ input[type="text"], input[type="password"] {
   color: v.$light_brown;
 }
 
-a.button-image > img {
-  height: v.$big_size - 20px;
-  width: v.$big_size - 20px;
-  padding: 10px;
+.button-image {
+  max-height: v.$big_size;
+  max-width: v.$big_size;
+  padding: 0;
+  background: transparent;
+  border: none;
 
-  &:hover {
-    background-color: v.$dark_brown;
-  }
+  & > img {
+    height: v.$big_size - 20px;
+    width: v.$big_size - 20px;
+    padding: 10px;
 
-  &:active {
-    transform: translateY(1px);
+    &:hover {
+      background-color: v.$dark_brown;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
   }
 }
 
@@ -102,12 +110,9 @@ a.button-image > img {
     transform: translateY(1px);
   }
 
-  &:enabled {
-    cursor: pointer;
-  }
-
   &:disabled {
     opacity: 0.66;
+    cursor: none;
   }
 }
 
