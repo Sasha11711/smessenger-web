@@ -5,10 +5,10 @@
 ::-webkit-scrollbar {
   width: 10px;
   background: none;
-}
 
-::-webkit-scrollbar-thumb {
-  background: v.$brown;
+  &-thumb {
+    background: v.$brown;
+  }
 }
 
 * {
@@ -36,30 +36,33 @@ form {
 }
 
 input[type="text"], input[type="password"] {
-  border: none;
   background: linear-gradient(#000, #000) center bottom 5px /100% 1px no-repeat;
-  font-size: medium;
+  border: none;
 
   &:focus {
     outline: none;
-  }
-
-  &::placeholder {
-    color: v.$brown;
-  }
-
-  &.ng-dirty.ng-valid {
-    background: linear-gradient(v.$correct, v.$correct) center bottom 5px /100% 1px no-repeat;
-  }
-
-  &.ng-dirty.ng-invalid {
-    background: linear-gradient(v.$incorrect, v.$incorrect) center bottom 5px /100% 1px no-repeat;
   }
 }
 
 .form-input {
   height: v.$default_size;
   width: 100%;
+
+  &[type="text"], &[type="password"] {
+    font-size: medium;
+
+    &::placeholder {
+      color: v.$brown;
+    }
+
+    &.ng-dirty.ng-valid {
+      background: linear-gradient(v.$correct, v.$correct) center bottom 5px /100% 1px no-repeat;
+    }
+
+    &.ng-dirty.ng-invalid {
+      background: linear-gradient(v.$incorrect, v.$incorrect) center bottom 5px /100% 1px no-repeat;
+    }
+  }
 }
 
 .text-primary, .button-secondary {
@@ -68,6 +71,17 @@ input[type="text"], input[type="password"] {
 
 .text-secondary, .button-primary {
   color: v.$light_brown;
+}
+
+.button-primary, .button-secondary, .button-image {
+  &:is(a):active, &:enabled:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.66;
+    cursor: default;
+  }
 }
 
 .button-image {
@@ -81,14 +95,10 @@ input[type="text"], input[type="password"] {
     height: v.$big_size - 20px;
     width: v.$big_size - 20px;
     padding: 10px;
+  }
 
-    &:hover {
-      background-color: v.$dark_brown;
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
+  &:is(button):hover:enabled > img, &:is(a):hover > img {
+    background-color: v.$dark_brown;
   }
 }
 
@@ -104,15 +114,6 @@ input[type="text"], input[type="password"] {
     text-decoration: none;
     line-height: v.$small_size;
     font-size: small;
-  }
-
-  &:is(a):active, &:enabled:active {
-    transform: translateY(1px);
-  }
-
-  &:disabled {
-    opacity: 0.66;
-    cursor: none;
   }
 }
 

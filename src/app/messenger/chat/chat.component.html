@@ -14,10 +14,8 @@
         <img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"/>
       </a>
     </div>
-    {{ messageForm.invalid}}
-    {{messageForm.hasError('empty')}}
     <input class="message-input" type="text" placeholder="Enter message" formControlName="text"/>
-    <button type="submit" class="button-image" [disabled]="messageForm.invalid || messageForm.hasError('any')">
+    <button type="submit" class="button-image" [disabled]="messageForm.invalid || messageForm.disabled">
       <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
     </button>
   </form>

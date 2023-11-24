@@ -32,6 +32,10 @@
   color: v.$light_brown;
   background-image: linear-gradient(v.$light_brown, v.$light_brown);
   font-size: large;
+
+  &::placeholder {
+    color: v.$light_brown;
+  }
 }
 
 .file-input {

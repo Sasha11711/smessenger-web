@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   @Output() onChatUnselected = new EventEmitter();
   @Output() onSettingsToggled = new EventEmitter();
   messages?: MessageDto[];
-  page: number = 1;
+  page: number = 0;
   embedURL?: string;
   messageForm = new FormGroup({
     text: new FormControl<string>(''),
@@ -75,7 +75,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.messageForm);
+    if (this.messages === undefined)
+      return;
     this.messageForm.disable();
     let token = this.authService.getToken();
     let text = this.messageForm.get('text')?.value;
