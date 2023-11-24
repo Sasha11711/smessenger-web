@@ -32,7 +32,7 @@
   </div>
   <div class="block">
     <p class="error" [style.visibility]="errorMessage ? 'visible' : 'hidden'">{{errorMessage}}</p>
-    <button class="button-primary form-input" type="submit" [disabled]="!registerForm.valid || registerForm.disabled">
+    <button class="button-primary form-input" type="submit" [disabled]="registerForm.invalid || registerForm.disabled">
       register
     </button>
   </div>

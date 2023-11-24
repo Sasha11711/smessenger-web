@@ -1,11 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {HttpChatService} from "../../../services/http-chat.service";
-import {AuthService} from "../../../services/auth.service";
-import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ChatDto} from "../../../dto/chat/chat-dto";
-import {API_URL} from "../../constants";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { HttpChatService } from "../../../services/http-chat.service";
+import { AuthService } from "../../../services/auth.service";
+import { Subscription } from "rxjs";
+import { Router } from "@angular/router";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ChatDto } from "../../../dto/chat/chat-dto";
+import { API_URL } from "../../constants";
 
 @Component({
   selector: "app-chat-create",
@@ -15,10 +15,9 @@ import {API_URL} from "../../constants";
 export class ChatCreateComponent implements OnInit, OnDestroy {
   @Input() chat?: ChatDto;
   imageURL?: string;
-  image?: File;
   chatForm = new FormGroup({
-    title: new FormControl('', Validators.required),
-    image: new FormControl(null)
+    title: new FormControl<string | null>(null, Validators.required),
+    image: new FormControl<Blob | null>(null)
   })
   private subscription = new Subscription();
 
@@ -27,7 +26,6 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.chat) {
-      this.chatForm.get('title')!.setValue(this.chat.title);
       this.imageURL = `${API_URL}/image/${this.chat.imageId}`;
     }
   }
@@ -38,23 +36,26 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
 
   setImage(event: any) {
     if (event.target.value) {
-      this.image = event.target.files[0];
+      this.chatForm.controls["image"] = event.target.files[0];
       const reader = new FileReader();
-      reader.readAsDataURL(this.image!);
+      reader.readAsDataURL(event.target.files[0]);
       reader.onload = () => {
         this.imageURL = reader.result as string;
       }
+    }
+    else {
+      this.chatForm.controls["image"].setValue(null);
+      this.imageURL = undefined;
     }
   }
 
   onSubmit() {
     this.chatForm.disable();
     let token = this.authService.getToken();
+    let image = this.chatForm.get('image')?.value;
     const formData = new FormData();
     formData.append('title', this.chatForm.get('title')!.value!);
-    if (this.image) {
-      formData.append('image', this.image, this.image.name);
-    }
+    if (image) formData.append('image', image);
     if (this.chat) {
       this.subscription.add(
         this.httpChatService.updateByMod(this.chat.id, token, formData).subscribe({

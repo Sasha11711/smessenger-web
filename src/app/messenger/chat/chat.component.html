@@ -6,7 +6,7 @@
   <div class="message-list">
     <app-message-item *ngFor="let message of messages" [message]="message"/>
   </div>
-  <form class="message-form" (submit)="onSubmit()" >
+  <form class="message-form" (ngSubmit)="onSubmit()" [formGroup]="messageForm">
     <div>
       <input class="file-input" type="file" accept=".png" name="embed"
              (change)="setEmbed($event)" #fileInput>
@@ -14,8 +14,10 @@
         <img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"/>
       </a>
     </div>
-    <input class="message-input" type="text" placeholder="Enter message" />
-    <button type="submit" class="button-image" [disabled]="!messages || messageForm.valid">
+    {{ messageForm.invalid}}
+    {{messageForm.hasError('empty')}}
+    <input class="message-input" type="text" placeholder="Enter message" formControlName="text"/>
+    <button type="submit" class="button-image" [disabled]="messageForm.invalid || messageForm.hasError('any')">
       <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
     </button>
   </form>

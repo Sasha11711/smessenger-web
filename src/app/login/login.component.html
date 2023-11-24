@@ -6,7 +6,7 @@
          formControlName="password">
   <div class="block">
     <p class="error" [style.visibility]="errorMessage ? 'visible' : 'hidden'">{{errorMessage}}</p>
-    <button class="button-primary form-input" type="submit" [disabled]="!loginForm.valid || loginForm.disabled">
+    <button class="button-primary form-input" type="submit" [disabled]="loginForm.invalid || loginForm.disabled">
       login
     </button>
   </div>
