@@ -4,9 +4,14 @@
     <h1>{{chat.title}}</h1>
   </app-header>
   <div class="message-list">
-    <app-message-item *ngFor="let message of messages" [message]="message"/>
+    <button *ngIf="page" class="center button-primary" (click)="resetPage()">Reset</button>
+    <app-message-item class="message-item" *ngFor="let message of messages"
+                      [message]="message" [isAuthor]="message.author.id == user.id"
+                      [isBlocked]="isBlocked(message.author)"
+                      (contextmenu)="enableContextMenu($event, message)"/>
+    <button *ngIf="!isLastPage" class="center button-primary" (click)="nextPage()">Load more...</button>
   </div>
-  <form class="message-form" (ngSubmit)="onSubmit()" [formGroup]="messageForm">
+  <form *ngIf="!editMessageItem" class="message-form" (ngSubmit)="onSubmit()" [formGroup]="messageForm">
     <div>
       <input class="file-input" type="file" accept=".png" name="embed"
              (change)="setEmbed($event)" #fileInput>
@@ -19,4 +24,18 @@
       <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
     </button>
   </form>
+  <form *ngIf="editMessageItem" class="message-form" (ngSubmit)="onEditSubmit()" [formGroup]="editMessageForm">
+    <a class="button-image" (click)="cancelEditMessage()">
+      <img ngSrc="assets/back_icon.svg" alt="back" width="60" height="60"/>
+    </a>
+    <input class="message-input" type="text" [placeholder]="editMessageItem.text??''"
+           formControlName="newText"/>
+    <button type="submit" class="button-image" [disabled]="editMessageForm.invalid || editMessageForm.disabled">
+      <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
+    </button>
+  </form>
+</div>
+<div *ngIf="contextMenuComponent">
+  <app-context-menu [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"
+                    [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"/>
 </div>

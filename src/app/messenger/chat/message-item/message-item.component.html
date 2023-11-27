@@ -1,8 +1,8 @@
-<div class="item-flex">
-    <img class="avatar" ngSrc="{{API_URL}}/image/{{message.author.avatarId}}" alt="avatar" height="64" width="64">
-    <div>
-        <p>{{message.author}}</p>
-        <p>{{isBlocked ? BLOCKED_USER_TEXT : message.text}}</p>
-        <img *ngIf="!isBlocked" ngSrc="{{API_URL}}/image/{{message.embedId}}" alt="embed" height="100" width="100">
-    </div>
+<div class="item-flex" [class.is-author]="isAuthor">
+  <img class="avatar" ngSrc="{{API_URL}}/image/{{message.author.avatarId}}" alt="avatar" height="64" width="64">
+  <div>
+    <p class="username">{{message.author.username}}</p>
+    <p class="message" [class.edited]="message.isEdited">{{isBlocked ? BLOCKED_USER_TEXT : message.text}}</p>
+    <img class="image" *ngIf="!isBlocked && message.embedId" src="{{API_URL}}/image/{{message.embedId}}" alt="embed">
+  </div>
 </div>

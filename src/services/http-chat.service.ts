@@ -67,19 +67,19 @@ export class HttpChatService {
 
   setModeratorByMod(id: number, userId: number, token: string) {
     const params = new HttpParams()
-      .set('token', token);
+      .set("token", token);
     return this.http.put(`${this.URL}/${id}/mod/${userId}`, null, {params});
   }
 
   unsetModeratorByMod(id: number, userId: number, token: string) {
     const params = new HttpParams()
-      .set('token', token);
+      .set("token", token);
     return this.http.put(`${this.URL}/${id}/unmod/${userId}`, null, {params});
   }
 
   deleteByMod(id: number, token: string) {
     const params = new HttpParams()
-      .set('token', token);
+      .set("token", token);
     return this.http.delete(`${this.URL}/${id}`, {params});
   }
 }

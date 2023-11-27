@@ -2,12 +2,13 @@
             [rightButtons]="[
                 {imageURL: 'assets/users_icon.svg', link: '/users'},
                 {imageURL: 'assets/add_chat_icon.svg', link: '/create'}]">
-    <h1>Chats</h1>
+  <h1>Chats</h1>
 </app-header>
 <div>
-    <app-chat-item *ngFor="let chat of user.chats" [chat]="chat" [blockedUsers]="user.blockedUsers"
-                   (click)="onChatSelected.emit(chat)" (contextmenu)="enableContextMenu($event, chat.id)"/>
+  <app-chat-item *ngFor="let chat of user.chats" [chat]="chat" [blockedUsers]="user.blockedUsers"
+                 (click)="onChatSelected.emit(chat)" (contextmenu)="enableContextMenu($event, chat)"/>
 </div>
-<div *ngIf="contextMenu">
-  <app-context-menu [x]="contextX" [y]="contextY" [buttons]="contextButtons"/>
+<div *ngIf="contextMenuComponent">
+  <app-context-menu [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"
+                    [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"/>
 </div>

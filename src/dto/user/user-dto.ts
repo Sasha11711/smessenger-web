@@ -2,6 +2,8 @@ import { ChatDto } from "../chat/chat-dto";
 import { UserInfoDto } from "./user-info-dto";
 
 export class UserDto {
+  id!: number;
+
   username!: string;
   avatarId!: number;
 

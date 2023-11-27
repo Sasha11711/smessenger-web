@@ -1,6 +1,6 @@
 //TODO: remove proxy and:
-// export const API_URL = "http://10.0.0.72:8080"
-export const API_URL = "api"
+// export const API_URL = "http://localhost:8080/api"
+export const API_URL = "http://localhost:4200/api"
 
 export const LOGIN_REGEX = /^[\w-]{10,}$/
 export const PASSWORD_REGEX = /^(?=.*\d)[\w-]{12,}$/

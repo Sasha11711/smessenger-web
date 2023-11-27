@@ -16,16 +16,16 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
   @Input() chat?: ChatDto;
   imageURL?: string;
   chatForm = new FormGroup({
-    title: new FormControl<string | null>(null, Validators.required),
+    title: new FormControl<string>('', Validators.required),
     image: new FormControl<Blob | null>(null)
   })
   private subscription = new Subscription();
 
-  constructor(private httpChatService: HttpChatService, private authService: AuthService, private router: Router) {
-  }
+  constructor(private httpChatService: HttpChatService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     if (this.chat) {
+      this.chatForm.controls["title"].setValue(this.chat.title);
       this.imageURL = `${API_URL}/image/${this.chat.imageId}`;
     }
   }
@@ -36,26 +36,24 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
 
   setImage(event: any) {
     if (event.target.value) {
-      this.chatForm.controls["image"] = event.target.files[0];
+      let file = event.target.files[0];
+      this.chatForm.controls["image"].setValue(file);
       const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      reader.onload = () => {
-        this.imageURL = reader.result as string;
-      }
-    }
-    else {
+      reader.readAsDataURL(file);
+      reader.onload = () => this.imageURL = reader.result as string;
+    } else {
       this.chatForm.controls["image"].setValue(null);
-      this.imageURL = undefined;
+      this.imageURL = `${API_URL}/image/${this.chat?.imageId}`;
     }
   }
 
   onSubmit() {
     this.chatForm.disable();
     let token = this.authService.getToken();
-    let image = this.chatForm.get('image')?.value;
+    let image = this.chatForm.get("image")?.value;
     const formData = new FormData();
-    formData.append('title', this.chatForm.get('title')!.value!);
-    if (image) formData.append('image', image);
+    formData.append("title", this.chatForm.get("title")!.value!);
+    if (image) formData.append("image", image);
     if (this.chat) {
       this.subscription.add(
         this.httpChatService.updateByMod(this.chat.id, token, formData).subscribe({

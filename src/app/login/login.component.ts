@@ -15,7 +15,7 @@ export class LoginComponent implements OnDestroy {
   })
   private destroy$ = new Subject<void>();
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -27,10 +27,10 @@ export class LoginComponent implements OnDestroy {
     this.errorMessage = undefined;
     this.authService.login(this.getValue("login"), this.getValue("password"))
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        error: (err) => {
+      .subscribe(error => {
+        if (error) {
           this.loginForm.enable();
-          this.errorMessage = err;
+          this.errorMessage = error;
         }
       });
   }

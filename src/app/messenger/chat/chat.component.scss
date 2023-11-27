@@ -12,12 +12,13 @@
 
 .message-list {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  overflow: hidden;
+  flex-direction: column-reverse;
   overflow-y: scroll;
   flex-grow: 1;
+}
+
+.message-item {
+  width: 100%;
 }
 
 .message-form {

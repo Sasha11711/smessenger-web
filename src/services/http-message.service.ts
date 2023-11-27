@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { API_URL } from "../app/constants";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { MessageCreateDto } from "../dto/message/message-create-dto";
 import { MessageDto } from "../dto/message/message-dto";
-import { ChatInfoDto } from "../dto/chat/chat-info-dto";
 
 @Injectable({
   providedIn: "root"
@@ -39,7 +37,7 @@ export class HttpMessageService {
   updateByAuthor(id: number, token: string, newText: string) {
     const params = new HttpParams()
       .set("token", token);
-    return this.http.put(`${this.URL}/${id}`, newText, {params});
+    return this.http.put<MessageDto>(`${this.URL}/${id}`, newText, {params});
   }
 
   deleteByAuthorOrMod(id: number, token: string) {

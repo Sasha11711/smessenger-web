@@ -74,8 +74,10 @@ input[type="text"], input[type="password"] {
 }
 
 .button-primary, .button-secondary, .button-image {
+  transform: translateY(-1px);
+
   &:is(a):active, &:enabled:active {
-    transform: translateY(1px);
+    transform: translateY(0);
   }
 
   &:disabled {
@@ -85,8 +87,6 @@ input[type="text"], input[type="password"] {
 }
 
 .button-image {
-  max-height: v.$big_size;
-  max-width: v.$big_size;
   padding: 0;
   background: transparent;
   border: none;
@@ -159,6 +159,7 @@ input[type="text"], input[type="password"] {
 }
 
 .center {
+  display: block;
   margin-left: auto;
   margin-right: auto;
 }

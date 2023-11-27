@@ -3,13 +3,11 @@
 </app-header>
 <form class="center item-flex" (ngSubmit)="onSubmit()" [formGroup]="chatForm">
   <div>
-    <input class="file-input" type="file" accept=".png" name="image" formControlName="image"
-           (change)="setImage($event)" #fileInput >
-    <img [ngSrc]="imageURL??'assets/icon.svg'" alt="image" width="100" height="100"
-         (click)="fileInput.click()"/>
+    <input class="file-input" type="file" accept=".png" name="image" (change)="setImage($event)" #fileInput>
+    <img [ngSrc]="imageURL??'assets/icon.svg'" alt="image" width="100" height="100" (click)="fileInput.click()"/>
   </div>
   <div class="align-right">
     <input class="form-input" type="text" formControlName="title" required>
-    <button class="button-primary" type="submit" [disabled]="chatForm.invalid">Apply</button>
+    <button class="button-primary" type="submit" [disabled]="chatForm.invalid || chatForm.disabled">Apply</button>
   </div>
 </form>

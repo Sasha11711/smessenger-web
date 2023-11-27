@@ -4,10 +4,11 @@ import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { API_URL } from "../../constants";
 import { UserDto } from "../../../dto/user/user-dto";
 import { Observable, Subject } from "rxjs";
-import { ContextButton } from "../context-menu/context-menu.component";
+import { ContextButton, ContextMenuComponent } from "../context-menu/context-menu.component";
 import { HttpChatService } from "../../../services/http-chat.service";
 import { AuthService } from "../../../services/auth.service";
 import { ContextMenuService } from "../../../services/context-menu.service";
+import { ChatInfoDto } from "../../../dto/chat/chat-info-dto";
 
 @Component({
   selector: "app-chats",
@@ -20,23 +21,18 @@ export class ChatsComponent {
   @Input() blocked!: UserInfoDto[];
   @Output() onChatSelected = new EventEmitter<ChatDto>();
   @Output() onChatLeft = new EventEmitter<number>();
-  contextMenu = false;
-  contextX = 0;
-  contextY = 0;
-  contextButtons?: ContextButton[];
+  contextMenuComponent?: ContextMenuComponent;
 
   constructor(private httpChatService: HttpChatService, private authService: AuthService, contextMenuService: ContextMenuService) {
     contextMenuService.subject.subscribe(() => this.disableContextMenu());
   }
 
   leaveChat(chatId: number) {
-    this.disableContextMenu();
     let token = this.authService.getToken();
     this.subscribeLeaveUser(this.httpChatService.leaveUser(chatId, token), chatId);
   }
 
   deleteChat(chatId: number) {
-    this.disableContextMenu();
     let token = this.authService.getToken();
     this.subscribeLeaveUser(this.httpChatService.deleteByMod(chatId, token), chatId);
   }
@@ -52,22 +48,25 @@ export class ChatsComponent {
     });
   }
 
-  enableContextMenu(event: any, chatId: number) {
-    event.preventDefault();
-    let leaveChatSubject = new Subject<void>();
-    leaveChatSubject.subscribe(() => this.leaveChat(chatId));
-    this.contextButtons = [new ContextButton("Leave chat", leaveChatSubject)];
-    if (this.user.moderatorAt.includes(chatId)) {
-      let deleteChatSubject = new Subject<void>();
-      deleteChatSubject.subscribe(() => this.deleteChat(chatId));
-      this.contextButtons.push(new ContextButton("Delete chat", deleteChatSubject));
+  enableContextMenu(event: any, chat: ChatInfoDto) {
+    if (!this.contextMenuComponent) {
+      event.preventDefault();
+      this.contextMenuComponent = new ContextMenuComponent();
+      let leaveChatSubject = new Subject<void>();
+      leaveChatSubject.subscribe(() => this.leaveChat(chat.id));
+      this.contextMenuComponent.buttons = [new ContextButton("Leave chat", leaveChatSubject)];
+      if (this.user.moderatorAt.includes(chat.id)) {
+        let deleteChatSubject = new Subject<void>();
+        deleteChatSubject.subscribe(() => this.deleteChat(chat.id));
+        this.contextMenuComponent.buttons.push(new ContextButton("Delete chat", deleteChatSubject));
+      }
+      this.contextMenuComponent.title = `${chat.id}. ${chat.title}`;
+      this.contextMenuComponent.x = event.clientX;
+      this.contextMenuComponent.y = event.clientY;
     }
-    this.contextX = event.clientX;
-    this.contextY = event.clientY;
-    this.contextMenu = true;
   }
 
   disableContextMenu() {
-    this.contextMenu = false;
+    this.contextMenuComponent = undefined;
   }
 }

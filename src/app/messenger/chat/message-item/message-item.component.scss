@@ -1,8 +1,34 @@
 @use "src/variables" as v;
+
 .avatar {
   height: v.$big_size;
   width: v.$big_size;
   border-radius: 50%;
   margin-top: 5px;
   margin-left: 5px;
+}
+
+.is-author {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.message {
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.image {
+  max-width: 100%;
+}
+
+.edited {
+  font-style: italic;
 }
