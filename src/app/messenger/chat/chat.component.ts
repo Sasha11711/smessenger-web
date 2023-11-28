@@ -164,7 +164,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  enableContextMenu(event: any, messageDto: MessageDto) {
+  enableContextMenu(event: MouseEvent, messageDto: MessageDto) {
     if (!this.contextMenuComponent) {
       event.preventDefault();
       this.contextMenuComponent = new ContextMenuComponent();

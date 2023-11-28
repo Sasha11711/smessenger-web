@@ -48,7 +48,7 @@ export class ChatsComponent {
     });
   }
 
-  enableContextMenu(event: any, chat: ChatInfoDto) {
+  enableContextMenu(event: MouseEvent, chat: ChatInfoDto) {
     if (!this.contextMenuComponent) {
       event.preventDefault();
       this.contextMenuComponent = new ContextMenuComponent();
