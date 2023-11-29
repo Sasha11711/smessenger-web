@@ -2,8 +2,8 @@
 // export const API_URL = "http://localhost:8080/api"
 export const API_URL = "http://localhost:4200/api"
 
-export const LOGIN_REGEX = /^[\w-]{10,}$/
-export const PASSWORD_REGEX = /^(?=.*\d)[\w-]{12,}$/
+export const LOGIN_REGEX = /^[\w-]{10,255}$/
+export const PASSWORD_REGEX = /^(?=.*\d)[\w-]{12,255}$/
 
 
 export const LOGIN_PASSWORD_ERROR = "Invalid login or password.";

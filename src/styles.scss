@@ -148,6 +148,14 @@ input[type="text"], input[type="password"] {
   * {
     margin-bottom: 10px;
   }
+
+  & > img {
+    height: v.$big_size;
+    width: v.$big_size;
+    border-radius: 50%;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
 }
 
 .text {
@@ -159,7 +167,6 @@ input[type="text"], input[type="password"] {
 }
 
 .center {
-  display: block;
   margin-left: auto;
   margin-right: auto;
 }

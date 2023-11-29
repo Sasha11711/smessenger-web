@@ -2,27 +2,22 @@
   <h1>{{chat.title}}</h1>
 </app-header>
 <app-chat-create [chat]="chat"/>
-<div>
+<div class="tabs-container center">
   <div class="tabs">
-    <button class="tab" (click)="tab = 0" [class.active]="tab == 0">Users</button>
-    <button class="tab" (click)="tab = 1" [class.active]="tab == 1">Add</button>
-    <button class="tab" (click)="tab = 2" [class.active]="tab == 2">Banned</button>
+    <button (click)="tab = 0" class="button-primary" [disabled]="tab == 0">Users</button>
+    <button (click)="tab = 1" class="button-primary" [disabled]="tab == 1">Add</button>
+    <button (click)="tab = 2" class="button-primary" [disabled]="tab == 2">Banned</button>
   </div>
-  <div class="tabs-content">
-    <div *ngIf="tab == 0" class="tab-content">
-      <div class="user-item" *ngFor="let chatUser of chat.users" (contextmenu)="userContextMenu($event, chatUser)">
-        <p>{{chatUser.username}}</p>
-      </div>
-    </div>
-    <div *ngIf="tab == 1" class="tab-content">
-      <div class="user-item" *ngFor="let friend of getFriends()" (contextmenu)="addContextMenu($event, friend)">
-        <p>{{friend.username}}</p>
-      </div>
-    </div>
-    <div *ngIf="tab == 2" class="tab-content">
-      <div class="user-item" *ngFor="let banned of getFriends()" (contextmenu)="bannedContextMenu($event, banned)">
-        <p>{{banned.username}}</p>
-      </div>
-    </div>
+  <div *ngIf="tab == 0">
+    <app-user-item *ngFor="let chatUser of chat.users" (contextmenu)="enableContextMenu($event, chatUser)"
+                   [user]="chatUser"/>
+  </div>
+  <div *ngIf="tab == 1">
+    <app-user-item *ngFor="let friend of getFriends()" (contextmenu)="enableContextMenu($event, friend)"
+                   [user]="friend"/>
+  </div>
+  <div *ngIf="tab == 2">
+    <app-user-item *ngFor="let banned of chat.bannedUsers" (contextmenu)="enableContextMenu($event, banned)"
+                   [user]="banned"/>
   </div>
 </div>

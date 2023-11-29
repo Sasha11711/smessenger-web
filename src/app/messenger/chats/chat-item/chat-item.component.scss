@@ -1,13 +1,3 @@
-@use "src/variables" as v;
-
-.chat-image {
-  height: v.$big_size;
-  width: v.$big_size;
-  border-radius: 50%;
-  margin-top: 5px;
-  margin-left: 5px;
-}
-
 .title {
   font-weight: bold;
   font-size: 1.2rem;

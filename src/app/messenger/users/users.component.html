@@ -1,0 +1,22 @@
+<app-header [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
+  <h1>Users</h1>
+</app-header>
+<div class="tabs-container center">
+  <div class="tabs">
+    <button (click)="tab = 0" class="button-primary" [disabled]="tab == 0">Find</button>
+    <button (click)="tab = 1" class="button-primary" [disabled]="tab == 1">Requests</button>
+    <button (click)="tab = 2" class="button-primary" [disabled]="tab == 2">Blocked</button>
+  </div>
+  <div *ngIf="tab == 0">
+<!-- TODO:   <app-user-item *ngFor="let chatUser of chat.users" (contextmenu)="enableContextMenu($event, chatUser)"-->
+<!--                        [user]="chatUser"/>-->
+  </div>
+  <div *ngIf="tab == 1">
+<!-- TODO:   <app-user-item *ngFor="let friend of getFriends()" (contextmenu)="enableContextMenu($event, friend)"-->
+<!--                        [user]="friend"/>-->
+  </div>
+  <div *ngIf="tab == 2">
+<!-- TODO:   <app-user-item *ngFor="let banned of chat.bannedUsers" (contextmenu)="enableContextMenu($event, banned)"-->
+<!--                        [user]="banned"/>-->
+  </div>
+</div>

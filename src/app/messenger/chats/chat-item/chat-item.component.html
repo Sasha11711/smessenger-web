@@ -1,5 +1,5 @@
 <div class="item-flex">
-  <img class="chat-image" ngSrc="{{API_URL}}/image/{{chat.imageId}}" alt="Chat image" height="60" width="60">
+  <img ngSrc="{{API_URL}}/image/{{chat.imageId}}" alt="Chat image" height="60" width="60">
   <div>
     <p class="title">{{chat.title}}</p>
     <p class="last-message" *ngIf="chat.lastMessage; let lastMessage">

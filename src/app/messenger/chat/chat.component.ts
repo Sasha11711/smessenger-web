@@ -5,7 +5,7 @@ import { UserDto } from "../../../dto/user/user-dto";
 import { repeat, Subject, takeUntil } from "rxjs";
 import { AuthService } from "../../../services/auth.service";
 import { HttpMessageService } from "../../../services/http-message.service";
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from "@angular/forms";
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { ContextButton, ContextMenuComponent } from "../context-menu/context-menu.component";
 import { ContextMenuService } from "../../../services/context-menu.service";
@@ -34,12 +34,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   isLastPage = true;
   embedURL?: string;
   messageForm = new FormGroup({
-    text: new FormControl<string>(''),
+    text: new FormControl<string>('', Validators.maxLength(255)),
     embed: new FormControl<Blob | null>(null)
   }, this.anyValidator);
   editMessageItem?: MessageDto;
   editMessageForm = new FormGroup({
-    newText: new FormControl<string>('')
+    newText: new FormControl<string>('', Validators.maxLength(255))
   }, this.editValidator);
   contextMenuComponent?: ContextMenuComponent;
   private destroy$ = new Subject<void>();

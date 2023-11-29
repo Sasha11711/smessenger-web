@@ -16,7 +16,7 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
   @Input() chat?: ChatDto;
   imageURL?: string;
   chatForm = new FormGroup({
-    title: new FormControl<string>('', Validators.required),
+    title: new FormControl<string>('', [Validators.required, Validators.maxLength(255)]),
     image: new FormControl<Blob | null>(null)
   })
   private subscription = new Subscription();
