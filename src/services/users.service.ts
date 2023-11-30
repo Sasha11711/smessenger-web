@@ -30,6 +30,9 @@ export class UsersService {
     this.httpUserService.blockUser(token, anotherUser.id).subscribe({
       next: () => {
         user!.blockedUsers.push(anotherUser);
+        user!.friends = user!.friends.filter(friend => friend.id !== anotherUser.id);
+        user!.friendRequests = user!.friendRequests.filter(friendRequest => friendRequest.id !== anotherUser.id);
+        user!.friendRequestedBy = user!.friendRequestedBy.filter(friendRequestedBy => friendRequestedBy.id !== anotherUser.id);
       },
       error: (err) => {
         // TODO: handle error
@@ -88,7 +91,7 @@ export class UsersService {
 
   addFriendRequest(user: UserDto, anotherUser: UserInfoDto) {
     let token = this.authService.getToken();
-    this.httpUserService.acceptFriendRequest(token, anotherUser.id).subscribe({
+    this.httpUserService.addFriendRequest(token, anotherUser.id).subscribe({
       next: () => {
         user!.friendRequests.push(anotherUser);
       },
@@ -126,7 +129,7 @@ export class UsersService {
       } else {
         let addFriendRequestSubject = new Subject<void>();
         addFriendRequestSubject.subscribe(() => this.addFriendRequest(user, anotherUser));
-        buttons.push(new ContextButton("Add friend request", addFriendRequestSubject));
+        buttons.push(new ContextButton("Send friend request", addFriendRequestSubject));
       }
     }
     return buttons;

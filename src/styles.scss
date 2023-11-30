@@ -44,6 +44,16 @@ input[type="text"], input[type="password"] {
   }
 }
 
+form .form-input {
+  &.ng-dirty.ng-valid {
+    background: linear-gradient(v.$correct, v.$correct) center bottom 5px /100% 1px no-repeat;
+  }
+
+  &.ng-dirty.ng-invalid {
+    background: linear-gradient(v.$incorrect, v.$incorrect) center bottom 5px /100% 1px no-repeat;
+  }
+}
+
 .form-input {
   height: v.$default_size;
   width: 100%;
@@ -53,14 +63,6 @@ input[type="text"], input[type="password"] {
 
     &::placeholder {
       color: v.$brown;
-    }
-
-    &.ng-dirty.ng-valid {
-      background: linear-gradient(v.$correct, v.$correct) center bottom 5px /100% 1px no-repeat;
-    }
-
-    &.ng-dirty.ng-invalid {
-      background: linear-gradient(v.$incorrect, v.$incorrect) center bottom 5px /100% 1px no-repeat;
     }
   }
 }

@@ -66,7 +66,7 @@ export class MessengerComponent implements OnInit, OnDestroy {
       queryParams: {
         chat: this.chat.id
       }
-    })
+    });
   }
 
   unselectChat() {
@@ -76,7 +76,7 @@ export class MessengerComponent implements OnInit, OnDestroy {
       queryParams: {
         chat: undefined
       }
-    })
+    });
   }
 
   leaveChat(chatId: number) {
@@ -92,6 +92,6 @@ export class MessengerComponent implements OnInit, OnDestroy {
         chat: this.chat!.id,
         settings: this.isChatSettings ? this.isChatSettings : undefined
       }
-    })
+    });
   }
 }

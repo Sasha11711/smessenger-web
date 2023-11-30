@@ -43,9 +43,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   }, this.editValidator);
   contextMenuComponent?: ContextMenuComponent;
   private destroy$ = new Subject<void>();
+  private getMessagesDestroy$ = new Subject<void>();
 
   constructor(private httpMessageService: HttpMessageService, private authService: AuthService, contextMenuService: ContextMenuService) {
-    contextMenuService.subject.subscribe(() => this.disableContextMenu());
+    contextMenuService.subject
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.disableContextMenu());
   }
 
   ngOnInit() {
@@ -55,15 +58,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.getMessagesDestroy$.next();
+    this.getMessagesDestroy$.complete();
   }
 
   subscribeGetMessages() {
-    this.destroy$.next();
+    this.getMessagesDestroy$.next();
     let token = this.authService.getToken();
     this.httpMessageService.getAll(this.chat.id, token, this.page, this.PAGE_SIZE)
       .pipe(
         repeat({delay: 1000}),
-        takeUntil(this.destroy$))
+        takeUntil(this.getMessagesDestroy$))
       .subscribe({
         next: (messages) => {
           this.isLastPage = messages.last;

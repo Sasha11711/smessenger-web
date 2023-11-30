@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 import { UserDto } from "../../../../dto/user/user-dto";
 import { ChatDto } from "../../../../dto/chat/chat-dto";
 import { UserInfoDto } from "../../../../dto/user/user-info-dto";
 import { ContextButton, ContextMenuComponent } from "../../context-menu/context-menu.component";
 import { ContextMenuService } from "../../../../services/context-menu.service";
-import { Subject } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 import { AuthService } from "../../../../services/auth.service";
 import { HttpChatService } from "../../../../services/http-chat.service";
 import { UsersService } from "../../../../services/users.service";
@@ -14,15 +14,23 @@ import { UsersService } from "../../../../services/users.service";
   templateUrl: "./chat-settings.component.html",
   styleUrls: ["../../tabbing.scss"]
 })
-export class ChatSettingsComponent {
+export class ChatSettingsComponent implements OnDestroy {
   @Input() user!: UserDto;
   @Input() chat!: ChatDto;
   @Output() onSettingsToggled = new EventEmitter();
   contextMenuComponent?: ContextMenuComponent;
   tab = 0;
+  private destroy$ = new Subject<void>();
 
   constructor(private usersService: UsersService, private httpChatService: HttpChatService, private authService: AuthService, contextMenuService: ContextMenuService) {
-    contextMenuService.subject.subscribe(() => this.disableContextMenu());
+    contextMenuService.subject
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.disableContextMenu());
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getFriends(): UserInfoDto[] {

@@ -1,22 +1,41 @@
-<app-header [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
-  <h1>Users</h1>
-</app-header>
-<div class="tabs-container center">
-  <div class="tabs">
-    <button (click)="tab = 0" class="button-primary" [disabled]="tab == 0">Find</button>
-    <button (click)="tab = 1" class="button-primary" [disabled]="tab == 1">Requests</button>
-    <button (click)="tab = 2" class="button-primary" [disabled]="tab == 2">Blocked</button>
+<div class="users">
+  <app-header [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
+    <h1>Users</h1>
+  </app-header>
+  <div class="tabs-container center">
+    <div class="tabs">
+      <button (click)="openTab(0)" class="button-primary" [disabled]="tab == 0">Find</button>
+      <button (click)="openTab(1)" class="button-primary" [disabled]="tab == 1">Requests</button>
+      <button (click)="openTab(2)" class="button-primary" [disabled]="tab == 2">Blocked</button>
+    </div>
+    <ng-container *ngIf="!isLoading">
+      <div *ngIf="tab == 0">
+        <input class="form-input" type="text" placeholder="Search user" maxlength="255" [(ngModel)]="searchUsername"
+               (input)="searchUsers()"/>
+        <app-user-item *ngFor="let searchedUser of searchedUsers" (contextmenu)="enableContextMenu($event, searchedUser)"
+                       [user]="searchedUser"/>
+      </div>
+      <div *ngIf="tab == 1" class="requests">
+        <div>
+          <h1>Incoming requests</h1>
+          <app-user-item *ngFor="let incoming of this.user?.friendRequestedBy" (contextmenu)="enableContextMenu($event, incoming)"
+                         [user]="incoming"/>
+        </div>
+        <div>
+          <h1>Outgoing requests</h1>
+          <app-user-item *ngFor="let outgoing of this.user?.friendRequests" (contextmenu)="enableContextMenu($event, outgoing)"
+                         [user]="outgoing"/>
+        </div>
+      </div>
+      <div *ngIf="tab == 2">
+        <app-user-item *ngFor="let blocked of this.user?.blockedUsers" (contextmenu)="enableContextMenu($event, blocked)"
+                       [user]="blocked"/>
+      </div>
+    </ng-container>
+    <p *ngIf="isLoading" class="text-center">Loading...</p>
   </div>
-  <div *ngIf="tab == 0">
-<!-- TODO:   <app-user-item *ngFor="let chatUser of chat.users" (contextmenu)="enableContextMenu($event, chatUser)"-->
-<!--                        [user]="chatUser"/>-->
-  </div>
-  <div *ngIf="tab == 1">
-<!-- TODO:   <app-user-item *ngFor="let friend of getFriends()" (contextmenu)="enableContextMenu($event, friend)"-->
-<!--                        [user]="friend"/>-->
-  </div>
-  <div *ngIf="tab == 2">
-<!-- TODO:   <app-user-item *ngFor="let banned of chat.bannedUsers" (contextmenu)="enableContextMenu($event, banned)"-->
-<!--                        [user]="banned"/>-->
-  </div>
+</div>
+<div *ngIf="contextMenuComponent">
+  <app-context-menu [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"
+                    [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"/>
 </div>

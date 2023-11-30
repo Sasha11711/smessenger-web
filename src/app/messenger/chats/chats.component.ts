@@ -3,7 +3,7 @@ import { ChatDto } from "../../../dto/chat/chat-dto";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { API_URL } from "../../constants";
 import { UserDto } from "../../../dto/user/user-dto";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, takeUntil } from "rxjs";
 import { ContextButton, ContextMenuComponent } from "../context-menu/context-menu.component";
 import { HttpChatService } from "../../../services/http-chat.service";
 import { AuthService } from "../../../services/auth.service";
@@ -22,9 +22,12 @@ export class ChatsComponent {
   @Output() onChatSelected = new EventEmitter<ChatDto>();
   @Output() onChatLeft = new EventEmitter<number>();
   contextMenuComponent?: ContextMenuComponent;
+  private destroy$ = new Subject<void>();
 
   constructor(private httpChatService: HttpChatService, private authService: AuthService, contextMenuService: ContextMenuService) {
-    contextMenuService.subject.subscribe(() => this.disableContextMenu());
+    contextMenuService.subject
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.disableContextMenu());
   }
 
   leaveChat(chatId: number) {
@@ -38,7 +41,7 @@ export class ChatsComponent {
   }
 
   subscribeLeaveUser(observable: Observable<Object>, chatId: number) {
-    observable.subscribe({
+    observable.pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.onChatLeft.emit(chatId);
       },
