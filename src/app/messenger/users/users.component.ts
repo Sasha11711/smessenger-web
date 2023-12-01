@@ -63,14 +63,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       });
   }
 
-  openTab(tab: number) {
-    if (tab !== this.tab) {
-      this.searchUsers();
-      this.tab = tab;
-      this.router.navigate([], {queryParams: {tab: tab}});
-    }
-  }
-
   searchUsers() {
     if (this.searchUsername.length > 1) {
       this.searchDestroy$.next();
@@ -84,6 +76,14 @@ export class UsersComponent implements OnInit, OnDestroy {
             //TODO handle error
           }
         });
+    }
+  }
+
+  openTab(tab: number) {
+    if (tab !== this.tab) {
+      this.getUser();
+      this.tab = tab;
+      this.router.navigate([], {queryParams: {tab: tab}});
     }
   }
 

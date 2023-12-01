@@ -21,3 +21,7 @@
                    [user]="banned"/>
   </div>
 </div>
+<div *ngIf="contextMenuComponent">
+  <app-context-menu [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"
+                    [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"/>
+</div>

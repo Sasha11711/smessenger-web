@@ -34,9 +34,9 @@ export class ChatSettingsComponent implements OnDestroy {
   }
 
   getFriends(): UserInfoDto[] {
-    return this.chat.users.filter(user =>
-      !this.chat.users.find(value => value.id === user.id) &&
-      !this.chat.bannedUsers.find(value => value.id === user.id)
+    return this.user.friends.filter(friend =>
+      !this.chat.users.find(value => value.id === friend.id) &&
+      !this.chat.bannedUsers.find(value => value.id === friend.id)
     );
   }
 
@@ -98,6 +98,18 @@ export class ChatSettingsComponent implements OnDestroy {
         // TODO: handle error
       }
     });
+  }  
+
+  add(user: UserInfoDto) {
+    let token = this.authService.getToken();
+    this.httpChatService.addUser(this.chat.id, user.id, token).subscribe({
+      next: () => {
+        this.chat.users.push(user);
+      },
+      error: (err) => {
+        // TODO: handle error
+      }
+    });
   }
 
   enableContextMenu(event: MouseEvent, chatUser: UserInfoDto) {
@@ -126,6 +138,10 @@ export class ChatSettingsComponent implements OnDestroy {
             modSubject.subscribe(() => this.mod(chatUser));
             this.contextMenuComponent.buttons.push(new ContextButton("Mod", modSubject));
           }
+        } else {
+          let addSubject = new Subject<void>();
+          addSubject.subscribe(() => this.add(chatUser));
+          this.contextMenuComponent.buttons.push(new ContextButton("Add", addSubject));
         }
       }
       this.contextMenuComponent.title = `${chatUser.id}. ${chatUser.username}`;

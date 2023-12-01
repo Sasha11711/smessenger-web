@@ -119,7 +119,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (embed) formData.append("embed", embed);
     this.httpMessageService.createByUserInChat(this.chat.id, token, formData).subscribe({
       next: (message) => {
-        this.messages?.push(message);
+        this.messages?.unshift(message);
         this.messageForm.controls["text"].setValue('');
         this.messageForm.controls["embed"].setValue(null);
         this.embedURL = undefined;
