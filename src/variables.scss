@@ -1,7 +1,15 @@
-$dark_brown: #59503F;
-$brown: #A79473;
-$light_brown: #E6D9C4;
-$cube_brown: #9D370F;
+//changeable colors
+:root {
+  --dark-color: #59503F;
+  --default-color: #A79473;
+  --light-color: #E6D9C4;
+  --accent-color: #9D370F;
+}
+
+$dark_brown: var(--dark-color);
+$brown: var(--default-color);
+$light_brown: var(--light-color);
+$cube_brown: var(--accent-color);
 $black: #000000;
 $white: #ffffff;
 $grey: #bbbbbb;
