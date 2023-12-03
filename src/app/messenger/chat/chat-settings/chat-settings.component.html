@@ -4,19 +4,19 @@
 <app-chat-create [chat]="chat"/>
 <div class="tabs-container center">
   <div class="tabs">
-    <button (click)="tab = 0" class="button-primary" [disabled]="tab == 0">Users</button>
-    <button (click)="tab = 1" class="button-primary" [disabled]="tab == 1">Add</button>
-    <button (click)="tab = 2" class="button-primary" [disabled]="tab == 2">Banned</button>
+    <button (click)="tab = 0" class="button-primary" [disabled]="tab === 0">Users</button>
+    <button (click)="tab = 1" class="button-primary" [disabled]="tab === 1">Add</button>
+    <button (click)="tab = 2" class="button-primary" [disabled]="tab === 2">Banned</button>
   </div>
-  <div *ngIf="tab == 0">
+  <div *ngIf="tab === 0">
     <app-user-item *ngFor="let chatUser of chat.users" (contextmenu)="enableContextMenu($event, chatUser)"
                    [user]="chatUser"/>
   </div>
-  <div *ngIf="tab == 1">
+  <div *ngIf="tab === 1">
     <app-user-item *ngFor="let friend of getFriends()" (contextmenu)="enableContextMenu($event, friend)"
                    [user]="friend"/>
   </div>
-  <div *ngIf="tab == 2">
+  <div *ngIf="tab === 2">
     <app-user-item *ngFor="let banned of chat.bannedUsers" (contextmenu)="enableContextMenu($event, banned)"
                    [user]="banned"/>
   </div>

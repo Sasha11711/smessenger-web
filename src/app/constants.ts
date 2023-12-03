@@ -1,4 +1,4 @@
-//TODO: remove proxy and:
+// On launch without proxy:
 // export const API_URL = "http://localhost:8080/api"
 export const API_URL = "http://localhost:4200/api"
 

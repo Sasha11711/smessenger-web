@@ -1,0 +1,20 @@
+<h1 class="text-primary text-center">Security</h1>
+<div class="text-center">
+  <button class="button-primary" (click)="logout()">Logout</button>
+  <button class="button-primary" (click)="resetUuid()">Reset UUID</button>
+</div>
+<form class="center" [formGroup]="securityForm">
+  <input class="form-input" type="text" formControlName="login" placeholder="Enter login">
+  <input class="form-input" type="password" formControlName="password" placeholder="Enter password">
+</form>
+<button class="button-primary center block" (click)="deactivateUser()" [disabled]="securityForm.invalid">
+  Deactivate user
+</button>
+<form class="center" [formGroup]="newPasswordForm">
+  <input class="form-input" type="password" formControlName="password" placeholder="Enter new password">
+  <input class="form-input" type="password" formControlName="confirmPassword" placeholder="Enter new password again"
+         [ngClass]="newPasswordForm.hasError('passwordMismatch') ? 'ng-invalid' : 'ng-valid'">
+</form>
+<button class="button-primary center block" (click)="changePassword()" [disabled]="securityForm.invalid || newPasswordForm.invalid">
+  Change password
+</button>

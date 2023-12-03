@@ -19,10 +19,13 @@ import { ChatSettingsComponent } from "./messenger/chat/chat-settings/chat-setti
 import { ContextMenuComponent } from "./messenger/context-menu/context-menu.component";
 import { UserItemComponent } from "./messenger/users/user-item/user-item.component";
 import { UsersComponent } from "./messenger/users/users.component";
-import { SettingsComponent } from "./settings/settings.component";
+import { SettingsComponent } from "./messenger/settings/settings.component";
+import { UpdateUserComponent } from "./messenger/settings/update-user/update-user.component";
+import { SecurityUserComponent } from "./messenger/settings/security-user/security-user.component";
+import { ThemeComponent } from "./messenger/settings/theme/theme.component";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MessengerComponent, ChatsComponent, ChatComponent, ChatCreateComponent, MessageItemComponent, ChatItemComponent, HeaderComponent, ChatSettingsComponent, ContextMenuComponent, UserItemComponent, UsersComponent, SettingsComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MessengerComponent, ChatsComponent, ChatComponent, ChatCreateComponent, MessageItemComponent, ChatItemComponent, HeaderComponent, ChatSettingsComponent, ContextMenuComponent, UserItemComponent, UsersComponent, SettingsComponent, UpdateUserComponent, SecurityUserComponent, ThemeComponent],
   imports: [BrowserModule, AppRoutingModule, RouterOutlet, HttpClientModule, FormsModule, ReactiveFormsModule, NgOptimizedImage],
   providers: [],
   bootstrap: [AppComponent]

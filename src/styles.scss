@@ -67,6 +67,10 @@ form .form-input {
   }
 }
 
+.file-input {
+  display: none;
+}
+
 .text-primary, .button-secondary {
   color: v.$dark_brown;
 }
@@ -89,17 +93,21 @@ form .form-input {
 }
 
 .button-image {
-  padding: 0;
   background: transparent;
-  border: none;
 
-  & > img {
+  & > div {
     height: v.$big_size - 20px;
     width: v.$big_size - 20px;
     padding: 10px;
+
+    & > img {
+      height: 100%;
+      width: 100%;
+      filter: opacity(.25) drop-shadow(0 0 0 v.$light_brown) drop-shadow(0 0 0 v.$light_brown) drop-shadow(0 0 0 v.$light_brown);
+    }
   }
 
-  &:is(button):hover:enabled > img, &:is(a):hover > img {
+  &:is(button):hover:enabled > div, &:is(a):hover > div {
     background-color: v.$dark_brown;
   }
 }
@@ -144,7 +152,6 @@ form .form-input {
 
 .item-flex {
   display: flex;
-  flex-direction: row;
   gap: 20px;
 
   * {
@@ -168,9 +175,17 @@ form .form-input {
   text-align: center;
 }
 
+.align-right {
+  text-align: right;
+}
+
 .center {
   margin-left: auto;
   margin-right: auto;
+}
+
+.right {
+  margin-left: auto;
 }
 
 .error {

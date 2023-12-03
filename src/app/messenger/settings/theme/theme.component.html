@@ -1,0 +1,20 @@
+<form class="center" (ngSubmit)="onSubmit()" [formGroup]="themeForm">
+  <div class="color-group">
+    <p>Dark color:</p>
+    <input type="color" formControlName="dark">
+  </div>
+  <div class="color-group">
+    <p>Default color:</p>
+    <input type="color" formControlName="default">
+  </div>
+  <div class="color-group">
+    <p>Light color:</p>
+    <input type="color" formControlName="light">
+  </div>
+  <div class="color-group">
+    <p>Ascent color:</p>
+    <input type="color" formControlName="accent">
+  </div>
+  <button class="button-primary form-input block" type="submit">Apply</button>
+</form>
+<button class="button-secondary block center" (click)="reset()">Reset</button>

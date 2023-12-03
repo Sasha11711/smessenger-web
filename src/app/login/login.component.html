@@ -1,14 +1,12 @@
-<h1 class="block text-primary text-center">Login</h1>
+<h1 class="text-primary text-center">Login</h1>
 <form class="center" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input class="block form-input" type="text" name="login" placeholder="Enter login"
-         formControlName="login">
-  <input class="block form-input" type="password" name="password" placeholder="Enter password"
-         formControlName="password">
+  <input class="block form-input" type="text" placeholder="Enter login" formControlName="login">
+  <input class="block form-input" type="password" placeholder="Enter password" formControlName="password">
   <div class="block">
     <p class="error" [style.visibility]="errorMessage ? 'visible' : 'hidden'">{{errorMessage}}</p>
     <button class="button-primary form-input" type="submit" [disabled]="loginForm.invalid || loginForm.disabled">
-      login
+      Login
     </button>
   </div>
-  <a class="block text-center button-secondary" routerLink="/register">register</a>
+  <a class="block text-center button-secondary" routerLink="/register">Register</a>
 </form>

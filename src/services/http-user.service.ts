@@ -41,9 +41,9 @@ export class HttpUserService {
     return this.http.post(this.URL, userCreateDto);
   }
 
-  update(token: string, userUpdateDto: UserUpdateDto) {
+  update(token: string, formData: FormData) {
     const params = new HttpParams().set("token", token);
-    return this.http.put(this.URL, userUpdateDto, {params});
+    return this.http.put(this.URL, formData, {params});
   }
 
   changePassword(token: string, login: string, password: string, newPassword: string) {

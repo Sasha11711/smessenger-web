@@ -16,7 +16,7 @@ export class RegisterComponent implements OnDestroy {
     password: new FormControl('', [Validators.required, Validators.pattern(PASSWORD_REGEX)]),
     confirmPassword: new FormControl(''),
     username: new FormControl('', Validators.required),
-  }, this.confirmPasswordValidator);
+  }, confirmPasswordValidator);
   private destroy$ = new Subject<void>();
 
   constructor(private httpUserService: HttpUserService, private router: Router) {}
@@ -51,16 +51,16 @@ export class RegisterComponent implements OnDestroy {
     return this.registerForm.get(controlName)!.invalid && this.registerForm.get(controlName)!.dirty;
   }
 
-  private confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {
-    const passwordControl = control.get("password");
-    const confirmPasswordControl = control.get("confirmPassword");
-
-    if (passwordControl?.value !== confirmPasswordControl?.value)
-      return {"passwordMismatch": true};
-    return null;
-  }
-
   private getValue(controlName: string) {
     return this.registerForm.get(controlName)!.value;
   }
+}
+
+export function confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {
+  const passwordControl = control.get("password");
+  const confirmPasswordControl = control.get("confirmPassword");
+
+  if (passwordControl?.value !== confirmPasswordControl?.value)
+    return {"passwordMismatch": true};
+  return null;
 }

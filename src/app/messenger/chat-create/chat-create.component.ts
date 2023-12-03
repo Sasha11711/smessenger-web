@@ -9,8 +9,7 @@ import { API_URL } from "../../constants";
 
 @Component({
   selector: "app-chat-create",
-  templateUrl: "./chat-create.component.html",
-  styleUrls: ["./chat-create.component.scss"]
+  templateUrl: "./chat-create.component.html"
 })
 export class ChatCreateComponent implements OnInit, OnDestroy {
   @Input() chat?: ChatDto;

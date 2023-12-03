@@ -1,0 +1,13 @@
+@use "src/variables" as v;
+
+.color-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: v.$big_size;
+
+  [type="color"] {
+    background-image: linear-gradient(v.$brown, v.$light_brown);
+  }
+}

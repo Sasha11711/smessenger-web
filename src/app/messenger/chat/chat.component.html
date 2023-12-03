@@ -13,25 +13,23 @@
   </div>
   <form *ngIf="!editMessageItem" class="message-form" (ngSubmit)="onSubmit()" [formGroup]="messageForm">
     <div>
-      <input class="file-input" type="file" accept=".png" name="embed"
-             (change)="setEmbed($event)" #fileInput>
+      <input class="file-input" type="file" accept=".png" (change)="setEmbed($event)" #fileInput>
       <a class="button-image" (click)="fileInput.click()">
-        <img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"/>
+        <div><img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"/></div>
       </a>
     </div>
     <input class="message-input" type="text" placeholder="Enter message" formControlName="text"/>
     <button type="submit" class="button-image" [disabled]="messageForm.invalid || messageForm.disabled">
-      <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
+      <div><img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/></div>
     </button>
   </form>
   <form *ngIf="editMessageItem" class="message-form" (ngSubmit)="onEditSubmit()" [formGroup]="editMessageForm">
     <a class="button-image" (click)="cancelEditMessage()">
-      <img ngSrc="assets/back_icon.svg" alt="back" width="60" height="60"/>
+      <div><img ngSrc="assets/back_icon.svg" alt="back" width="60" height="60"/></div>
     </a>
-    <input class="message-input" type="text" [placeholder]="editMessageItem.text??''"
-           formControlName="newText"/>
+    <input class="message-input" type="text" [placeholder]="editMessageItem.text??''" formControlName="newText"/>
     <button type="submit" class="button-image" [disabled]="editMessageForm.invalid || editMessageForm.disabled">
-      <img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/>
+      <div><img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/></div>
     </button>
   </form>
 </div>

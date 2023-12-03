@@ -3,14 +3,15 @@
 .context-menu {
   position: absolute;
   width: 150px;
-  overflow: hidden;
   background: v.$brown;
   border-radius: 3px;
 }
 
 .context-title {
+  height: 37px;
   margin: 5px;
   color: v.$light_brown;
+  overflow: hidden;
 }
 
 .context-button {

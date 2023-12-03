@@ -8,11 +8,11 @@ import { Subject, takeUntil } from "rxjs";
   templateUrl: "./login.component.html",
 })
 export class LoginComponent implements OnDestroy {
-  errorMessage?: string;
-  loginForm = new FormGroup({
+  protected errorMessage?: string;
+  protected loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
-  })
+  });
   private destroy$ = new Subject<void>();
 
   constructor(private authService: AuthService) { }
@@ -22,10 +22,11 @@ export class LoginComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  onSubmit() {
+  protected onSubmit() {
     this.loginForm.disable();
     this.errorMessage = undefined;
-    this.authService.login(this.getValue("login"), this.getValue("password"))
+    const {login, password} = this.loginForm.value;
+    this.authService.login(login!, password!)
       .pipe(takeUntil(this.destroy$))
       .subscribe(error => {
         if (error) {
@@ -33,9 +34,5 @@ export class LoginComponent implements OnDestroy {
           this.errorMessage = error;
         }
       });
-  }
-
-  private getValue(controlName: string) {
-    return this.loginForm.get(controlName)!.value;
   }
 }

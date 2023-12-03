@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 import { ChatDto } from "../../../dto/chat/chat-dto";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { API_URL } from "../../constants";
@@ -12,10 +12,9 @@ import { ChatInfoDto } from "../../../dto/chat/chat-info-dto";
 
 @Component({
   selector: "app-chats",
-  templateUrl: "./chats.component.html",
-  styleUrls: ["./chats.component.scss"]
+  templateUrl: "./chats.component.html"
 })
-export class ChatsComponent {
+export class ChatsComponent implements OnDestroy {
   protected readonly API_URL = API_URL;
   @Input() user!: UserDto;
   @Input() blocked!: UserInfoDto[];
@@ -28,6 +27,11 @@ export class ChatsComponent {
     contextMenuService.subject
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.disableContextMenu());
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   leaveChat(chatId: number) {
@@ -66,7 +70,7 @@ export class ChatsComponent {
       this.contextMenuComponent.title = `${chat.id}. ${chat.title}`;
       this.contextMenuComponent.x = event.clientX;
       this.contextMenuComponent.y = event.clientY;
-    }
+    } else this.disableContextMenu();
   }
 
   disableContextMenu() {

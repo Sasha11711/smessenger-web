@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { ContextMenuService } from "../services/context-menu.service";
-import { SettingsService } from "../services/settings.service";
+import { ThemeService } from "../services/theme.service";
 
 @Component({
   selector: "app-root",
@@ -10,7 +10,7 @@ import { SettingsService } from "../services/settings.service";
 export class AppComponent {
   title = "SMessenger";
 
-  constructor(protected contextMenuService: ContextMenuService, settingsService: SettingsService) {
+  constructor(protected contextMenuService: ContextMenuService, settingsService: ThemeService) {
     settingsService.applyTheme();
   }
 }

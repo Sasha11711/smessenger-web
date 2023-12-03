@@ -8,10 +8,6 @@ header {
   color: v.$light_brown;
 
   * {
-    display: inline;
+    display: inline-block;
   }
-}
-
-.right {
-  margin-left: auto;
 }

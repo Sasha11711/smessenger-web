@@ -5,7 +5,7 @@ import { UserDto } from "../../../dto/user/user-dto";
 import { repeat, Subject, takeUntil } from "rxjs";
 import { AuthService } from "../../../services/auth.service";
 import { HttpMessageService } from "../../../services/http-message.service";
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { ContextButton, ContextMenuComponent } from "../context-menu/context-menu.component";
 import { ContextMenuService } from "../../../services/context-menu.service";
@@ -17,10 +17,10 @@ import { IMAGE_MESSAGE_TEXT } from "../../constants";
   styleUrls: ["./chat.component.scss"]
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  protected readonly anyValidator: ValidatorFn = (control: AbstractControl) => {
+  protected readonly anyValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     return (!control.get("text")!.value && !control.get("embed")!.value) ? {empty: true} : null;
   }
-  protected readonly editValidator = (control: AbstractControl) => {
+  protected readonly editValidator = (control: AbstractControl): ValidationErrors | null => {
     let newText = control!.get("newText")!.value;
     return !newText || newText == this.editMessageItem!.text ? {invalid: true} : null;
   };
@@ -194,7 +194,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.contextMenuComponent.x = event.clientX;
         this.contextMenuComponent.y = event.clientY;
       }
-    }
+    } else this.disableContextMenu();
   }
 
   disableContextMenu() {

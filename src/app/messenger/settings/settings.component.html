@@ -1,0 +1,19 @@
+<app-header [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
+    <h1>Settings</h1>
+</app-header>
+<div class="tabs-container center">
+    <div class="tabs">
+        <button (click)="openTab(0)" class="button-primary" [disabled]="tab == 0">User</button>
+        <button (click)="openTab(1)" class="button-primary" [disabled]="tab == 1">Theme</button>
+    </div>
+    <div *ngIf="tab == 0">
+        <ng-container *ngIf="user">
+            <app-update-user [user]="user"/>
+            <app-security-user [user]="user"/>
+        </ng-container>
+        <p *ngIf="!user" class="text-center">Loading...</p>
+    </div>
+    <div *ngIf="tab == 1">
+        <app-theme/>
+    </div>
+</div>

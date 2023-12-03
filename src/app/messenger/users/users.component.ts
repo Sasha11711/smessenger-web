@@ -80,11 +80,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   openTab(tab: number) {
-    if (tab !== this.tab) {
-      this.getUser();
-      this.tab = tab;
-      this.router.navigate([], {queryParams: {tab: tab}});
-    }
+    this.getUser();
+    this.tab = tab;
+    this.router.navigate([], {queryParams: {tab: tab}});
   }
 
   enableContextMenu(event: MouseEvent, chatUser: UserInfoDto) {
@@ -95,7 +93,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.contextMenuComponent.title = `${chatUser.id}. ${chatUser.username}`;
       this.contextMenuComponent.x = event.clientX;
       this.contextMenuComponent.y = event.clientY;
-    }
+    } else this.disableContextMenu();
   }
 
   disableContextMenu() {
