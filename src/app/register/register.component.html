@@ -1,34 +1,34 @@
 <h1 class="block text-primary text-center">Register</h1>
-<form class="center" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="center">
   <div class="block">
-    <input class="form-input" type="text" placeholder="Enter login" formControlName="login">
-    <p class="error" [style.visibility]="isInvalidOrDirty('login') ? 'visible' : 'hidden'">
+    <input class="form-input" formControlName="login" placeholder="Enter login" type="text">
+    <p [style.visibility]="isInvalidOrDirty('login') ? 'visible' : 'hidden'" class="error">
       Must be > 10, can contain digits, letters, '–', '_'.
     </p>
   </div>
   <div class="block">
-    <input class="form-input" type="password" placeholder="Enter password" formControlName="password">
-    <p class="error" [style.visibility]="isInvalidOrDirty('password') ? 'visible' : 'hidden'">
+    <input class="form-input" formControlName="password" placeholder="Enter password" type="password">
+    <p [style.visibility]="isInvalidOrDirty('password') ? 'visible' : 'hidden'" class="error">
       Must be > 12 and contain 1+ digits, can contain letters, '–', '_'.
     </p>
   </div>
   <div class="block">
-    <input class="form-input" type="password" placeholder="Enter password again" formControlName="confirmPassword"
-           [ngClass]="registerForm.hasError('passwordMismatch') ? 'ng-invalid' : 'ng-valid'">
-    <p class="error" [style.visibility]="registerForm.hasError('passwordMismatch') &&
-                                         registerForm.get('confirmPassword')!.dirty ? 'visible' : 'hidden'">
+    <input [ngClass]="registerForm.hasError('passwordMismatch') ? 'ng-invalid' : 'ng-valid'" class="form-input" formControlName="confirmPassword" placeholder="Enter password again"
+           type="password">
+    <p [style.visibility]="registerForm.hasError('passwordMismatch') &&
+                                         registerForm.get('confirmPassword')!.dirty ? 'visible' : 'hidden'" class="error">
       Must be identical to password.
     </p>
   </div>
   <div class="block">
-    <input class="form-input" type="text" placeholder="Enter username" formControlName="username">
-    <p class="error" [style.visibility]="isInvalidOrDirty('username') ? 'visible' : 'hidden'">
+    <input class="form-input" formControlName="username" placeholder="Enter username" type="text">
+    <p [style.visibility]="isInvalidOrDirty('username') ? 'visible' : 'hidden'" class="error">
       Username is required.
     </p>
   </div>
   <div class="block">
-    <p class="error" [style.visibility]="errorMessage ? 'visible' : 'hidden'">{{errorMessage}}</p>
-    <button class="button-primary form-input" type="submit" [disabled]="registerForm.invalid || registerForm.disabled">
+    <p [style.visibility]="errorMessage ? 'visible' : 'hidden'" class="error">{{errorMessage}}</p>
+    <button [disabled]="registerForm.invalid || registerForm.disabled" class="button-primary form-input" type="submit">
       register
     </button>
   </div>

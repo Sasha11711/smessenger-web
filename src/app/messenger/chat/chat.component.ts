@@ -17,31 +17,31 @@ import { IMAGE_MESSAGE_TEXT } from "../../constants";
   styleUrls: ["./chat.component.scss"]
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  protected readonly anyValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    return (!control.get("text")!.value && !control.get("embed")!.value) ? {empty: true} : null;
-  }
-  protected readonly editValidator = (control: AbstractControl): ValidationErrors | null => {
-    let newText = control!.get("newText")!.value;
-    return !newText || newText == this.editMessageItem!.text ? {invalid: true} : null;
-  };
-  protected readonly PAGE_SIZE = 20;
   @Input() user!: UserDto;
   @Input() chat!: ChatDto;
   @Output() onChatUnselected = new EventEmitter();
   @Output() onSettingsToggled = new EventEmitter();
-  messages?: MessageDto[];
-  page = 0;
-  isLastPage = true;
-  embedURL?: string;
-  messageForm = new FormGroup({
+  protected readonly anyValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    return (!control.get("text")!.value && !control.get("embed")!.value) ? {empty: true} : null;
+  }
+  protected readonly editValidator = (control: AbstractControl): ValidationErrors | null => {
+    const newText = control!.get("newText")!.value;
+    return !newText || newText == this.editMessageItem!.text ? {invalid: true} : null;
+  };
+  protected readonly PAGE_SIZE = 20;
+  protected messages?: MessageDto[];
+  protected page = 0;
+  protected isLastPage = true;
+  protected embedURL?: string;
+  protected messageForm = new FormGroup({
     text: new FormControl<string>('', Validators.maxLength(255)),
     embed: new FormControl<Blob | null>(null)
   }, this.anyValidator);
-  editMessageItem?: MessageDto;
-  editMessageForm = new FormGroup({
+  protected editMessageItem?: MessageDto;
+  protected editMessageForm = new FormGroup({
     newText: new FormControl<string>('', Validators.maxLength(255))
   }, this.editValidator);
-  contextMenuComponent?: ContextMenuComponent;
+  protected contextMenuComponent?: ContextMenuComponent;
   private destroy$ = new Subject<void>();
   private getMessagesDestroy$ = new Subject<void>();
 
@@ -62,130 +62,95 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.getMessagesDestroy$.complete();
   }
 
-  subscribeGetMessages() {
-    this.getMessagesDestroy$.next();
-    let token = this.authService.getToken();
-    this.httpMessageService.getAll(this.chat.id, token, this.page, this.PAGE_SIZE)
-      .pipe(
-        repeat({delay: 1000}),
-        takeUntil(this.getMessagesDestroy$))
-      .subscribe({
-        next: (messages) => {
-          this.isLastPage = messages.last;
-          let newMessages = (messages.content as MessageDto[]).sort((a, b) => b.id - a.id);
-          if (JSON.stringify(this.messages) != JSON.stringify(newMessages))
-            this.messages = newMessages;
-        },
-        error: (error) => {
-          if (error.status === 401) this.authService.logout();
-        }
-      });
-  }
-
-  nextPage() {
+  protected nextPage() {
     this.page++;
     this.subscribeGetMessages();
   }
 
-  resetPage() {
+  protected resetPage() {
     this.page = 0;
     this.subscribeGetMessages();
   }
 
-  setEmbed(event: any) {
+  protected setEmbed(event: any) {
     if (event.target.value) {
-      this.messageForm.controls["embed"].setValue(event.target.files[0]);
+      const file = event.target.files[0];
+      this.messageForm.controls["embed"].setValue(file);
       const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      reader.onload = () => {
-        this.embedURL = reader.result as string;
-      }
+      reader.readAsDataURL(file);
+      reader.onload = () => this.embedURL = reader.result as string;
     } else {
       this.messageForm.controls["embed"].setValue(null);
       this.embedURL = undefined;
     }
   }
 
-  onSubmit() {
-    if (this.messages === undefined)
-      return;
+  protected onSubmit() {
+    if (this.messages === undefined) return;
     this.messageForm.disable();
     if (this.page) this.resetPage();
-    let token = this.authService.getToken();
-    let text = this.messageForm.get("text")?.value;
-    let embed = this.messageForm.get("embed")?.value;
+    const token = this.authService.getToken();
+    const text = this.messageForm.get("text")?.value;
+    const embed = this.messageForm.get("embed")?.value;
     const formData = new FormData();
     if (text) formData.append("text", text);
     if (embed) formData.append("embed", embed);
-    this.httpMessageService.createByUserInChat(this.chat.id, token, formData).subscribe({
-      next: (message) => {
-        this.messages?.unshift(message);
-        this.messageForm.controls["text"].setValue('');
-        this.messageForm.controls["embed"].setValue(null);
-        this.embedURL = undefined;
-        this.messageForm.enable();
-      },
-      error: (err) => {
-        if (err.status == 401) this.authService.logout();
-        else this.messageForm.enable();
-      }
-    });
+    this.httpMessageService.createByUserInChat(this.chat.id, token, formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (message) => {
+          this.messages?.unshift(message);
+          this.messageForm.controls["text"].setValue('');
+          this.messageForm.controls["embed"].setValue(null);
+          this.embedURL = undefined;
+          this.messageForm.enable();
+        },
+        error: (err) => {
+          if (err.status == 401) this.authService.logout();
+          else this.messageForm.enable();
+        }
+      });
   }
 
-  startEditMessage(messageDto: MessageDto) {
-    this.editMessageItem = messageDto;
-    this.editMessageForm.controls["newText"].setValue(messageDto.text ?? '');
-  }
-
-  cancelEditMessage() {
+  protected cancelEditMessage() {
     this.editMessageItem = undefined;
   }
 
-  onEditSubmit() {
-    let token = this.authService.getToken();
-    let newText = this.editMessageForm.get("newText")!.value!;
-    this.httpMessageService.updateByAuthor(this.editMessageItem!.id, token, newText).subscribe({
-      next: (message) => {
-        this.messages![this.messages!.findIndex(m => m.id === message.id)] = message;
-        this.editMessageItem = undefined;
-        this.editMessageForm.enable();
-      },
-      error: (err) => {
-        if (err.status == 401) this.authService.logout();
-        else this.messageForm.enable();
-      }
-    });
+  protected onEditSubmit() {
+    const token = this.authService.getToken();
+    const newText = this.editMessageForm.get("newText")!.value!;
+    this.httpMessageService.updateByAuthor(this.editMessageItem!.id, token, newText)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (message) => {
+          this.messages![this.messages!.findIndex(m => m.id === message.id)] = message;
+          this.editMessageItem = undefined;
+          this.editMessageForm.enable();
+        },
+        error: (err) => {
+          if (err.status == 401) this.authService.logout();
+          else this.messageForm.enable();
+        }
+      });
   }
 
-  deleteMessage(messageId: number) {
-    let token = this.authService.getToken();
-    this.httpMessageService.deleteByAuthorOrMod(messageId, token).subscribe({
-      next: () => {
-        this.messages!.splice(this.messages!.findIndex(m => m.id === messageId), 1);
-      },
-      error: (err) => {
-        if (err.status == 401) this.authService.logout();
-      }
-    });
-  }
-
-  enableContextMenu(event: MouseEvent, messageDto: MessageDto) {
+  protected enableContextMenu(event: MouseEvent, messageDto: MessageDto) {
     if (!this.contextMenuComponent) {
       event.preventDefault();
       this.contextMenuComponent = new ContextMenuComponent();
       this.contextMenuComponent.buttons = [];
       if (messageDto.text) {
-        let copyTextSubject = new Subject<void>();
+        const copyTextSubject = new Subject<void>();
         copyTextSubject.subscribe(() => navigator.clipboard.writeText(messageDto.text!));
         this.contextMenuComponent.buttons.push(new ContextButton("Copy text", copyTextSubject));
       }
       if (messageDto.author.id == this.user.id) {
-        let editMessageSubject = new Subject<void>();
+        const editMessageSubject = new Subject<void>();
         editMessageSubject.subscribe(() => this.startEditMessage(messageDto));
         this.contextMenuComponent.buttons.push(new ContextButton("Edit message", editMessageSubject));
       }
       if (messageDto.author.id == this.user.id || this.user.moderatorAt.includes(this.chat.id)) {
-        let deleteMessageSubject = new Subject<void>();
+        const deleteMessageSubject = new Subject<void>();
         deleteMessageSubject.subscribe(() => this.deleteMessage(messageDto.id));
         this.contextMenuComponent.buttons.push(new ContextButton("Delete message", deleteMessageSubject));
       }
@@ -197,11 +162,47 @@ export class ChatComponent implements OnInit, OnDestroy {
     } else this.disableContextMenu();
   }
 
-  disableContextMenu() {
+  protected isBlocked(user: UserInfoDto): boolean {
+    return this.user.blockedUsers.some(u => u.id === user.id);
+  }
+
+  private disableContextMenu() {
     this.contextMenuComponent = undefined;
   }
 
-  isBlocked(user: UserInfoDto) {
-    return this.user.blockedUsers.find(u => u.id === user.id) !== undefined;
+  private subscribeGetMessages() {
+    this.getMessagesDestroy$.next();
+    const token = this.authService.getToken();
+    this.httpMessageService.getAll(this.chat.id, token, this.page, this.PAGE_SIZE)
+      .pipe(
+        repeat({delay: 1000}),
+        takeUntil(this.getMessagesDestroy$))
+      .subscribe({
+        next: (messages) => {
+          this.isLastPage = messages.last;
+          const newMessages = (messages.content as MessageDto[]).sort((a, b) => b.id - a.id);
+          if (JSON.stringify(this.messages) != JSON.stringify(newMessages)) this.messages = newMessages;
+        },
+        error: (error) => {
+          if (error.status === 401) this.authService.logout();
+        }
+      });
+  }
+
+  private startEditMessage(messageDto: MessageDto) {
+    this.editMessageItem = messageDto;
+    this.editMessageForm.controls["newText"].setValue(messageDto.text ?? '');
+  }
+
+  private deleteMessage(messageId: number) {
+    const token = this.authService.getToken();
+    this.httpMessageService.deleteByAuthorOrMod(messageId, token).subscribe({
+      next: () => {
+        this.messages!.splice(this.messages!.findIndex(m => m.id === messageId), 1);
+      },
+      error: (err) => {
+        if (err.status == 401) this.authService.logout();
+      }
+    });
   }
 }

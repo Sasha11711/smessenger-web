@@ -10,39 +10,38 @@ import { ChatDto } from "../dto/chat/chat-dto";
 export class HttpChatService {
   private readonly URL = `${API_URL}/chat`
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   get(id: number) {
     return this.http.get<ChatInfoDto>(`${this.URL}/${id}`);
   }
 
   getByUser(id: number, token: string) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set("token", token);
     return this.http.get<ChatDto>(`${this.URL}/${id}/full`, {params});
   }
 
   createByUser(token: string, formData: FormData) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set("token", token);
     return this.http.post<ChatInfoDto>(this.URL, formData, {params});
   }
 
   updateByMod(id: number, token: string, formData: FormData) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set("token", token);
     return this.http.put(`${this.URL}/${id}`, formData, {params});
   }
 
   addUser(id: number, userId: number, token: string) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set("token", token);
     return this.http.put(`${this.URL}/${id}/add/${userId}`, null, {params});
   }
 
   leaveUser(id: number, token: string) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set("token", token);
     return this.http.put(`${this.URL}/${id}/leave`, null, {params});
   }

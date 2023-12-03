@@ -1,10 +1,10 @@
 <header>
-  <a class="button-image" [routerLink]="leftButton.link" (click)="leftButton.event?.emit()">
+  <a (click)="leftButton.event?.emit()" [routerLink]="leftButton.link" class="button-image">
     <div><img [ngSrc]="leftButton.imageURL" alt="back" height="60" width="60"/></div>
   </a>
   <ng-content/>
   <div class="right">
-    <a class="button-image" *ngFor="let rightButton of rightButtons" [routerLink]="rightButton.link" (click)="rightButton.event?.emit()">
+    <a (click)="rightButton.event?.emit()" *ngFor="let rightButton of rightButtons" [routerLink]="rightButton.link" class="button-image">
       <div><img [ngSrc]="rightButton.imageURL" alt="settings" height="60" width="60"></div>
     </a>
   </div>

@@ -9,8 +9,7 @@ import { MessageDto } from "../dto/message/message-dto";
 export class HttpMessageService {
   private readonly URL = `${API_URL}/message`
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   get(id: number, token: string) {
     const params = new HttpParams()
@@ -19,7 +18,7 @@ export class HttpMessageService {
   }
 
   getAll(chatId: number, token: string, page: number, size: number) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set("chatId", chatId)
       .set("token", token)
       .set("page", page)

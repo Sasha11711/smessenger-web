@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { UserInfoDto } from "../../../dto/user/user-info-dto";
 import { ContextMenuComponent } from "../context-menu/context-menu.component";
 import { UserDto } from "../../../dto/user/user-dto";
@@ -15,12 +15,12 @@ import { Router } from "@angular/router";
   styleUrls: ["./users.component.scss", "../tabbing.scss"]
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  user?: UserDto;
-  isLoading = false;
-  searchUsername = '';
-  searchedUsers?: UserInfoDto[];
-  tab = 0;
-  contextMenuComponent?: ContextMenuComponent;
+  protected user?: UserDto;
+  protected isLoading = false;
+  protected searchUsername = '';
+  protected searchedUsers?: UserInfoDto[];
+  protected tab = 0;
+  protected contextMenuComponent?: ContextMenuComponent;
   private destroy$ = new Subject<void>();
   private searchDestroy$ = new Subject<void>();
 
@@ -32,9 +32,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUser();
-    let queryParams = this.router.parseUrl(this.router.url).queryParamMap;
-    if (queryParams.has("tab"))
-      this.tab = parseInt(queryParams.get("tab")!);
+    const queryParams = this.router.parseUrl(this.router.url).queryParamMap;
+    if (queryParams.has("tab")) this.tab = parseInt(queryParams.get("tab")!);
     else this.router.navigate([], {queryParams: {tab: 0}});
   }
 
@@ -45,47 +44,24 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.searchDestroy$.complete();
   }
 
-  getUser() {
-    this.isLoading = true;
-    let token = this.authService.getToken();
-    this.httpUserService.getFull(token)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (user: UserDto) => {
-          if (JSON.stringify(this.user) != JSON.stringify(user))
-            this.user = user;
-          this.isLoading = false;
-        },
-        error: (err) => {
-          if (err.status === 401) this.authService.logout();
-          this.isLoading = false;
-        }
-      });
-  }
-
-  searchUsers() {
+  protected searchUsers() {
     if (this.searchUsername.length > 1) {
       this.searchDestroy$.next();
       this.httpUserService.getAllByUsername(this.searchUsername)
         .pipe(takeUntil(this.searchDestroy$))
         .subscribe({
-          next: (users: UserInfoDto[]) => {
-            this.searchedUsers = users.filter(value => value.id !== this.user?.id);
-          },
-          error: (err) => {
-            //TODO handle error
-          }
+          next: (users: UserInfoDto[]) => this.searchedUsers = users.filter(value => value.id !== this.user?.id)
         });
     }
   }
 
-  openTab(tab: number) {
+  protected openTab(tab: number) {
     this.getUser();
     this.tab = tab;
     this.router.navigate([], {queryParams: {tab: tab}});
   }
 
-  enableContextMenu(event: MouseEvent, chatUser: UserInfoDto) {
+  protected enableContextMenu(event: MouseEvent, chatUser: UserInfoDto) {
     if (!this.contextMenuComponent) {
       event.preventDefault();
       this.contextMenuComponent = new ContextMenuComponent();
@@ -96,7 +72,24 @@ export class UsersComponent implements OnInit, OnDestroy {
     } else this.disableContextMenu();
   }
 
-  disableContextMenu() {
+  private getUser() {
+    this.isLoading = true;
+    const token = this.authService.getToken();
+    this.httpUserService.getFull(token)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (user: UserDto) => {
+          if (JSON.stringify(this.user) != JSON.stringify(user)) this.user = user;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          if (err.status === 401) this.authService.logout();
+          else this.isLoading = false;
+        }
+      });
+  }
+
+  private disableContextMenu() {
     this.contextMenuComponent = undefined;
   }
 }

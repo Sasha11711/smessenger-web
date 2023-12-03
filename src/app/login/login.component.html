@@ -1,10 +1,10 @@
 <h1 class="text-primary text-center">Login</h1>
-<form class="center" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input class="block form-input" type="text" placeholder="Enter login" formControlName="login">
-  <input class="block form-input" type="password" placeholder="Enter password" formControlName="password">
+<form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="center">
+  <input class="block form-input" formControlName="login" placeholder="Enter login" type="text">
+  <input class="block form-input" formControlName="password" placeholder="Enter password" type="password">
   <div class="block">
-    <p class="error" [style.visibility]="errorMessage ? 'visible' : 'hidden'">{{errorMessage}}</p>
-    <button class="button-primary form-input" type="submit" [disabled]="loginForm.invalid || loginForm.disabled">
+    <p [style.visibility]="errorMessage ? 'visible' : 'hidden'" class="error">{{errorMessage}}</p>
+    <button [disabled]="loginForm.invalid || loginForm.disabled" class="button-primary form-input" type="submit">
       Login
     </button>
   </div>

@@ -1,9 +1,10 @@
 <div *ngIf="user" [class.flex-row]="isDesktop">
-  <app-chats [class.chats-container]="isDesktop" *ngIf="isDesktop || !chat"
-             [user]="user" (onChatSelected)="selectChat($event)" (onChatLeft)="leaveChat($event)"/>
-  <div [class.chat-container]="isDesktop" *ngIf="chat">
-    <app-chat *ngIf="!isChatSettings" [user]="user" [chat]="chat" (onChatUnselected)="unselectChat()" (onSettingsToggled)="toggleSettings()"/>
-    <app-chat-settings *ngIf="isChatSettings" [user]="user" [chat]="chat" (onSettingsToggled)="toggleSettings()"/>
+  <app-chats (onChatLeft)="leaveChat($event)" (onChatSelected)="selectChat($event)" *ngIf="isDesktop || !chat"
+             [class.chats-container]="isDesktop" [user]="user"/>
+  <div *ngIf="chat" [class.chat-container]="isDesktop">
+    <app-chat (onChatUnselected)="unselectChat()" (onSettingsToggled)="toggleSettings()" *ngIf="!isChatSettings"
+              [chat]="chat" [user]="user"/>
+    <app-chat-settings (onSettingsToggled)="toggleSettings()" *ngIf="isChatSettings" [chat]="chat" [user]="user"/>
   </div>
 </div>
-<h1 class="text-primary text-center" *ngIf="!user">loading...</h1>
+<h1 *ngIf="!user" class="text-primary text-center">loading...</h1>

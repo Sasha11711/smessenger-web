@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { catchError, map, of } from "rxjs";
+import { catchError, of, tap } from "rxjs";
 import { HttpUserService } from "./http-user.service";
 import { LOGIN_PASSWORD_ERROR, UNEXPECTED_ERROR, USER_DEACTIVATED_ERROR } from "../app/constants";
 import { Md5 } from "ts-md5";
@@ -11,12 +11,11 @@ import { Router } from "@angular/router";
 })
 export class AuthService {
 
-  constructor(private httpUserService: HttpUserService, private cookieService: CookieService, private router: Router) {}
+  constructor(private httpUserService: HttpUserService, private cookieService: CookieService, private router: Router) { }
 
   login(login: string, password: string) {
-    let md5Password = Md5.hashStr(password);
-    return this.httpUserService.getToken(login, md5Password).pipe(
-      map(token => {
+    return this.httpUserService.getToken(login, Md5.hashStr(password)).pipe(
+      tap(token => {
         this.cookieService.set("token", token);
         this.router.navigate(['/']);
       }),
@@ -37,7 +36,7 @@ export class AuthService {
     this.router.navigate(["/login"]);
   }
 
-  checkToken() {
+  checkToken(): boolean {
     return this.cookieService.check("token");
   }
 

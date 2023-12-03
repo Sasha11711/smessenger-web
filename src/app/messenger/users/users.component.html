@@ -4,31 +4,30 @@
   </app-header>
   <div class="tabs-container center">
     <div class="tabs">
-      <button (click)="openTab(0)" class="button-primary" [disabled]="tab == 0">Find</button>
-      <button (click)="openTab(1)" class="button-primary" [disabled]="tab == 1">Requests</button>
-      <button (click)="openTab(2)" class="button-primary" [disabled]="tab == 2">Blocked</button>
+      <button (click)="openTab(0)" [disabled]="tab == 0" class="button-primary">Find</button>
+      <button (click)="openTab(1)" [disabled]="tab == 1" class="button-primary">Requests</button>
+      <button (click)="openTab(2)" [disabled]="tab == 2" class="button-primary">Blocked</button>
     </div>
     <ng-container *ngIf="!isLoading">
       <div *ngIf="tab == 0">
-        <input class="form-input" type="text" placeholder="Search user" maxlength="255" [(ngModel)]="searchUsername"
-               (input)="searchUsers()"/>
-        <app-user-item *ngFor="let searchedUser of searchedUsers" (contextmenu)="enableContextMenu($event, searchedUser)"
+        <input (input)="searchUsers()" [(ngModel)]="searchUsername" class="form-input" maxlength="255" placeholder="Search user" type="text"/>
+        <app-user-item (contextmenu)="enableContextMenu($event, searchedUser)" *ngFor="let searchedUser of searchedUsers"
                        [user]="searchedUser"/>
       </div>
       <div *ngIf="tab == 1" class="requests">
         <div>
           <h1>Incoming requests</h1>
-          <app-user-item *ngFor="let incoming of this.user?.friendRequestedBy" (contextmenu)="enableContextMenu($event, incoming)"
+          <app-user-item (contextmenu)="enableContextMenu($event, incoming)" *ngFor="let incoming of this.user?.friendRequestedBy"
                          [user]="incoming"/>
         </div>
         <div>
           <h1>Outgoing requests</h1>
-          <app-user-item *ngFor="let outgoing of this.user?.friendRequests" (contextmenu)="enableContextMenu($event, outgoing)"
+          <app-user-item (contextmenu)="enableContextMenu($event, outgoing)" *ngFor="let outgoing of this.user?.friendRequests"
                          [user]="outgoing"/>
         </div>
       </div>
       <div *ngIf="tab == 2">
-        <app-user-item *ngFor="let blocked of this.user?.blockedUsers" (contextmenu)="enableContextMenu($event, blocked)"
+        <app-user-item (contextmenu)="enableContextMenu($event, blocked)" *ngFor="let blocked of this.user?.blockedUsers"
                        [user]="blocked"/>
       </div>
     </ng-container>
@@ -36,6 +35,6 @@
   </div>
 </div>
 <div *ngIf="contextMenuComponent">
-  <app-context-menu [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"
-                    [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"/>
+  <app-context-menu [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"
+                    [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"/>
 </div>

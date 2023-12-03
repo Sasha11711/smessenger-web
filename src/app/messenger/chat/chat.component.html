@@ -1,39 +1,40 @@
 <div class="chat">
-  <app-header class="chat-header" [leftButton]="{imageURL: 'assets/back_icon.svg', event: onChatUnselected}"
-              [rightButtons]="[{imageURL: 'assets/settings_icon.svg', event: onSettingsToggled}]">
+  <app-header [leftButton]="{imageURL: 'assets/back_icon.svg', event: onChatUnselected}"
+              [rightButtons]="[{imageURL: 'assets/settings_icon.svg', event: onSettingsToggled}]"
+              class="chat-header">
     <h1>{{chat.title}}</h1>
   </app-header>
   <div class="message-list">
-    <button *ngIf="page" class="center button-primary" (click)="resetPage()">Reset</button>
-    <app-message-item class="message-item" *ngFor="let message of messages"
-                      [message]="message" [isAuthor]="message.author.id == user.id"
-                      [isBlocked]="isBlocked(message.author)"
-                      (contextmenu)="enableContextMenu($event, message)"/>
-    <button *ngIf="!isLastPage" class="center button-primary" (click)="nextPage()">Load more...</button>
+    <button (click)="resetPage()" *ngIf="page" class="center button-primary">Reset</button>
+    <app-message-item (contextmenu)="enableContextMenu($event, message)" *ngFor="let message of messages"
+                      [isAuthor]="message.author.id == user.id" [isBlocked]="isBlocked(message.author)"
+                      [message]="message"
+                      class="message-item"/>
+    <button (click)="nextPage()" *ngIf="!isLastPage" class="center button-primary">Load more...</button>
   </div>
-  <form *ngIf="!editMessageItem" class="message-form" (ngSubmit)="onSubmit()" [formGroup]="messageForm">
+  <form (ngSubmit)="onSubmit()" *ngIf="!editMessageItem" [formGroup]="messageForm" class="message-form">
     <div>
-      <input class="file-input" type="file" accept=".png" (change)="setEmbed($event)" #fileInput>
-      <a class="button-image" (click)="fileInput.click()">
-        <div><img [ngSrc]="embedURL??'assets/add_image_icon.svg'" alt="embed" width="60" height="60"/></div>
+      <input #fileInput (change)="setEmbed($event)" accept=".png" class="file-input" type="file">
+      <a (click)="fileInput.click()" class="button-image">
+        <div><img [ngSrc]="embedURL ?? 'assets/add_image_icon.svg'" alt="embed" height="60" width="60"/></div>
       </a>
     </div>
-    <input class="message-input" type="text" placeholder="Enter message" formControlName="text"/>
-    <button type="submit" class="button-image" [disabled]="messageForm.invalid || messageForm.disabled">
-      <div><img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/></div>
+    <input class="message-input" formControlName="text" placeholder="Enter message" type="text"/>
+    <button [disabled]="messageForm.invalid || messageForm.disabled" class="button-image" type="submit">
+      <div><img [ngSrc]="'assets/send_icon.svg'" alt="send" height="60" width="60"/></div>
     </button>
   </form>
-  <form *ngIf="editMessageItem" class="message-form" (ngSubmit)="onEditSubmit()" [formGroup]="editMessageForm">
-    <a class="button-image" (click)="cancelEditMessage()">
-      <div><img ngSrc="assets/back_icon.svg" alt="back" width="60" height="60"/></div>
+  <form (ngSubmit)="onEditSubmit()" *ngIf="editMessageItem" [formGroup]="editMessageForm" class="message-form">
+    <a (click)="cancelEditMessage()" class="button-image">
+      <div><img [ngSrc]="'assets/back_icon.svg'" alt="back" height="60" width="60"/></div>
     </a>
-    <input class="message-input" type="text" [placeholder]="editMessageItem.text??''" formControlName="newText"/>
-    <button type="submit" class="button-image" [disabled]="editMessageForm.invalid || editMessageForm.disabled">
-      <div><img ngSrc="assets/send_icon.svg" alt="send" width="60" height="60"/></div>
+    <input [placeholder]="editMessageItem.text??''" class="message-input" formControlName="newText" type="text"/>
+    <button [disabled]="editMessageForm.invalid || editMessageForm.disabled" class="button-image" type="submit">
+      <div><img alt="send" height="60" ngSrc="assets/send_icon.svg" width="60"/></div>
     </button>
   </form>
 </div>
 <div *ngIf="contextMenuComponent">
-  <app-context-menu [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"
-                    [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"/>
+  <app-context-menu [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"
+                    [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"/>
 </div>

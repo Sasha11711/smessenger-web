@@ -10,14 +10,13 @@ import { UserInfoDto } from "../../../../dto/user/user-info-dto";
   styleUrls: ["./chat-item.component.scss"]
 })
 export class ChatItemComponent {
-  protected readonly API_URL = API_URL;
   @Input() chat!: ChatDto;
   @Input() blockedUsers!: UserInfoDto[];
+  protected readonly API_URL = API_URL;
 
-  getText(message: MessageDto) {
-    if (this.blockedUsers.find(user => user.id === message.author.id))
-      return BLOCKED_USER_TEXT
-    let text = message.text?.length! > 12 ? message.text?.slice(0, 12) + "..." : message.text;
-    return text || IMAGE_MESSAGE_TEXT
+  getText(message: MessageDto): string {
+    if (this.blockedUsers.some(user => user.id === message.author.id)) return BLOCKED_USER_TEXT;
+    const text = message.text?.length! > 12 ? message.text?.slice(0, 12) + "..." : message.text;
+    return text || IMAGE_MESSAGE_TEXT;
   }
 }

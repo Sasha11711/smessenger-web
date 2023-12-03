@@ -1,8 +1,8 @@
 <div class="item-flex">
-  <img ngSrc="{{API_URL}}/image/{{chat.imageId}}" alt="Chat image" height="60" width="60">
+  <img alt="Chat image" height="60" ngSrc="{{API_URL}}/image/{{chat.imageId}}" width="60">
   <div>
     <p class="title">{{chat.title}}</p>
-    <p class="last-message" *ngIf="chat.lastMessage; let lastMessage">
+    <p *ngIf="chat.lastMessage; let lastMessage" class="last-message">
       {{lastMessage.author.username}}: {{getText(lastMessage)}}
     </p>
   </div>

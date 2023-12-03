@@ -10,8 +10,8 @@ import { Subject, takeUntil } from "rxjs";
   templateUrl: "./register.component.html",
 })
 export class RegisterComponent implements OnDestroy {
-  errorMessage?: string;
-  registerForm = new FormGroup({
+  protected errorMessage?: string;
+  protected registerForm = new FormGroup({
     login: new FormControl('', [Validators.required, Validators.pattern(LOGIN_REGEX)]),
     password: new FormControl('', [Validators.required, Validators.pattern(PASSWORD_REGEX)]),
     confirmPassword: new FormControl(''),
@@ -19,14 +19,14 @@ export class RegisterComponent implements OnDestroy {
   }, confirmPasswordValidator);
   private destroy$ = new Subject<void>();
 
-  constructor(private httpUserService: HttpUserService, private router: Router) {}
+  constructor(private httpUserService: HttpUserService, private router: Router) { }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  onSubmit() {
+  protected onSubmit() {
     this.registerForm.disable();
     this.errorMessage = undefined;
     this.httpUserService.create({
@@ -47,7 +47,7 @@ export class RegisterComponent implements OnDestroy {
       });
   }
 
-  isInvalidOrDirty(controlName: string) {
+  protected isInvalidOrDirty(controlName: string): boolean {
     return this.registerForm.get(controlName)!.invalid && this.registerForm.get(controlName)!.dirty;
   }
 
@@ -59,8 +59,5 @@ export class RegisterComponent implements OnDestroy {
 export function confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {
   const passwordControl = control.get("password");
   const confirmPasswordControl = control.get("confirmPassword");
-
-  if (passwordControl?.value !== confirmPasswordControl?.value)
-    return {"passwordMismatch": true};
-  return null;
+  return (passwordControl?.value !== confirmPasswordControl?.value) ? {"passwordMismatch": true} : null;
 }

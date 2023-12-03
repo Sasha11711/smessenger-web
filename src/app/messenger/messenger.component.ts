@@ -12,11 +12,11 @@ import { Router } from "@angular/router";
   styleUrls: ["./messenger.component.scss"]
 })
 export class MessengerComponent implements OnInit, OnDestroy {
-  user?: UserDto;
-  chat?: ChatDto;
-  chatId?: number;
-  isChatSettings = false;
-  isDesktop: boolean;
+  protected user?: UserDto;
+  protected chat?: ChatDto;
+  protected isChatSettings = false;
+  protected isDesktop: boolean;
+  private chatId?: number;
   private destroy$ = new Subject<void>();
 
   constructor(private httpUserService: HttpUserService, private authService: AuthService, private router: Router) {
@@ -24,14 +24,8 @@ export class MessengerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.parseQueryParams();
     this.subscribeGetUser();
-    let queryParams = this.router.parseUrl(this.router.url).queryParamMap;
-    if (queryParams.has("chat")) {
-      this.chatId = parseInt(queryParams.get("chat")!);
-    }
-    if (queryParams.has("settings")) {
-      this.isChatSettings = true;
-    }
   }
 
   ngOnDestroy() {
@@ -39,12 +33,48 @@ export class MessengerComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  subscribeGetUser() {
-    let token = this.authService.getToken();
+  protected selectChat(chat: ChatDto) {
+    this.chat = chat;
+    this.isChatSettings = false;
+    this.updateQueryParams();
+  }
+
+  protected unselectChat() {
+    this.chat = undefined;
+    this.chatId = undefined;
+    this.updateQueryParams();
+  }
+
+  protected leaveChat(chatId: number) {
+    this.user!.chats = this.user!.chats.filter(chat => chat.id !== chatId);
+    this.user!.moderatorAt = this.user!.moderatorAt.filter(id => id !== chatId);
+    this.unselectChat();
+  }
+
+  protected toggleSettings() {
+    this.isChatSettings = !this.isChatSettings;
+    this.updateQueryParams();
+  }
+
+  private updateQueryParams() {
+    this.router.navigate([], {
+      queryParams: {
+        chat: this.chat?.id,
+        settings: this.isChatSettings || undefined
+      }
+    });
+  }
+
+  private parseQueryParams() {
+    const queryParams = this.router.parseUrl(this.router.url).queryParamMap;
+    if (queryParams.has("chat")) this.chatId = parseInt(queryParams.get("chat")!);
+    if (queryParams.has("settings")) this.isChatSettings = true;
+  }
+
+  private subscribeGetUser() {
+    const token = this.authService.getToken();
     this.httpUserService.getFull(token)
-      .pipe(
-        repeat({delay: 1000}),
-        takeUntil(this.destroy$))
+      .pipe(repeat({delay: 1000}), takeUntil(this.destroy$))
       .subscribe({
         next: (user: UserDto) => {
           if (JSON.stringify(this.user) != JSON.stringify(user)) {
@@ -57,41 +87,5 @@ export class MessengerComponent implements OnInit, OnDestroy {
           if (err.status === 401) this.authService.logout();
         }
       });
-  }
-
-  selectChat(chat: ChatDto) {
-    this.chat = chat;
-    this.isChatSettings = false;
-    this.router.navigate([], {
-      queryParams: {
-        chat: this.chat.id
-      }
-    });
-  }
-
-  unselectChat() {
-    this.chat = undefined;
-    this.chatId = undefined;
-    this.router.navigate([], {
-      queryParams: {
-        chat: undefined
-      }
-    });
-  }
-
-  leaveChat(chatId: number) {
-    this.user!.chats = this.user!.chats.filter(chat => chat.id !== chatId);
-    this.user!.moderatorAt = this.user!.moderatorAt.filter(id => id !== chatId);
-    this.unselectChat();
-  }
-
-  toggleSettings() {
-    this.isChatSettings = !this.isChatSettings;
-    this.router.navigate([], {
-      queryParams: {
-        chat: this.chat!.id,
-        settings: this.isChatSettings ? this.isChatSettings : undefined
-      }
-    });
   }
 }

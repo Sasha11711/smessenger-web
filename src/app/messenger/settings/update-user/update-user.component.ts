@@ -12,8 +12,8 @@ import { Subject } from "rxjs";
 })
 export class UpdateUserComponent implements OnInit, OnDestroy {
   @Input() user!: UserDto;
-  avatarURL?: string;
-  updateForm = new FormGroup({
+  protected avatarURL?: string;
+  protected updateForm = new FormGroup({
     username: new FormControl<string>('', [Validators.required, Validators.maxLength(255)]),
     avatar: new FormControl<Blob | null>(null)
   });
@@ -31,9 +31,9 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  setAvatar(event: any) {
+  protected setAvatar(event: any) {
     if (event.target.value) {
-      let file = event.target.files[0];
+      const file = event.target.files[0];
       this.updateForm.controls["avatar"].setValue(file);
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -44,7 +44,7 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit() {
+  protected onSubmit() {
     this.updateForm.disable();
     const token = this.authService.getToken();
     const username = this.updateForm.get("username")!.value!;

@@ -13,11 +13,11 @@ import { confirmPasswordValidator } from "../../../register/register.component";
 })
 export class SecurityUserComponent implements OnDestroy {
   @Input() user!: UserDto;
-  securityForm = new FormGroup({
+  protected securityForm = new FormGroup({
     login: new FormControl<string>('', Validators.required),
     password: new FormControl<string>('', Validators.required)
   });
-  newPasswordForm = new FormGroup({
+  protected newPasswordForm = new FormGroup({
     password: new FormControl<string>('', [Validators.required, Validators.pattern(PASSWORD_REGEX)]),
     confirmPassword: new FormControl<string>('')
   }, confirmPasswordValidator);
@@ -30,11 +30,11 @@ export class SecurityUserComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  logout() {
+  protected logout() {
     this.authService.logout();
   }
 
-  resetUuid() {
+  protected resetUuid() {
     this.newPasswordForm.disable();
     this.securityForm.disable();
     const token = this.authService.getToken();
@@ -42,8 +42,7 @@ export class SecurityUserComponent implements OnDestroy {
       .subscribe({
         next: () => this.authService.logout(),
         error: (err) => {
-          if (err.status === 401) this.authService.logout();
-          else {
+          if (err.status === 401) this.authService.logout(); else {
             this.securityForm.enable();
             this.newPasswordForm.enable();
           }
@@ -51,7 +50,7 @@ export class SecurityUserComponent implements OnDestroy {
       });
   }
 
-  deactivateUser() {
+  protected deactivateUser() {
     this.newPasswordForm.disable();
     this.securityForm.disable();
     const token = this.authService.getToken();
@@ -72,7 +71,7 @@ export class SecurityUserComponent implements OnDestroy {
       });
   }
 
-  changePassword() {
+  protected changePassword() {
     this.newPasswordForm.disable();
     this.securityForm.disable();
     const token = this.authService.getToken();

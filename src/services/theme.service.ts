@@ -8,7 +8,7 @@ export class ThemeService {
   readonly defaultColors;
 
   constructor(private cookieService: CookieService) {
-    let rootStyle = getComputedStyle(document.documentElement);
+    const rootStyle = getComputedStyle(document.documentElement);
     this.defaultColors = {
       dark: rootStyle.getPropertyValue("--dark-color"),
       default: rootStyle.getPropertyValue("--default-color"),
@@ -22,17 +22,16 @@ export class ThemeService {
   }
 
   getColor(property: "dark" | "default" | "light" | "accent"): string {
-    if (this.cookieService.check(property))
-      return this.cookieService.get(property);
+    if (this.cookieService.check(property)) return this.cookieService.get(property);
     return this.defaultColors[property];
   }
 
   applyTheme() {
-    let root = document.documentElement;
-    let darkColor = this.getColor("dark");
-    let defaultColor = this.getColor("default");
-    let lightColor = this.getColor("light");
-    let accentColor = this.getColor("accent");
+    const root = document.documentElement;
+    const darkColor = this.getColor("dark");
+    const defaultColor = this.getColor("default");
+    const lightColor = this.getColor("light");
+    const accentColor = this.getColor("accent");
     if (darkColor) root.style.setProperty("--dark-color", darkColor);
     if (defaultColor) root.style.setProperty("--default-color", defaultColor);
     if (lightColor) root.style.setProperty("--light-color", lightColor);

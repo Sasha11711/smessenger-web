@@ -1,13 +1,13 @@
 <app-header *ngIf="!chat" [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
   <h1>Create Chat</h1>
 </app-header>
-<form class="center item-flex block" (ngSubmit)="onSubmit()" [formGroup]="chatForm">
+<form (ngSubmit)="onSubmit()" [formGroup]="chatForm" class="center item-flex block">
   <div>
-    <input class="file-input" type="file" accept=".png" (change)="setImage($event)" #fileInput>
-    <img [ngSrc]="imageURL??'assets/icon.svg'" alt="image" width="100" height="100" (click)="fileInput.click()"/>
+    <input #fileInput (change)="setImage($event)" accept=".png" class="file-input" type="file">
+    <img (click)="fileInput.click()" [ngSrc]="imageURL??'assets/icon.svg'" alt="image" height="100" width="100"/>
   </div>
   <div class="align-right">
-    <input class="form-input" type="text" [placeholder]="chat ? chat.title : 'Title'" formControlName="title">
-    <button class="button-primary" type="submit" [disabled]="chatForm.invalid || chatForm.disabled">Apply</button>
+    <input [placeholder]="chat ? chat.title : 'Title'" class="form-input" formControlName="title" type="text">
+    <button [disabled]="chatForm.invalid || chatForm.disabled" class="button-primary" type="submit">Apply</button>
   </div>
 </form>

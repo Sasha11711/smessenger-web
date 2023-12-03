@@ -3,6 +3,10 @@
   text-align: right;
 }
 
+.is-edited {
+  font-style: italic;
+}
+
 .author-username {
   font-weight: bold;
   font-size: 1.2rem;
@@ -17,8 +21,4 @@
 
 .embed {
   max-width: 100%;
-}
-
-.is-edited {
-  font-style: italic;
 }

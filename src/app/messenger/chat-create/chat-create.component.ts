@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { HttpChatService } from "../../../services/http-chat.service";
 import { AuthService } from "../../../services/auth.service";
-import { Subject, takeUntil } from "rxjs";
+import { Observable, Subject, takeUntil } from "rxjs";
 import { Router } from "@angular/router";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ChatDto } from "../../../dto/chat/chat-dto";
@@ -13,8 +13,8 @@ import { API_URL } from "../../constants";
 })
 export class ChatCreateComponent implements OnInit, OnDestroy {
   @Input() chat?: ChatDto;
-  imageURL?: string;
-  chatForm = new FormGroup({
+  protected imageURL?: string;
+  protected chatForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.maxLength(255)]),
     image: new FormControl<Blob | null>(null)
   })
@@ -34,9 +34,9 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  setImage(event: any) {
+  protected setImage(event: any) {
     if (event.target.value) {
-      let file = event.target.files[0];
+      const file = event.target.files[0];
       this.chatForm.controls["image"].setValue(file);
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -47,33 +47,24 @@ export class ChatCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit() {
+  protected onSubmit() {
     this.chatForm.disable();
-    let token = this.authService.getToken();
-    let image = this.chatForm.get("image")?.value;
+    const token = this.authService.getToken();
+    const image = this.chatForm.get("image")?.value;
     const formData = new FormData();
     formData.append("title", this.chatForm.get("title")!.value!);
     if (image) formData.append("image", image);
-    if (this.chat) {
-      this.httpChatService.updateByMod(this.chat.id, token, formData)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => this.chatForm.enable(),
-          error: (err) => {
-            if (err.status == 401) this.authService.logout();
-            else this.chatForm.enable();
-          }
-        });
-    } else {
-      this.httpChatService.createByUser(token, formData)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => this.router.navigate([""]),
-          error: (err) => {
-            if (err.status == 401) this.authService.logout();
-            else this.chatForm.enable();
-          }
-        });
-    }
+    if (this.chat) this.handleRequest(this.httpChatService.updateByMod(this.chat.id, token, formData));
+    else this.handleRequest(this.httpChatService.createByUser(token, formData));
+  }
+
+  private handleRequest(observable: Observable<Object>) {
+    observable.pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => this.router.navigate([""]),
+      error: (err) => {
+        if (err.status == 401) this.authService.logout();
+        else this.chatForm.enable();
+      }
+    });
   }
 }

@@ -8,16 +8,16 @@ import { ThemeService } from "../../../../services/theme.service";
   styleUrls: ["./theme.component.scss"]
 })
 export class ThemeComponent {
-  themeForm = new FormGroup({
+  protected themeForm = new FormGroup({
     dark: new FormControl<string>(this.settingsService.getColor("dark")),
     default: new FormControl<string>(this.settingsService.getColor("default")),
     light: new FormControl<string>(this.settingsService.getColor("light")),
     accent: new FormControl<string>(this.settingsService.getColor("accent"))
   });
 
-  constructor(protected settingsService: ThemeService) { }
+  constructor(private settingsService: ThemeService) { }
 
-  onSubmit() {
+  protected onSubmit() {
     this.settingsService.setColor("dark", this.themeForm.get("dark")!.value!);
     this.settingsService.setColor("default", this.themeForm.get("default")!.value!);
     this.settingsService.setColor("light", this.themeForm.get("light")!.value!);
@@ -25,14 +25,13 @@ export class ThemeComponent {
     this.settingsService.applyTheme();
   }
 
-  reset() {
+  protected reset() {
     this.settingsService.resetTheme();
     this.themeForm.reset({
-        dark: this.settingsService.getColor("dark"),
-        default: this.settingsService.getColor("default"),
-        light: this.settingsService.getColor("light"),
-        accent: this.settingsService.getColor("accent")
-      }
-    );
+      dark: this.settingsService.getColor("dark"),
+      default: this.settingsService.getColor("default"),
+      light: this.settingsService.getColor("light"),
+      accent: this.settingsService.getColor("accent")
+    });
   }
 }

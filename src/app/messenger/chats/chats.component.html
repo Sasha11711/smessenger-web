@@ -5,10 +5,10 @@
   <h1>Chats</h1>
 </app-header>
 <div>
-  <app-chat-item *ngFor="let chat of user.chats" [chat]="chat" [blockedUsers]="user.blockedUsers"
-                 (click)="onChatSelected.emit(chat)" (contextmenu)="enableContextMenu($event, chat)"/>
+  <app-chat-item (click)="onChatSelected.emit(chat)" (contextmenu)="enableContextMenu($event, chat)" *ngFor="let chat of user.chats"
+                 [blockedUsers]="user.blockedUsers" [chat]="chat"/>
 </div>
 <div *ngIf="contextMenuComponent">
-  <app-context-menu [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"
-                    [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"/>
+  <app-context-menu [buttons]="contextMenuComponent.buttons" [title]="contextMenuComponent.title"
+                    [x]="contextMenuComponent.x" [y]="contextMenuComponent.y"/>
 </div>

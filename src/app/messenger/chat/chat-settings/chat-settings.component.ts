@@ -33,38 +33,34 @@ export class ChatSettingsComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  disableContextMenu() {
-    this.contextMenuComponent = undefined;
-  }
-
   protected enableContextMenu(event: MouseEvent, chatUser: UserInfoDto) {
     if (!this.contextMenuComponent && this.user.id !== chatUser.id) {
       event.preventDefault();
       this.contextMenuComponent = new ContextMenuComponent();
       this.contextMenuComponent.buttons = this.usersService.userContextMenu(this.user, chatUser);
-      if (this.chat.bannedUsers.find(value => value.id === chatUser.id)) {
-        let unbanSubject = new Subject<void>();
+      if (this.chat.bannedUsers.some(value => value.id === chatUser.id)) {
+        const unbanSubject = new Subject<void>();
         unbanSubject.subscribe(() => this.unban(chatUser.id));
         this.contextMenuComponent.buttons.push(new ContextButton("Unban", unbanSubject));
       } else {
-        let banSubject = new Subject<void>();
+        const banSubject = new Subject<void>();
         banSubject.subscribe(() => this.ban(chatUser));
         this.contextMenuComponent.buttons.push(new ContextButton("Ban", banSubject));
-        if (this.chat.users.find(value => value.id === chatUser.id)) {
-          let kickSubject = new Subject<void>();
+        if (this.chat.users.some(value => value.id === chatUser.id)) {
+          const kickSubject = new Subject<void>();
           kickSubject.subscribe(() => this.kick(chatUser.id));
           this.contextMenuComponent.buttons.push(new ContextButton("Kick", kickSubject));
           if (this.chat.moderatorsId.includes(chatUser.id)) {
-            let unmodSubject = new Subject<void>();
+            const unmodSubject = new Subject<void>();
             unmodSubject.subscribe(() => this.unmod(chatUser.id));
             this.contextMenuComponent.buttons.push(new ContextButton("Unmod", unmodSubject));
           } else {
-            let modSubject = new Subject<void>();
+            const modSubject = new Subject<void>();
             modSubject.subscribe(() => this.mod(chatUser));
             this.contextMenuComponent.buttons.push(new ContextButton("Mod", modSubject));
           }
         } else {
-          let addSubject = new Subject<void>();
+          const addSubject = new Subject<void>();
           addSubject.subscribe(() => this.add(chatUser));
           this.contextMenuComponent.buttons.push(new ContextButton("Add", addSubject));
         }
@@ -77,13 +73,17 @@ export class ChatSettingsComponent implements OnDestroy {
 
   protected getFriends(): UserInfoDto[] {
     return this.user.friends.filter(friend =>
-      !this.chat.users.find(value => value.id === friend.id) &&
-      !this.chat.bannedUsers.find(value => value.id === friend.id)
+      !this.chat.users.some(value => value.id === friend.id) &&
+      !this.chat.bannedUsers.some(value => value.id === friend.id)
     );
   }
 
+  private disableContextMenu() {
+    this.contextMenuComponent = undefined;
+  }
+
   private unban(userId: number) {
-    let token = this.authService.getToken();
+    const token = this.authService.getToken();
     this.httpChatService.unbanUserByMod(this.chat.id, userId, token).subscribe({
       next: () => this.chat.bannedUsers.splice(this.chat.bannedUsers.findIndex(value => value.id !== userId), 1),
       error: this.handleError
@@ -91,7 +91,7 @@ export class ChatSettingsComponent implements OnDestroy {
   }
 
   private ban(user: UserInfoDto) {
-    let token = this.authService.getToken();
+    const token = this.authService.getToken();
     this.httpChatService.banUserByMod(this.chat.id, user.id, token).subscribe({
       next: () => this.chat.bannedUsers.push(user),
       error: this.handleError
@@ -99,7 +99,7 @@ export class ChatSettingsComponent implements OnDestroy {
   }
 
   private kick(userId: number) {
-    let token = this.authService.getToken();
+    const token = this.authService.getToken();
     this.httpChatService.kickUserByMod(this.chat.id, userId, token).subscribe({
       next: () => this.chat.users.splice(this.chat.users.findIndex(value => value.id !== userId), 1),
       error: this.handleError
@@ -107,7 +107,7 @@ export class ChatSettingsComponent implements OnDestroy {
   }
 
   private unmod(userId: number) {
-    let token = this.authService.getToken();
+    const token = this.authService.getToken();
     this.httpChatService.unsetModeratorByMod(this.chat.id, userId, token).subscribe({
       next: () => this.chat.moderatorsId.splice(this.chat.moderatorsId.indexOf(userId), 1),
       error: this.handleError
@@ -115,7 +115,7 @@ export class ChatSettingsComponent implements OnDestroy {
   }
 
   private mod(user: UserInfoDto) {
-    let token = this.authService.getToken();
+    const token = this.authService.getToken();
     this.httpChatService.setModeratorByMod(this.chat.id, user.id, token).subscribe({
       next: () => this.chat.moderatorsId.push(user.id),
       error: this.handleError
@@ -123,7 +123,7 @@ export class ChatSettingsComponent implements OnDestroy {
   }
 
   private add(user: UserInfoDto) {
-    let token = this.authService.getToken();
+    const token = this.authService.getToken();
     this.httpChatService.addUser(this.chat.id, user.id, token).subscribe({
       next: () => this.chat.users.push(user),
       error: this.handleError

@@ -9,8 +9,7 @@ import { Image } from "../dto/image";
 export class HttpImageService {
   private readonly URL = `${API_URL}/image`
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   get(id: number) {
     return this.http.get<Image>(`${this.URL}/${id}`);

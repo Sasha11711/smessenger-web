@@ -3,7 +3,6 @@ import { API_URL } from "../app/constants";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { UserInfoDto } from "../dto/user/user-info-dto";
 import { UserDto } from "../dto/user/user-dto";
-import { UserUpdateDto } from "../dto/user/user-update-dto";
 import { UserCreateDto } from "../dto/user/user-create-dto";
 
 @Injectable({
@@ -12,8 +11,7 @@ import { UserCreateDto } from "../dto/user/user-create-dto";
 export class HttpUserService {
   private readonly URL = `${API_URL}/user`
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   getAllByUsername(username: string) {
     const params = new HttpParams().set("username", username);

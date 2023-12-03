@@ -1,11 +1,11 @@
 <h1 class="text-primary text-center">Update user</h1>
-<form class="center item-flex" (ngSubmit)="onSubmit()" [formGroup]="updateForm">
+<form (ngSubmit)="onSubmit()" [formGroup]="updateForm" class="center item-flex">
   <div>
-    <input class="file-input" type="file" accept=".png" (change)="setAvatar($event)" #fileInput>
-    <img [ngSrc]="avatarURL??'assets/icon.svg'" alt="avatar" width="100" height="100" (click)="fileInput.click()"/>
+    <input #fileInput (change)="setAvatar($event)" accept=".png" class="file-input" type="file">
+    <img (click)="fileInput.click()" [ngSrc]="avatarURL??'assets/icon.svg'" alt="avatar" height="100" width="100"/>
   </div>
   <div class="align-right">
-    <input class="form-input" type="text" [placeholder]="user.username" formControlName="username">
-    <button class="button-primary" type="submit" [disabled]="updateForm.invalid || updateForm.disabled">Apply</button>
+    <input [placeholder]="user.username" class="form-input" formControlName="username" type="text">
+    <button [disabled]="updateForm.invalid || updateForm.disabled" class="button-primary" type="submit">Apply</button>
   </div>
 </form>

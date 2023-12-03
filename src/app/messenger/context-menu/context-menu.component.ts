@@ -12,11 +12,11 @@ export class ContextMenuComponent {
   @Input() buttons?: ContextButton[];
   @Input() title?: string;
 
-  getX() {
+  protected getX() {
     return this.x + 150 > window.innerWidth ? this.x - 150 : this.x;
   }
 
-  getY() {
+  protected getY() {
     return this.y + 150 > window.innerHeight ? this.y - 150 : this.y;
   }
 }

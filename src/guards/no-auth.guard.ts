@@ -6,7 +6,6 @@ export const noAuthGuard = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.checkToken())
-    return true;
+  if (!authService.checkToken()) return true;
   return router.navigate(['/']);
 };

@@ -1,20 +1,20 @@
 <h1 class="text-primary text-center">Security</h1>
 <div class="text-center">
-  <button class="button-primary" (click)="logout()">Logout</button>
-  <button class="button-primary" (click)="resetUuid()">Reset UUID</button>
+  <button (click)="logout()" class="button-primary">Logout</button>
+  <button (click)="resetUuid()" class="button-primary">Reset UUID</button>
 </div>
-<form class="center" [formGroup]="securityForm">
-  <input class="form-input" type="text" formControlName="login" placeholder="Enter login">
-  <input class="form-input" type="password" formControlName="password" placeholder="Enter password">
+<form [formGroup]="securityForm" class="center">
+  <input class="form-input" formControlName="login" placeholder="Enter login" type="text">
+  <input class="form-input" formControlName="password" placeholder="Enter password" type="password">
 </form>
-<button class="button-primary center block" (click)="deactivateUser()" [disabled]="securityForm.invalid">
+<button (click)="deactivateUser()" [disabled]="securityForm.invalid" class="button-primary center block">
   Deactivate user
 </button>
-<form class="center" [formGroup]="newPasswordForm">
-  <input class="form-input" type="password" formControlName="password" placeholder="Enter new password">
-  <input class="form-input" type="password" formControlName="confirmPassword" placeholder="Enter new password again"
-         [ngClass]="newPasswordForm.hasError('passwordMismatch') ? 'ng-invalid' : 'ng-valid'">
+<form [formGroup]="newPasswordForm" class="center">
+  <input class="form-input" formControlName="password" placeholder="Enter new password" type="password">
+  <input [ngClass]="newPasswordForm.hasError('passwordMismatch') ? 'ng-invalid' : 'ng-valid'" class="form-input"
+         formControlName="confirmPassword" placeholder="Enter new password again" type="password">
 </form>
-<button class="button-primary center block" (click)="changePassword()" [disabled]="securityForm.invalid || newPasswordForm.invalid">
+<button (click)="changePassword()" [disabled]="securityForm.invalid || newPasswordForm.invalid" class="button-primary center block">
   Change password
 </button>
