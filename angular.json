@@ -57,6 +57,20 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "proxy": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/constants.ts",
+                  "with": "src/app/constants.proxy.ts"
+                }
+              ],
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -69,6 +83,9 @@
             },
             "development": {
               "browserTarget": "smessenger-web:build:development"
+            },
+            "proxy": {
+              "browserTarget": "smessenger-web:build:proxy"
             }
           },
           "defaultConfiguration": "development"
