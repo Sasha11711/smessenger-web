@@ -1,3 +1,5 @@
+@use "src/variables" as v;
+
 .is-author {
   flex-direction: row-reverse;
   text-align: right;
@@ -7,6 +9,9 @@
   font-style: italic;
 }
 
+.is-mod {
+  color: v.$cube_brown !important;
+}
 .author-username {
   font-weight: bold;
   font-size: 1.2rem;

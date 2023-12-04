@@ -1,6 +1,6 @@
 <div class="users">
   <app-header [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
-    <h1>Users</h1>
+    <h1 class="text-primary">Users</h1>
   </app-header>
   <div class="tabs-container center">
     <div class="tabs">
@@ -16,12 +16,12 @@
       </div>
       <div *ngIf="tab == 1" class="requests">
         <div>
-          <h1>Incoming requests</h1>
+          <h1 class="text-primary">Incoming requests</h1>
           <app-user-item (contextmenu)="enableContextMenu($event, incoming)" *ngFor="let incoming of this.user?.friendRequestedBy"
                          [user]="incoming"/>
         </div>
         <div>
-          <h1>Outgoing requests</h1>
+          <h1 class="text-primary">Outgoing requests</h1>
           <app-user-item (contextmenu)="enableContextMenu($event, outgoing)" *ngFor="let outgoing of this.user?.friendRequests"
                          [user]="outgoing"/>
         </div>
@@ -31,7 +31,7 @@
                        [user]="blocked"/>
       </div>
     </ng-container>
-    <p *ngIf="isLoading" class="text-center">Loading...</p>
+    <p *ngIf="isLoading" class="text-primary text-center">Loading...</p>
   </div>
 </div>
 <div *ngIf="contextMenuComponent">

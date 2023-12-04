@@ -1,5 +1,5 @@
 <app-header *ngIf="!chat" [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
-  <h1>Create Chat</h1>
+  <h1 class="text-primary">Create Chat</h1>
 </app-header>
 <form (ngSubmit)="onSubmit()" [formGroup]="chatForm" class="center item-flex block">
   <div>

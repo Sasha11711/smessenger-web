@@ -1,5 +1,5 @@
 <app-header [leftButton]="{imageURL: 'assets/back_icon.svg', link: ''}">
-  <h1>Settings</h1>
+  <h1 class="text-primary">Settings</h1>
 </app-header>
 <div class="tabs-container center">
   <div class="tabs">
@@ -11,7 +11,7 @@
       <app-update-user [user]="user"/>
       <app-security-user [user]="user"/>
     </ng-container>
-    <p *ngIf="!user" class="text-center">Loading...</p>
+    <p *ngIf="!user" class="text-primary text-center">Loading...</p>
   </div>
   <div *ngIf="tab == 1">
     <app-theme/>

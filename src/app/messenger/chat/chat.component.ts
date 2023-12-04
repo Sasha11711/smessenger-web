@@ -162,8 +162,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     } else this.disableContextMenu();
   }
 
-  protected isBlocked(user: UserInfoDto): boolean {
-    return this.user.blockedUsers.some(u => u.id === user.id);
+  protected isBlocked(userId: number): boolean {
+    return this.user.blockedUsers.some(u => u.id === userId);
+  }
+
+  protected isMod(userId: number): boolean {
+    return this.chat.moderatorsId.includes(userId);
   }
 
   private disableContextMenu() {

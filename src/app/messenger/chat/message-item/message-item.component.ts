@@ -10,6 +10,7 @@ import { API_URL, BLOCKED_USER_TEXT } from "../../../constants";
 export class MessageItemComponent {
   @Input() isBlocked!: boolean;
   @Input() isAuthor!: boolean;
+  @Input() isMod!: boolean;
   @Input() message!: MessageDto;
   protected readonly API_URL = API_URL;
   protected readonly BLOCKED_USER_TEXT = BLOCKED_USER_TEXT;

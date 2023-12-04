@@ -2,13 +2,13 @@
   <app-header [leftButton]="{imageURL: 'assets/back_icon.svg', event: onChatUnselected}"
               [rightButtons]="[{imageURL: 'assets/settings_icon.svg', event: onSettingsToggled}]"
               class="chat-header">
-    <h1>{{chat.title}}</h1>
+    <h1 class="text-secondary">{{chat.title}}</h1>
   </app-header>
   <div class="message-list">
     <button (click)="resetPage()" *ngIf="page" class="center button-primary">Reset</button>
     <app-message-item (contextmenu)="enableContextMenu($event, message)" *ngFor="let message of messages"
-                      [isAuthor]="message.author.id == user.id" [isBlocked]="isBlocked(message.author)"
-                      [message]="message"
+                      [isBlocked]="isBlocked(message.author.id)" [isMod]="isMod(message.author.id)"
+                      [isAuthor]="message.author.id == user.id" [message]="message"
                       class="message-item"/>
     <button (click)="nextPage()" *ngIf="!isLastPage" class="center button-primary">Load more...</button>
   </div>

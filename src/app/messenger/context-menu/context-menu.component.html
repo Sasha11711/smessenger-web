@@ -1,5 +1,5 @@
 <div [ngStyle]="{'left.px': getX(), 'top.px': getY()}" class="context-menu">
-  <p *ngIf="title" class="context-title">{{title}}</p>
+  <p *ngIf="title" class="text-secondary context-title">{{title}}</p>
   <button (click)="button.event.next()" *ngFor="let button of buttons" class="context-button button-primary">
     {{button.text}}
   </button>

@@ -2,7 +2,7 @@
             [rightButtons]="[
                 {imageURL: 'assets/users_icon.svg', link: '/users'},
                 {imageURL: 'assets/add_chat_icon.svg', link: '/create'}]">
-  <h1>Chats</h1>
+  <h1 class="text-primary">Chats</h1>
 </app-header>
 <div>
   <app-chat-item (click)="onChatSelected.emit(chat)" (contextmenu)="enableContextMenu($event, chat)" *ngFor="let chat of user.chats"
